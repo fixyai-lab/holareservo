@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservo — Tu agenda llena, aunque no contestes WhatsApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --azul: #1a56db;
+    --azul-claro: #e8f0fe;
+    --azul-medio: #3b82f6;
+    --dorado: #f59e0b;
+    --dorado-claro: #fef3c7;
+    --texto: #111827;
+    --texto-suave: #6b7280;
+    --fondo: #ffffff;
+    --fondo-suave: #f9fafb;
+    --borde: #e5e7eb;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--texto);
+    background: var(--fondo);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--borde);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--azul);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--dorado); }
+
+  .nav-cta {
+    background: var(--azul);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: #1440b0; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 50%, #fffbeb 100%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,86,219,0.08) 0%, transparent 70%);
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--azul-claro);
+    color: var(--azul);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--azul);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 1.25rem;
+    color: var(--texto);
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--azul);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--texto-suave);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--azul);
+    color: white;
+    padding: 0.875rem 1.75rem;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(26,86,219,0.25);
+  }
+
+  .btn-primary:hover {
+    background: #1440b0;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(26,86,219,0.35);
+  }
+
+  .btn-secondary {
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-secondary:hover { color: var(--texto); }
+
+  /* WHATSAPP MOCKUP */
+  .phone-mockup {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+    overflow: hidden;
+    max-width: 320px;
+    margin: 0 auto;
+    border: 1px solid var(--borde);
+  }
+
+  .wa-header {
+    background: #075e54;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .wa-avatar {
+    width: 36px; height: 36px;
+    background: var(--dorado);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .wa-name { color: white; font-size: 0.9rem; font-weight: 500; }
+  .wa-status { color: rgba(255,255,255,0.7); font-size: 0.7rem; }
+
+  .wa-body {
+    background: #e5ddd5;
+    padding: 1rem;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8bdb5' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .msg {
+    max-width: 80%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .msg-in {
+    background: white;
+    align-self: flex-start;
+    border-radius: 0 8px 8px 8px;
+  }
+
+  .msg-out {
+    background: #dcf8c6;
+    align-self: flex-end;
+    border-radius: 8px 0 8px 8px;
+  }
+
+  .msg-time {
+    font-size: 0.65rem;
+    color: var(--texto-suave);
+    text-align: right;
+    margin-top: 2px;
+  }
+
+  .msg-confirmed {
+    background: #1a56db;
+    color: white;
+    align-self: flex-start;
+    border-radius: 0 8px 8px 8px;
+  }
+
+  .msg-confirmed .msg-time { color: rgba(255,255,255,0.7); }
+
+  /* STATS */
+  .stats-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 100px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--azul);
+  }
+
+  /* SECTION */
+  section { padding: 5rem 2rem; }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--azul);
+    margin-bottom: 0.75rem;
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 3vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    color: var(--texto-suave);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--fondo-suave);
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: all 0.2s;
+  }
+
+  .feature-card:hover {
+    border-color: var(--azul-medio);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,86,219,0.08);
+  }
+
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: var(--azul-claro);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.3px;
+  }
+
+  .feature-card p {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    line-height: 1.6;
+  }
+
+  /* PRICING */
+  .pricing-section { background: var(--fondo-suave); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 800px;
+  }
+
+  .pricing-card {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .pricing-card.featured {
+    border-color: var(--azul);
+    border-width: 2px;
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--azul);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.875rem;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .price-label {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .price-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .price-setup {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde);
+    margin-bottom: 1rem;
+  }
+
+  .price-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--azul);
+    letter-spacing: -1px;
+  }
+
+  .price-period {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-left: 4px;
+  }
+
+  .price-features {
+    list-style: none;
+    margin: 1.25rem 0 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .price-features li {
+    font-size: 0.88rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--texto);
+  }
+
+  .check {
+    color: #10b981;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .btn-plan {
+    width: 100%;
+    padding: 0.875rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+
+  .btn-plan-primary {
+    background: var(--azul);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(26,86,219,0.25);
+  }
+
+  .btn-plan-primary:hover { background: #1440b0; }
+
+  .btn-plan-outline {
+    background: transparent;
+    color: var(--azul);
+    border: 1.5px solid var(--azul);
+  }
+
+  .btn-plan-outline:hover { background: var(--azul-claro); }
+
+  /* OBJECTIONS */
+  .objections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .objection-card {
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .objection-q {
+    background: var(--fondo-suave);
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto-suave);
+    border-bottom: 1px solid var(--borde);
+  }
+
+  .objection-a {
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--texto);
+    line-height: 1.6;
+  }
+
+  /* CTA FINAL */
+  .cta-section {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    color: white;
+  }
+
+  .cta-section h2 { color: white; }
+
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta-section .section-label { color: rgba(255,255,255,0.7); }
+
+  .cta-desc {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    margin: 1rem 0 2.5rem;
+  }
+
+  .btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: var(--azul);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .btn-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+  }
+
+  .cta-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--texto);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+  }
+
+  footer .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+
+  footer .footer-logo span { color: var(--dorado); }
+
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; text-align: center; }
+    .hero-ctas { justify-content: center; }
+    .stats-row { justify-content: center; }
+    .phone-mockup { max-width: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Reservo<span>.</span></div>
+  <a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20información%20sobre%20Reservo" target="_blank" class="nav-cta">Hablar con ventas</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Bot de WhatsApp con IA · Activo 24/7
+      </div>
+      <h1>Tu agenda llena,<br>aunque no contestes<br><em>WhatsApp.</em></h1>
+      <p class="hero-sub">Reservo atiende a tus clientas, agenda citas y organiza tu calendario automáticamente. Tú te enfocas en atenderlas, nosotros en llenar tu agenda.</p>
+      <div class="hero-ctas">
+        <a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20llenar%20mi%20agenda%20automáticamente" target="_blank" class="btn-primary">
+          💬 Quiero llenar mi agenda
+        </a>
+        <a href="#precios" class="btn-secondary">Ver precios →</a>
+      </div>
+      <div class="stats-row">
+        <div class="stat-pill"><span class="stat-num">24/7</span> Siempre activo</div>
+        <div class="stat-pill"><span class="stat-num">5 min</span> Setup inicial</div>
+        <div class="stat-pill"><span class="stat-num">0</span> Citas perdidas</div>
+      </div>
+    </div>
+    <div>
+      <div class="phone-mockup">
+        <div class="wa-header">
+          <div class="wa-avatar">JB</div>
+          <div>
+            <div class="wa-name">Javeli Beauty Salon</div>
+            <div class="wa-status">en línea</div>
+          </div>
+        </div>
+        <div class="wa-body">
+          <div class="msg msg-in">
+            Hola! Quisiera agendar una cita para keratina 💇‍♀️
+            <div class="msg-time">10:23 am</div>
+          </div>
+          <div class="msg msg-out">
+            ¡Hola! ¿Para qué día y hora te gustaría?
+            <div class="msg-time">10:23 am ✓✓</div>
+          </div>
+          <div class="msg msg-in">
+            El viernes a las 3pm, soy Laura
+            <div class="msg-time">10:24 am</div>
+          </div>
+          <div class="msg msg-confirmed">
+            ✅ ¡Cita confirmada!<br>
+            <strong>Nombre:</strong> Laura<br>
+            <strong>Servicio:</strong> Keratina<br>
+            <strong>Fecha:</strong> Viernes 24 de abril<br>
+            <strong>Hora:</strong> 15:00<br><br>
+            ¡Estaremos encantadas de atenderte! 💅
+            <div class="msg-time">10:24 am ✓✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">¿Qué hace Reservo?</p>
+    <h2>Todo lo que necesitas<br>para no perder una cita más</h2>
+    <p class="section-desc">Reservo se conecta a tu WhatsApp y Google Calendar. Hace todo el trabajo pesado para que tú solo tengas que abrir el salón y atender.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>Agenda automática 24/7</h3>
+        <p>Tu bot responde al instante, aunque sea medianoche o estés ocupada atendiendo a una clienta.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Google Calendar integrado</h3>
+        <p>Las citas se guardan directo en tu calendario. Sin encimones, sin confusiones, sin "¿a qué hora quedamos?"</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✏️</div>
+        <h3>Cancela y reprograma</h3>
+        <p>Si una clienta quiere cambiar su cita, el bot lo gestiona solo. Tú te enteras de todo en tu calendario.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Habla como tú</h3>
+        <p>El bot se adapta al nombre y estilo de tu negocio. Tus clientas sienten que hablan con tu recepcionista.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Listo en horas</h3>
+        <p>Nosotros configuramos todo por ti. En el mismo día que contratas, tu bot ya está atendiendo clientes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Sin complicaciones técnicas</h3>
+        <p>No necesitas saber de tecnología. Si sabes usar WhatsApp, ya sabes usar Reservo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="precios">
+  <div class="section-inner">
+    <p class="section-label">Precios</p>
+    <h2>Invierte menos de lo que<br>pierdes en citas sin contestar</h2>
+    <p class="section-desc">Con solo 2 citas recuperadas al mes, Reservo ya se paga solo. Todo lo demás es ganancia pura.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="price-label">Plan Básico</div>
+        <div class="price-name">Reservo Starter</div>
+        <div class="price-setup">Setup único: $2,500 MXN</div>
+        <div>
+          <span class="price-amount">$990</span>
+          <span class="price-period">MXN/mes</span>
+        </div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Bot WhatsApp 24/7</li>
+          <li><span class="check">✓</span> Agendar, cancelar y reprogramar</li>
+          <li><span class="check">✓</span> Google Calendar integrado</li>
+          <li><span class="check">✓</span> Configuración incluida</li>
+          <li><span class="check">✓</span> Soporte por WhatsApp</li>
+        </ul>
+        <a href="https://wa.me/528117633984?text=Quiero%20el%20plan%20Starter%20de%20Reservo" target="_blank" class="btn-plan btn-plan-outline">Empezar ahora</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="popular-badge">Más popular</div>
+        <div class="price-label">Plan Pro</div>
+        <div class="price-name">Reservo Pro</div>
+        <div class="price-setup">Setup único: $3,500 MXN</div>
+        <div>
+          <span class="price-amount">$1,490</span>
+          <span class="price-period">MXN/mes</span>
+        </div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Todo lo del plan Starter</li>
+          <li><span class="check">✓</span> Recordatorios automáticos</li>
+          <li><span class="check">✓</span> Calendario público de disponibilidad</li>
+          <li><span class="check">✓</span> Respuestas personalizadas</li>
+          <li><span class="check">✓</span> Soporte prioritario</li>
+        </ul>
+        <a href="https://wa.me/528117633984?text=Quiero%20el%20plan%20Pro%20de%20Reservo" target="_blank" class="btn-plan btn-plan-primary">Quiero el Pro</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECTIONS -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">Preguntas frecuentes</p>
+    <h2>Sabemos lo que estás pensando</h2>
+    <p class="section-desc">Resolvemos las dudas más comunes antes de que las tengas.</p>
+    <div class="objections-grid">
+      <div class="objection-card">
+        <div class="objection-q">"Prefiero contestar yo misma..."</div>
+        <div class="objection-a">Puedes seguir haciéndolo. Reservo solo te respalda cuando no alcanzas a responder o estás ocupada atendiendo. No te reemplaza, te ayuda.</div>
+      </div>
+      <div class="objection-card">
+        <div class="objection-q">"¿Y si el bot se equivoca?"</div>
+        <div class="objection-a">El bot está conectado a tu Google Calendar en tiempo real. Si bloqueas un horario, el bot lo ve al instante y no lo ofrece. Tú sigues mandando en tu agenda.</div>
+      </div>
+      <div class="objection-card">
+        <div class="objection-q">"Se me hace caro..."</div>
+        <div class="objection-a">¿Cuántas citas pierdes al mes por no contestar rápido? Con solo 2 citas recuperadas, Reservo ya se paga. Todo lo demás es ganancia.</div>
+      </div>
+      <div class="objection-card">
+        <div class="objection-q">"No le sé a la tecnología..."</div>
+        <div class="objection-a">Nosotros hacemos todo el trabajo pesado. En menos de lo que dura un servicio de color, tu bot ya está listo y atendiendo clientes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <p class="section-label">Empieza hoy</p>
+    <h2>Tu salón merece una<br>recepcionista que nunca descansa</h2>
+    <p class="cta-desc">Miles de mensajes sin contestar son miles de pesos perdidos. Hoy es el día de cambiar eso.</p>
+    <a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20activar%20Reservo%20para%20mi%20negocio" target="_blank" class="btn-white">
+      💬 Activar mi Reservo ahora
+    </a>
+    <p class="cta-note">Sin contratos largos · Configuración incluida · Activo el mismo día</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Reservo<span>.</span></div>
+  <p>Tu recepcionista virtual para WhatsApp · Powered by Fixy IT</p>
+  <p style="margin-top: 0.5rem;">© 2026 Fixy IT · holareservo.com</p>
+</footer>
+
+</body>
+</html>
