@@ -1,514 +1,1135 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onboarding | Reservo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #050d1a;
-            --card-bg: #0a1629;
-            --primary: #2d7ef7;
-            --primary-hover: #1b66d8;
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --error: #ef4444;
-            --border: #1e293b;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding | Reservo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --card: #ffffff;
+  --navy: #050d1a;
+  --navy-2: #0a1628;
+  --electric: #2d7ef7;
+  --electric-light: #e8f1fe;
+  --electric-hover: #1a6ae0;
+  --text: #0d1526;
+  --text-mid: #3d4f6a;
+  --text-light: #6b7a96;
+  --border: #dde3f0;
+  --error: #ef4444;
+  --success: #22c55e;
+  --step-done: #22c55e;
+  --step-active: #2d7ef7;
+  --step-pending: #dde3f0;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(13,21,38,0.08);
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 80px;
+}
 
-        .wizard-container {
-            width: 100%;
-            max-width: 600px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            position: relative;
-            border: 1px solid var(--border);
-        }
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--navy);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-        .progress-container { margin-bottom: 30px; }
-        .progress-bar-bg { background: var(--border); height: 6px; border-radius: 10px; width: 100%; overflow: hidden; }
-        .progress-fill { background: var(--primary); height: 100%; width: 16.6%; transition: width 0.4s ease; }
-        .step-indicator { margin-top: 10px; font-size: 0.85rem; color: var(--text-dim); text-align: right; }
+.logo-dot { width: 8px; height: 8px; background: var(--electric); border-radius: 50%; display: inline-block; }
 
-        .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.4s ease; }
+/* STEPPER */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 36px;
+  width: 100%;
+  max-width: 640px;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  position: relative;
+}
 
-        h2 { margin-bottom: 8px; font-size: 1.5rem; }
-        p.subtitle { color: var(--text-dim); margin-bottom: 24px; font-size: 0.95rem; }
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--step-pending);
+  z-index: 0;
+  transition: background 0.3s;
+}
 
-        .form-group { margin-bottom: 20px; position: relative; }
-        label { display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: 500; color: var(--text-dim); }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg-color);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        input:focus, select:focus { outline: none; border-color: var(--primary); }
+.step-item.done:not(:last-child)::after { background: var(--step-done); }
+.step-item.active:not(:last-child)::after { background: var(--step-pending); }
 
-        .error-msg { color: var(--error); font-size: 0.8rem; margin-top: 5px; display: none; }
+.step-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--step-pending);
+  color: var(--text-light);
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s;
+  border: 2px solid var(--step-pending);
+}
 
-        .pass-wrapper { position: relative; }
-        .toggle-pass {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-        }
+.step-item.done .step-circle {
+  background: var(--step-done);
+  border-color: var(--step-done);
+  color: white;
+}
 
-        .flex-row { display: flex; align-items: center; gap: 10px; }
-        .checkbox-group { margin: 20px 0; font-size: 0.9rem; }
-        input[type="checkbox"] { width: auto; cursor: pointer; }
+.step-item.active .step-circle {
+  background: var(--electric);
+  border-color: var(--electric);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(45,126,247,0.2);
+}
 
-        .service-item {
-            background: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary);
-        }
-        .btn-add {
-            background: transparent;
-            color: var(--primary);
-            border: 1px dashed var(--primary);
-            padding: 10px;
-            width: 100%;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
+.step-label {
+  font-size: 10px;
+  color: var(--text-light);
+  text-align: center;
+  display: none;
+}
 
-        .day-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+@media (min-width: 520px) { .step-label { display: block; } }
+.step-item.active .step-label { color: var(--electric); font-weight: 500; }
+.step-item.done .step-label { color: var(--step-done); }
 
-        .emoji-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 10px;
-            background: var(--bg-color);
-            border-radius: 8px;
-        }
-        .emoji-item {
-            font-size: 1.5rem;
-            cursor: pointer;
-            text-align: center;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .emoji-item.selected { background: var(--primary); }
+/* CARD */
+.wizard-card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-        .option-card {
-            border: 1px solid var(--border);
-            padding: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            transition: 0.3s;
-        }
-        .option-card.selected { border-color: var(--primary); background: rgba(45, 126, 247, 0.1); }
+.card-body {
+  padding: 36px 36px 24px;
+  flex: 1;
+  min-height: 420px;
+}
 
-        .nav-btns { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
-        button.btn {
-            padding: 14px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.3s;
-            border: none;
-        }
-        .btn-next { background: var(--primary); color: white; flex: 2; }
-        .btn-next:hover { background: var(--primary-hover); }
-        .btn-prev { background: var(--border); color: var(--text-dim); flex: 1; }
+@media (max-width: 480px) { .card-body { padding: 24px 20px 16px; } }
 
-        .summary-box { background: var(--bg-color); padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; }
-        .summary-title { color: var(--primary); font-weight: bold; margin-bottom: 5px; text-transform: uppercase; font-size: 0.75rem; }
+/* STEPS */
+.step { display: none; animation: fadeUp 0.3s ease; }
+.step.active { display: block; }
 
-        @media (max-width: 480px) {
-            .wizard-container { padding: 20px; }
-            .day-row { grid-template-columns: 1fr; gap: 5px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
-        }
-    </style>
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-heading { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.step-sub { font-size: 14px; color: var(--text-light); margin-bottom: 28px; }
+
+/* FORM */
+.form-group { margin-bottom: 18px; }
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="time"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--electric);
+  box-shadow: 0 0 0 3px rgba(45,126,247,0.12);
+}
+
+input.error { border-color: var(--error); }
+.err-msg { font-size: 12px; color: var(--error); margin-top: 4px; display: none; }
+.err-msg.show { display: block; }
+
+.pass-wrap { position: relative; }
+.pass-toggle {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--electric);
+  user-select: none;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* CHECKBOX */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-mid);
+  cursor: pointer;
+}
+
+.check-row input[type="checkbox"] {
+  width: 18px; height: 18px;
+  accent-color: var(--electric);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* SERVICES */
+.services-list { margin-bottom: 12px; }
+
+.service-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--electric);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.service-inputs { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+
+.service-item input { font-size: 14px; padding: 8px 10px; }
+
+.btn-remove-service {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.btn-remove-service:hover { color: var(--error); }
+
+.btn-add-service {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1.5px dashed var(--electric);
+  border-radius: var(--radius);
+  color: var(--electric);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 24px;
+}
+
+.btn-add-service:hover { background: var(--electric-light); }
+
+/* HORARIOS */
+.horarios-grid { margin-bottom: 20px; }
+
+.day-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr 36px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.day-row:last-child { border-bottom: none; }
+
+.day-check { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+.day-check input { width: 16px; height: 16px; accent-color: var(--electric); }
+
+.day-row input[type="time"] { padding: 8px 10px; font-size: 13px; }
+
+.day-row .day-disabled { opacity: 0.3; pointer-events: none; }
+
+@media (max-width: 480px) {
+  .day-row { grid-template-columns: 1fr 1fr; gap: 6px; padding: 10px 0; }
+  .day-check { grid-column: 1 / -1; }
+}
+
+/* TOGGLE */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.toggle-label { font-size: 14px; color: var(--text-mid); font-weight: 500; }
+
+.toggle-switch {
+  position: relative;
+  width: 44px; height: 24px;
+}
+
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--border);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  left: 3px; top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider { background: var(--electric); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* EMOJI PICKER */
+.emoji-section { margin-top: 8px; }
+
+.emoji-categories {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.emoji-cat-btn {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.emoji-cat-btn.active {
+  background: var(--electric);
+  border-color: var(--electric);
+  color: white;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 10px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+}
+
+.emoji-btn {
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.15s;
+  text-align: center;
+  line-height: 1;
+}
+
+.emoji-btn:hover { background: var(--electric-light); }
+.emoji-btn.selected { background: var(--electric); }
+
+.selected-emojis {
+  margin-top: 10px;
+  min-height: 36px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1.5px dashed var(--border);
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+/* WA OPTIONS */
+.wa-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+
+.wa-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.wa-card:hover { border-color: var(--electric); background: var(--electric-light); }
+.wa-card.selected { border-color: var(--electric); background: var(--electric-light); }
+
+.wa-card-icon { font-size: 28px; margin-bottom: 8px; }
+.wa-card-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.wa-card-desc { font-size: 12px; color: var(--text-light); line-height: 1.4; }
+
+.wa-notice {
+  background: #fff8e1;
+  border: 1px solid #f0b429;
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #7a5a00;
+  margin-top: 12px;
+}
+
+/* SUMMARY */
+.summary-section {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+}
+
+.summary-sec-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--electric);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+.summary-key { color: var(--text-light); flex-shrink: 0; min-width: 120px; }
+.summary-val { color: var(--text); font-weight: 500; text-align: right; word-break: break-word; }
+
+.summary-service-item {
+  background: white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  border: 1px solid var(--border);
+}
+
+.summary-service-name { font-weight: 500; color: var(--text); }
+.summary-service-detail { color: var(--text-light); }
+
+.summary-horario-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 3px 0;
+  color: var(--text-mid);
+}
+
+.summary-horario-row.off { opacity: 0.4; text-decoration: line-through; }
+
+/* NAV BUTTONS - always fixed at bottom of card */
+.card-footer {
+  padding: 16px 36px 28px;
+  display: flex;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  position: sticky;
+  bottom: 0;
+}
+
+@media (max-width: 480px) { .card-footer { padding: 14px 20px 20px; } }
+
+.btn-prev {
+  flex: 1;
+  padding: 13px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-mid);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+}
+
+.btn-prev:hover { border-color: var(--electric); color: var(--electric); }
+
+.btn-next {
+  flex: 2;
+  padding: 13px;
+  background: var(--electric);
+  border: none;
+  border-radius: var(--radius);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-next:hover { background: var(--electric-hover); }
+.btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
+</style>
 </head>
 <body>
 
-<div class="wizard-container">
-    <div class="progress-container">
-        <div class="progress-bar-bg">
-            <div class="progress-fill" id="progressFill"></div>
+<div class="logo">Reservo <span class="logo-dot"></span></div>
+
+<!-- STEPPER -->
+<div class="stepper" id="stepper">
+  <div class="step-item active" data-step="1">
+    <div class="step-circle">1</div>
+    <div class="step-label">Titular</div>
+  </div>
+  <div class="step-item" data-step="2">
+    <div class="step-circle">2</div>
+    <div class="step-label">Negocio</div>
+  </div>
+  <div class="step-item" data-step="3">
+    <div class="step-circle">3</div>
+    <div class="step-label">Servicios</div>
+  </div>
+  <div class="step-item" data-step="4">
+    <div class="step-circle">4</div>
+    <div class="step-label">Identidad</div>
+  </div>
+  <div class="step-item" data-step="5">
+    <div class="step-circle">5</div>
+    <div class="step-label">WhatsApp</div>
+  </div>
+  <div class="step-item" data-step="6">
+    <div class="step-circle">6</div>
+    <div class="step-label">Resumen</div>
+  </div>
+</div>
+
+<!-- CARD -->
+<div class="wizard-card">
+  <div class="card-body">
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+      <div class="step-heading">Datos del Titular</div>
+      <p class="step-sub">Tu información de acceso a la plataforma Reservo.</p>
+
+      <div class="form-group">
+        <label>Nombre completo *</label>
+        <input type="text" id="titular_nombre" placeholder="Ej. María González" required>
+        <div class="err-msg" id="err_titular_nombre">Este campo es requerido</div>
+      </div>
+      <div class="two-col">
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input type="tel" id="titular_tel" placeholder="+52 81..." required>
+          <div class="err-msg" id="err_titular_tel">Requerido</div>
         </div>
-        <div class="step-indicator" id="stepCounter">Paso 1 de 6</div>
+        <div class="form-group">
+          <label>Correo electrónico *</label>
+          <input type="email" id="titular_email" placeholder="tu@correo.com" required>
+          <div class="err-msg" id="err_titular_email">Requerido</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Contraseña *</label>
+        <div class="pass-wrap">
+          <input type="password" id="titular_pass" placeholder="Mínimo 8 caracteres" required>
+          <span class="pass-toggle" onclick="togglePass('titular_pass', this)">MOSTRAR</span>
+        </div>
+        <div class="err-msg" id="err_titular_pass">Mínimo 8 caracteres</div>
+      </div>
+      <div class="form-group">
+        <label>Confirmar contraseña *</label>
+        <div class="pass-wrap">
+          <input type="password" id="titular_pass_conf" placeholder="Repite tu contraseña" required>
+          <span class="pass-toggle" onclick="togglePass('titular_pass_conf', this)">MOSTRAR</span>
+        </div>
+        <div class="err-msg" id="err_titular_pass_conf">Las contraseñas no coinciden</div>
+      </div>
+      <div class="check-row" style="margin-top:8px">
+        <input type="checkbox" id="terms" required>
+        <label for="terms" style="margin:0;cursor:pointer;">Acepto los <a href="#" style="color:var(--electric)">términos y condiciones</a></label>
+      </div>
+      <div class="err-msg" id="err_terms">Debes aceptar los términos</div>
     </div>
 
-    <form id="onboardingForm">
-        <div class="step active" id="step1">
-            <h2>Datos del Titular</h2>
-            <p class="subtitle">Comencemos con tu información personal.</p>
-            <div class="form-group">
-                <label>Nombre Completo</label>
-                <input type="text" id="titular_nombre" required>
-            </div>
-            <div class="form-group">
-                <label>Número Telefónico</label>
-                <input type="tel" id="titular_tel" placeholder="+52..." required>
-            </div>
-            <div class="form-group">
-                <label>Correo Electrónico</label>
-                <input type="email" id="titular_email" required>
-            </div>
-            <div class="form-group">
-                <label>Contraseña</label>
-                <div class="pass-wrapper">
-                    <input type="password" id="titular_pass" required>
-                    <span class="toggle-pass" onclick="togglePass('titular_pass')">MOSTRAR</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Confirmar Contraseña</label>
-                <input type="password" id="titular_pass_conf" required>
-            </div>
-            <div class="checkbox-group flex-row">
-                <input type="checkbox" id="terms" required>
-                <label for="terms">Acepto los términos y condiciones</label>
-            </div>
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
+      <div class="step-heading">Datos del Negocio</div>
+      <p class="step-sub">Información de tu salón o negocio.</p>
+
+      <div class="form-group">
+        <label>Nombre del negocio *</label>
+        <input type="text" id="negocio_nombre" placeholder="Ej. Javeli Beauty Salon" required>
+        <div class="err-msg" id="err_negocio_nombre">Requerido</div>
+      </div>
+      <div class="form-group">
+        <label>Giro del negocio</label>
+        <select id="negocio_giro">
+          <option value="Salón de Belleza">Salón de Belleza</option>
+          <option value="Barbería">Barbería</option>
+          <option value="Uñas / Nails">Uñas / Nails</option>
+          <option value="Spa / Masajes">Spa / Masajes</option>
+          <option value="Estética">Estética</option>
+          <option value="Cejas y Pestañas">Cejas y Pestañas</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dirección completa *</label>
+        <input type="text" id="negocio_dir" placeholder="Calle, número, colonia, ciudad" required>
+        <div class="err-msg" id="err_negocio_dir">Requerido</div>
+      </div>
+      <div class="form-group">
+        <label>Teléfono del negocio *</label>
+        <input type="tel" id="negocio_tel" placeholder="+52 81..." required>
+        <div class="err-msg" id="err_negocio_tel">Requerido</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="step3">
+      <div class="step-heading">Servicios y Horarios</div>
+      <p class="step-sub">¿Qué ofreces y cuándo atiendes?</p>
+
+      <label style="margin-bottom:10px;display:block">Tus servicios</label>
+      <div class="services-list" id="servicesList">
+        <div class="service-item">
+          <button type="button" class="btn-remove-service" onclick="removeService(this)" title="Eliminar">×</button>
+          <input type="text" placeholder="Nombre del servicio (ej. Corte de cabello)">
+          <div class="service-inputs">
+            <div></div>
+            <input type="number" placeholder="$ Precio" min="0">
+            <input type="number" placeholder="Minutos" min="5">
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn-add-service" onclick="addService()">+ Agregar servicio</button>
+
+      <label style="margin-bottom:10px;display:block">Horario de atención</label>
+      <div class="horarios-grid" id="horariosGrid"></div>
+
+      <div class="toggle-row">
+        <span class="toggle-label">¿Acepta citas el mismo día?</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mismo_dia">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="two-col">
+        <div class="form-group">
+          <label>Anticipación mínima</label>
+          <select id="anticipacion">
+            <option value="1h">1 hora antes</option>
+            <option value="2h" selected>2 horas antes</option>
+            <option value="4h">4 horas antes</option>
+            <option value="24h">24 horas antes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tolerancia (minutos)</label>
+          <input type="number" id="tolerancia" value="15" min="0" max="60">
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" id="step4">
+      <div class="step-heading">Identidad del Asistente</div>
+      <p class="step-sub">Dale personalidad a tu bot de WhatsApp.</p>
+
+      <div class="form-group">
+        <label>Actitud y tono del asistente</label>
+        <textarea id="asistente_actitud" rows="3" placeholder="Ej: Amable, profesional y usa emojis de flores. Siempre saluda con entusiasmo y confirma los detalles de la cita..."></textarea>
+      </div>
+
+      <div class="emoji-section">
+        <label style="margin-bottom:10px;display:block">Emojis que usará el bot</label>
+
+        <div class="emoji-categories" id="emojiCats">
+          <button class="emoji-cat-btn active" onclick="showCat('caras', this)">😊 Caras</button>
+          <button class="emoji-cat-btn" onclick="showCat('gestos', this)">👋 Gestos</button>
+          <button class="emoji-cat-btn" onclick="showCat('belleza', this)">💅 Belleza</button>
+          <button class="emoji-cat-btn" onclick="showCat('objetos', this)">📅 Objetos</button>
+          <button class="emoji-cat-btn" onclick="showCat('simbolos', this)">✅ Símbolos</button>
+          <button class="emoji-cat-btn" onclick="showCat('naturaleza', this)">🌸 Naturaleza</button>
+          <button class="emoji-cat-btn" onclick="showCat('corazones', this)">❤️ Corazones</button>
         </div>
 
-        <div class="step" id="step2">
-            <h2>Datos del Negocio</h2>
-            <p class="subtitle">¿Cómo se llama tu salón o barbería?</p>
-            <div class="form-group">
-                <label>Nombre del Negocio</label>
-                <input type="text" id="negocio_nombre" required>
-            </div>
-            <div class="form-group">
-                <label>Giro del Negocio</label>
-                <select id="negocio_giro">
-                    <option value="Salon de Belleza">Salón de Belleza</option>
-                    <option value="Barberia">Barbería</option>
-                    <option value="Uñas">Uñas / Nails</option>
-                    <option value="Spa">Spa / Masajes</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Dirección Completa</label>
-                <input type="text" id="negocio_dir" required>
-            </div>
-            <div class="form-group">
-                <label>Teléfono del Negocio</label>
-                <input type="tel" id="negocio_tel" required>
-            </div>
+        <div class="emoji-grid" id="emojiGrid"></div>
+
+        <div class="selected-emojis" id="selectedEmojiDisplay">
+          <span style="color:var(--text-light);font-size:13px">Toca un emoji para seleccionarlo...</span>
         </div>
+      </div>
+    </div>
 
-        <div class="step" id="step3">
-            <h2>Servicios y Horarios</h2>
-            <label>Tus Servicios</label>
-            <div id="servicesList">
-                <div class="service-item">
-                    <input type="text" placeholder="Nombre (ej. Corte)" style="margin-bottom:5px">
-                    <div style="display:flex; gap:5px">
-                        <input type="number" placeholder="$ Precio">
-                        <input type="number" placeholder="Minutos">
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn-add" onclick="addService()">+ Agregar otro servicio</button>
+    <!-- STEP 5 -->
+    <div class="step" id="step5">
+      <div class="step-heading">Configuración de WhatsApp</div>
+      <p class="step-sub">¿Cómo conectarás tu negocio?</p>
 
-            <label>Horario de Atención</label>
-            <div id="horariosGrid"></div>
-
-            <div class="form-group flex-row" style="margin-top:20px">
-                <label>¿Citas el mismo día?</label>
-                <input type="checkbox" id="mismo_dia">
-            </div>
-            <div class="form-group">
-                <label>Anticipación mínima</label>
-                <select id="anticipacion">
-                    <option value="1h">1 hora</option>
-                    <option value="2h">2 horas</option>
-                    <option value="4h">4 horas</option>
-                    <option value="24h">24 horas</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Tolerancia (minutos)</label>
-                <input type="number" id="tolerancia" value="15">
-            </div>
+      <div class="wa-options">
+        <div class="wa-card" id="waCardAsignado" onclick="selectWa('asignado')">
+          <div class="wa-card-icon">📱</div>
+          <div class="wa-card-title">Número nuevo</div>
+          <div class="wa-card-desc">Te asignamos un número exclusivo para el bot</div>
         </div>
-
-        <div class="step" id="step4">
-            <h2>Identidad de la Asistente</h2>
-            <div class="form-group">
-                <label>Actitud de tu asistente</label>
-                <textarea id="asistente_actitud" rows="3" placeholder="Ej: Amable y profesional..."></textarea>
-            </div>
-            <label>Emojis que usará el bot</label>
-            <div class="emoji-grid" id="emojiGrid">
-                <span class="emoji-item" onclick="toggleEmoji(this)">✨</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">💅</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">💇‍♀️</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">✂️</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">🌸</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">😊</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">📅</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">📍</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">✅</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">🙌</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">💄</span>
-                <span class="emoji-item" onclick="toggleEmoji(this)">💖</span>
-            </div>
+        <div class="wa-card" id="waCardPropio" onclick="selectWa('propio')">
+          <div class="wa-card-icon">🔁</div>
+          <div class="wa-card-title">Mi propio número</div>
+          <div class="wa-card-desc">Usa un número que ya tienes disponible</div>
         </div>
+      </div>
 
-        <div class="step" id="step5">
-            <h2>Configuración de WhatsApp</h2>
-            <div class="option-card" id="optAsignado" onclick="selectWaOption('asignado')">
-                <strong>Asignarme un número nuevo</strong>
-                <p style="font-size:0.8rem; color:var(--text-dim)">Número único para el bot.</p>
-            </div>
-            <div class="option-card" id="optPropio" onclick="selectWaOption('propio')">
-                <strong>Usar mi propio número</strong>
-                <p style="font-size:0.8rem; color:var(--text-dim)">Número sin WhatsApp personal activo.</p>
-            </div>
-            <div id="waPropioInput" style="display:none; margin-top:15px">
-                <div class="form-group">
-                    <label>Tu número exclusivo</label>
-                    <input type="tel" id="wa_numero" placeholder="+52...">
-                </div>
-            </div>
+      <div id="waPropioSection" style="display:none">
+        <div class="form-group">
+          <label>Tu número de WhatsApp exclusivo</label>
+          <input type="tel" id="wa_numero" placeholder="+52 81 1234 5678">
         </div>
+        <div class="wa-notice">
+          ⚠️ Este número <strong>no debe tener WhatsApp personal activo</strong>. Si ya lo usas en tu celular, primero debes cerrarlo antes de conectarlo al bot.
+        </div>
+      </div>
 
-        <div class="step" id="step6">
-            <h2>Resumen de Registro</h2>
-            <div id="summaryContent"></div>
+      <div id="waAsignadoSection" style="display:none">
+        <div class="wa-notice" style="background:#e8f1fe;border-color:#2d7ef7;color:#0a3a8a">
+          📞 Nosotros te asignaremos un número de WhatsApp Business dentro de las próximas <strong>24 horas</strong> y te lo comunicaremos por correo.
         </div>
+      </div>
+    </div>
 
-        <div class="nav-btns">
-            <button type="button" class="btn btn-prev" id="btnPrev" style="display:none" onclick="changeStep(-1)">Anterior</button>
-            <button type="button" class="btn btn-next" id="btnNext" onclick="changeStep(1)">Siguiente</button>
-        </div>
-    </form>
+    <!-- STEP 6 - RESUMEN -->
+    <div class="step" id="step6">
+      <div class="step-heading">Resumen de tu registro</div>
+      <p class="step-sub">Revisa todo antes de enviar. Puedes regresar a corregir cualquier dato.</p>
+      <div id="summaryContent"></div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- FOOTER FIJO -->
+  <div class="card-footer">
+    <button type="button" class="btn-prev" id="btnPrev" onclick="changeStep(-1)">← Anterior</button>
+    <button type="button" class="btn-next" id="btnNext" onclick="changeStep(1)">Siguiente →</button>
+  </div>
 </div>
 
 <script>
-    let currentStep = 1;
-    const totalSteps = 6;
-    let selectedEmojis = [];
-    let waOption = '';
+let currentStep = 1;
+const totalSteps = 6;
+let selectedEmojis = [];
+let waOption = '';
 
-    // Renderizar Horarios
-    const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    const grid = document.getElementById('horariosGrid');
-    diasSemana.forEach(dia => {
-        grid.innerHTML += `
-            <div class="day-row">
-                <div class="flex-row"><input type="checkbox" checked> <span>${dia}</span></div>
-                <input type="time" value="09:00">
-                <input type="time" value="19:00">
-            </div>
-        `;
+// EMOJI DATA
+const emojiData = {
+  caras: ['😊','😄','😁','🥰','😍','🤩','😎','🥳','😇','🤗','😋','😌','🙂','😀','😃','🤭','😏','😶','🤔','😴','😂','🤣','😅','😆'],
+  gestos: ['👋','🤝','👍','👌','✌️','🤞','👏','🙌','🤙','💪','🙏','👐','🫶','❤️‍🔥','🫰','☝️','👆','✋','🤚','🖐️'],
+  belleza: ['💅','💇‍♀️','✂️','💄','💋','👄','💅','🪮','🧴','🧹','🪥','💊','🧼','🪞','👗','👠','👒','🎀','💍','💎'],
+  objetos: ['📅','📆','🗓️','⏰','⏱️','🕐','📍','📌','📋','📝','✏️','🖊️','📱','💻','📷','🎵','🎶','💰','💳','🏷️'],
+  simbolos: ['✅','❌','⭐','🌟','💫','✨','🔥','💥','❗','❓','💯','🆕','🆒','🔔','🔕','📢','📣','🚀','💡','🎯'],
+  naturaleza: ['🌸','🌺','🌻','🌹','🌷','💐','🍀','🌿','🌱','🌲','🌴','🍃','🌊','☀️','🌤️','⛅','🌈','🦋','🐝','🌙'],
+  corazones: ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❤️‍🔥','💝','💖','💗','💓','💞','💕','💟','❣️','♥️']
+};
+
+let currentCat = 'caras';
+
+function showCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.emoji-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderEmojis();
+}
+
+function renderEmojis() {
+  const grid = document.getElementById('emojiGrid');
+  grid.innerHTML = '';
+  emojiData[currentCat].forEach(emoji => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'emoji-btn' + (selectedEmojis.includes(emoji) ? ' selected' : '');
+    btn.textContent = emoji;
+    btn.onclick = () => toggleEmoji(btn, emoji);
+    grid.appendChild(btn);
+  });
+}
+
+function toggleEmoji(btn, emoji) {
+  if (selectedEmojis.includes(emoji)) {
+    selectedEmojis = selectedEmojis.filter(e => e !== emoji);
+    btn.classList.remove('selected');
+  } else {
+    selectedEmojis.push(emoji);
+    btn.classList.add('selected');
+  }
+  updateEmojiDisplay();
+}
+
+function updateEmojiDisplay() {
+  const display = document.getElementById('selectedEmojiDisplay');
+  if (selectedEmojis.length === 0) {
+    display.innerHTML = '<span style="color:var(--text-light);font-size:13px">Toca un emoji para seleccionarlo...</span>';
+  } else {
+    display.textContent = selectedEmojis.join(' ');
+  }
+}
+
+// HORARIOS
+const diasSemana = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+const defaultOff = [6]; // domingo off por default
+
+function buildHorarios() {
+  const grid = document.getElementById('horariosGrid');
+  diasSemana.forEach((dia, i) => {
+    const off = defaultOff.includes(i);
+    grid.innerHTML += `
+      <div class="day-row" id="dayrow_${i}">
+        <div class="day-check">
+          <input type="checkbox" id="dia_check_${i}" ${off ? '' : 'checked'} onchange="toggleDay(${i})">
+          <span>${dia}</span>
+        </div>
+        <input type="time" id="dia_inicio_${i}" value="09:00" ${off ? 'class="day-disabled"' : ''}>
+        <input type="time" id="dia_fin_${i}" value="19:00" ${off ? 'class="day-disabled"' : ''}>
+      </div>
+    `;
+  });
+}
+
+function toggleDay(i) {
+  const checked = document.getElementById(`dia_check_${i}`).checked;
+  const inicio = document.getElementById(`dia_inicio_${i}`);
+  const fin = document.getElementById(`dia_fin_${i}`);
+  if (checked) {
+    inicio.classList.remove('day-disabled');
+    fin.classList.remove('day-disabled');
+  } else {
+    inicio.classList.add('day-disabled');
+    fin.classList.add('day-disabled');
+  }
+}
+
+// SERVICES
+function addService() {
+  const container = document.getElementById('servicesList');
+  const div = document.createElement('div');
+  div.className = 'service-item';
+  div.innerHTML = `
+    <button type="button" class="btn-remove-service" onclick="removeService(this)" title="Eliminar">×</button>
+    <input type="text" placeholder="Nombre del servicio">
+    <div class="service-inputs">
+      <div></div>
+      <input type="number" placeholder="$ Precio" min="0">
+      <input type="number" placeholder="Minutos" min="5">
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function removeService(btn) {
+  const items = document.querySelectorAll('.service-item');
+  if (items.length > 1) btn.closest('.service-item').remove();
+}
+
+function getServicios() {
+  return Array.from(document.querySelectorAll('.service-item')).map(item => {
+    const inputs = item.querySelectorAll('input');
+    return { nombre: inputs[0].value, precio: inputs[1].value, duracion: inputs[2].value };
+  });
+}
+
+function getHorarios() {
+  return diasSemana.map((dia, i) => ({
+    dia,
+    activo: document.getElementById(`dia_check_${i}`).checked,
+    inicio: document.getElementById(`dia_inicio_${i}`).value,
+    fin: document.getElementById(`dia_fin_${i}`).value
+  }));
+}
+
+// WA OPTION
+function selectWa(opt) {
+  waOption = opt;
+  document.getElementById('waCardAsignado').classList.toggle('selected', opt === 'asignado');
+  document.getElementById('waCardPropio').classList.toggle('selected', opt === 'propio');
+  document.getElementById('waPropioSection').style.display = opt === 'propio' ? 'block' : 'none';
+  document.getElementById('waAsignadoSection').style.display = opt === 'asignado' ? 'block' : 'none';
+}
+
+// PASS TOGGLE
+function togglePass(id, el) {
+  const input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+  el.textContent = input.type === 'password' ? 'MOSTRAR' : 'OCULTAR';
+}
+
+// VALIDATION
+function validateStep(step) {
+  let valid = true;
+
+  const hide = id => { const el = document.getElementById(id); if(el) el.classList.remove('show'); };
+  const show = id => { const el = document.getElementById(id); if(el) el.classList.add('show'); };
+
+  if (step === 1) {
+    const nombre = document.getElementById('titular_nombre').value.trim();
+    const tel = document.getElementById('titular_tel').value.trim();
+    const email = document.getElementById('titular_email').value.trim();
+    const pass = document.getElementById('titular_pass').value;
+    const passConf = document.getElementById('titular_pass_conf').value;
+    const terms = document.getElementById('terms').checked;
+
+    if (!nombre) { show('err_titular_nombre'); valid = false; } else hide('err_titular_nombre');
+    if (!tel) { show('err_titular_tel'); valid = false; } else hide('err_titular_tel');
+    if (!email) { show('err_titular_email'); valid = false; } else hide('err_titular_email');
+    if (pass.length < 8) { show('err_titular_pass'); valid = false; } else hide('err_titular_pass');
+    if (pass !== passConf) { show('err_titular_pass_conf'); valid = false; } else hide('err_titular_pass_conf');
+    if (!terms) { show('err_terms'); valid = false; } else hide('err_terms');
+  }
+
+  if (step === 2) {
+    const nombre = document.getElementById('negocio_nombre').value.trim();
+    const dir = document.getElementById('negocio_dir').value.trim();
+    const tel = document.getElementById('negocio_tel').value.trim();
+    if (!nombre) { show('err_negocio_nombre'); valid = false; } else hide('err_negocio_nombre');
+    if (!dir) { show('err_negocio_dir'); valid = false; } else hide('err_negocio_dir');
+    if (!tel) { show('err_negocio_tel'); valid = false; } else hide('err_negocio_tel');
+  }
+
+  return valid;
+}
+
+// SUMMARY
+function buildSummary() {
+  const horarios = getHorarios();
+  const servicios = getServicios();
+  const waNum = waOption === 'propio' ? (document.getElementById('wa_numero').value || 'No especificado') : 'Por asignar';
+
+  document.getElementById('summaryContent').innerHTML = `
+    <div class="summary-section">
+      <div class="summary-sec-title">Titular</div>
+      <div class="summary-row"><span class="summary-key">Nombre</span><span class="summary-val">${document.getElementById('titular_nombre').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Teléfono</span><span class="summary-val">${document.getElementById('titular_tel').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Correo</span><span class="summary-val">${document.getElementById('titular_email').value}</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Negocio</div>
+      <div class="summary-row"><span class="summary-key">Nombre</span><span class="summary-val">${document.getElementById('negocio_nombre').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Giro</span><span class="summary-val">${document.getElementById('negocio_giro').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Dirección</span><span class="summary-val">${document.getElementById('negocio_dir').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Teléfono</span><span class="summary-val">${document.getElementById('negocio_tel').value}</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Servicios (${servicios.length})</div>
+      ${servicios.map(s => `
+        <div class="summary-service-item">
+          <span class="summary-service-name">${s.nombre || 'Sin nombre'}</span>
+          <span class="summary-service-detail">$${s.precio || 0} · ${s.duracion || 0} min</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Horarios</div>
+      ${horarios.map(h => `
+        <div class="summary-horario-row ${h.activo ? '' : 'off'}">
+          <span>${h.dia}</span>
+          <span>${h.activo ? `${h.inicio} – ${h.fin}` : 'Cerrado'}</span>
+        </div>
+      `).join('')}
+      <div class="summary-row" style="margin-top:10px"><span class="summary-key">Mismo día</span><span class="summary-val">${document.getElementById('mismo_dia').checked ? 'Sí' : 'No'}</span></div>
+      <div class="summary-row"><span class="summary-key">Anticipación mín.</span><span class="summary-val">${document.getElementById('anticipacion').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Tolerancia</span><span class="summary-val">${document.getElementById('tolerancia').value} min</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Identidad del Asistente</div>
+      <div class="summary-row"><span class="summary-key">Actitud</span><span class="summary-val">${document.getElementById('asistente_actitud').value || 'No especificada'}</span></div>
+      <div class="summary-row"><span class="summary-key">Emojis</span><span class="summary-val">${selectedEmojis.length > 0 ? selectedEmojis.join(' ') : 'Ninguno seleccionado'}</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">WhatsApp</div>
+      <div class="summary-row"><span class="summary-key">Opción</span><span class="summary-val">${waOption === 'propio' ? 'Número propio' : waOption === 'asignado' ? 'Número asignado' : 'No seleccionado'}</span></div>
+      <div class="summary-row"><span class="summary-key">Número</span><span class="summary-val">${waNum}</span></div>
+    </div>
+  `;
+}
+
+// SEND
+async function enviarOnboarding() {
+  const btn = document.getElementById('btnNext');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  const payload = {
+    titular_nombre: document.getElementById('titular_nombre').value,
+    titular_telefono: document.getElementById('titular_tel').value,
+    titular_email: document.getElementById('titular_email').value,
+    plan: 'basico',
+    negocio_nombre: document.getElementById('negocio_nombre').value,
+    giro: document.getElementById('negocio_giro').value,
+    direccion: document.getElementById('negocio_dir').value,
+    telefono_negocio: document.getElementById('negocio_tel').value,
+    servicios: getServicios(),
+    horarios: getHorarios(),
+    mismo_dia: document.getElementById('mismo_dia').checked,
+    anticipacion: document.getElementById('anticipacion').value,
+    tolerancia: document.getElementById('tolerancia').value,
+    personalidad: document.getElementById('asistente_actitud').value,
+    emojis: selectedEmojis,
+    wa_opcion: waOption,
+    numero_whatsapp: waOption === 'propio' ? document.getElementById('wa_numero').value : 'por_asignar'
+  };
+
+  try {
+    const res = await fetch('https://n8n.srv1546051.hstgr.cloud/webhook/onboarding', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-
-    function togglePass(id) {
-        const input = document.getElementById(id);
-        input.type = input.type === 'password' ? 'text' : 'password';
+    const data = await res.json();
+    if (data.success) {
+      document.querySelector('.wizard-card').innerHTML = `
+        <div style="padding:60px 36px;text-align:center">
+          <div style="font-size:56px;margin-bottom:20px">🎉</div>
+          <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:12px">¡Registro exitoso!</div>
+          <p style="color:var(--text-light);font-size:15px;max-width:360px;margin:0 auto;line-height:1.6">Tu bot está siendo configurado. Te avisamos por correo en menos de <strong>24 horas</strong>.</p>
+        </div>
+      `;
+      document.getElementById('stepper').style.display = 'none';
+    } else {
+      alert('Hubo un problema. Intenta de nuevo.');
+      btn.textContent = 'Confirmar y enviar';
+      btn.disabled = false;
     }
+  } catch(e) {
+    alert('Error de conexión. Verifica tu internet e intenta de nuevo.');
+    btn.textContent = 'Confirmar y enviar';
+    btn.disabled = false;
+  }
+}
 
-    function addService() {
-        const container = document.getElementById('servicesList');
-        const div = document.createElement('div');
-        div.className = 'service-item';
-        div.innerHTML = `
-            <input type="text" placeholder="Nombre (ej. Corte)" style="margin-bottom:5px">
-            <div style="display:flex; gap:5px">
-                <input type="number" placeholder="$ Precio">
-                <input type="number" placeholder="Minutos">
-            </div>
-        `;
-        container.appendChild(div);
+// STEPPER UPDATE
+function updateStepper(step) {
+  document.querySelectorAll('.step-item').forEach((el, i) => {
+    el.classList.remove('active', 'done');
+    const circle = el.querySelector('.step-circle');
+    if (i + 1 < step) {
+      el.classList.add('done');
+      circle.innerHTML = '✓';
+    } else if (i + 1 === step) {
+      el.classList.add('active');
+      circle.textContent = i + 1;
+    } else {
+      circle.textContent = i + 1;
     }
+  });
+}
 
-    function toggleEmoji(el) {
-        el.classList.toggle('selected');
-        const emoji = el.innerText;
-        if(selectedEmojis.includes(emoji)) {
-            selectedEmojis = selectedEmojis.filter(e => e !== emoji);
-        } else {
-            selectedEmojis.push(emoji);
-        }
-    }
+// NAVIGATION
+function changeStep(n) {
+  if (n === 1 && !validateStep(currentStep)) return;
 
-    function selectWaOption(opt) {
-        waOption = opt;
-        document.getElementById('optAsignado').classList.toggle('selected', opt === 'asignado');
-        document.getElementById('optPropio').classList.toggle('selected', opt === 'propio');
-        document.getElementById('waPropioInput').style.display = opt === 'propio' ? 'block' : 'none';
-    }
+  if (currentStep + n > totalSteps) {
+    enviarOnboarding();
+    return;
+  }
 
-    function validateStep(step) {
-        const currentStepEl = document.getElementById(`step${step}`);
-        const inputs = currentStepEl.querySelectorAll('input[required]');
-        let valid = true;
+  document.getElementById(`step${currentStep}`).classList.remove('active');
+  currentStep += n;
+  document.getElementById(`step${currentStep}`).classList.add('active');
 
-        inputs.forEach(input => {
-            if(!input.value || (input.type === 'checkbox' && !input.checked)) {
-                input.style.borderColor = 'var(--error)';
-                valid = false;
-            } else {
-                input.style.borderColor = 'var(--border)';
-            }
-        });
+  document.getElementById('btnPrev').style.display = currentStep === 1 ? 'none' : 'block';
+  document.getElementById('btnNext').textContent = currentStep === totalSteps ? 'Confirmar y enviar ✓' : 'Siguiente →';
 
-        if(step === 1) {
-            const p1 = document.getElementById('titular_pass').value;
-            const p2 = document.getElementById('titular_pass_conf').value;
-            if(p1 !== p2) {
-                alert("Las contraseñas no coinciden");
-                valid = false;
-            }
-        }
-        return valid;
-    }
+  updateStepper(currentStep);
+  if (currentStep === 6) buildSummary();
 
-    function getServicios() {
-        const items = document.querySelectorAll('.service-item');
-        return Array.from(items).map(item => {
-            const inputs = item.querySelectorAll('input');
-            return {
-                nombre: inputs[0].value,
-                precio: inputs[1].value,
-                duracion: inputs[2].value
-            };
-        });
-    }
+  // Scroll to top of card
+  document.querySelector('.wizard-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-    function getHorarios() {
-        const rows = document.querySelectorAll('.day-row');
-        return Array.from(rows).map((row, i) => {
-            const inputs = row.querySelectorAll('input');
-            return {
-                dia: diasSemana[i],
-                activo: inputs[0].checked,
-                inicio: inputs[1].value,
-                fin: inputs[2].value
-            };
-        });
-    }
-
-    function buildSummary() {
-        const content = document.getElementById('summaryContent');
-        content.innerHTML = `
-            <div class="summary-box">
-                <div class="summary-title">Titular</div>
-                <p>${document.getElementById('titular_nombre').value}</p>
-                <p>${document.getElementById('titular_email').value}</p>
-            </div>
-            <div class="summary-box">
-                <div class="summary-title">Negocio</div>
-                <p>${document.getElementById('negocio_nombre').value}</p>
-                <p>${document.getElementById('negocio_giro').value}</p>
-            </div>
-            <div class="summary-box">
-                <div class="summary-title">WhatsApp</div>
-                <p>Opción: ${waOption === 'propio' ? 'Número propio' : 'Número asignado'}</p>
-            </div>
-        `;
-    }
-
-    async function enviarOnboarding() {
-        const btn = document.getElementById('btnNext');
-        btn.innerText = "Enviando...";
-        btn.disabled = true;
-
-        const payload = {
-            titular_nombre: document.getElementById('titular_nombre').value,
-            titular_telefono: document.getElementById('titular_tel').value,
-            titular_email: document.getElementById('titular_email').value,
-            negocio_nombre: document.getElementById('negocio_nombre').value,
-            giro: document.getElementById('negocio_giro').value,
-            direccion: document.getElementById('negocio_dir').value,
-            servicios: getServicios(),
-            horarios: getHorarios(),
-            wa_opcion: waOption
-        };
-
-        try {
-            const res = await fetch('https://n8n.srv1546051.hstgr.cloud/webhook/onboarding', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            
-            if (res.ok) {
-                alert('¡Registro exitoso! Próximamente: integración con MercadoPago');
-            } else {
-                alert('Error en el servidor. Revisa tu webhook de n8n.');
-            }
-        } catch(e) {
-            alert('Error de conexión. Verifica tu URL de n8n.');
-        } finally {
-            btn.innerText = "Ir a pagar";
-            btn.disabled = false;
-        }
-    }
-
-    function changeStep(n) {
-        if (n === 1 && !validateStep(currentStep)) return;
-
-        if (currentStep + n > totalSteps) {
-            enviarOnboarding();
-            return;
-        }
-
-        document.getElementById(`step${currentStep}`).classList.remove('active');
-        currentStep += n;
-        document.getElementById(`step${currentStep}`).classList.add('active');
-
-        // Actualizar UI
-        document.getElementById('btnPrev').style.display = currentStep === 1 ? 'none' : 'block';
-        document.getElementById('btnNext').innerText = currentStep === totalSteps ? 'Ir a pagar' : 'Siguiente';
-        document.getElementById('progressFill').style.width = (currentStep / totalSteps * 100) + '%';
-        document.getElementById('stepCounter').innerText = `Paso ${currentStep} de ${totalSteps}`;
-
-        if(currentStep === 6) buildSummary();
-    }
+// INIT
+buildHorarios();
+renderEmojis();
+updateStepper(1);
 </script>
-
 </body>
 </html>
