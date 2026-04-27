@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding Reservo</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  font-family:'DM Sans', sans-serif;
+  background:#050d1a;
+  color:white;
+}
+
+.container {
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
+
+.progress {
+  height:6px;
+  background:#1a2333;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.progress-bar {
+  height:100%;
+  background:#2d7ef7;
+  width:0%;
+  transition:.3s;
+}
+
+.step { display:none; }
+.step.active { display:block; }
+
+input, select, textarea {
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  margin-bottom:14px;
+  border-radius:8px;
+  border:none;
+  background:#0f1b2d;
+  color:white;
+}
+
+label { font-size:14px; opacity:.8; }
+
+button {
+  padding:12px 18px;
+  border:none;
+  border-radius:8px;
+  background:#2d7ef7;
+  color:white;
+  cursor:pointer;
+}
+
+button.secondary {
+  background:#1a2333;
+}
+
+.actions {
+  display:flex;
+  justify-content:space-between;
+}
+
+.error {
+  color:#ff6b6b;
+  font-size:12px;
+}
+
+.service {
+  background:#0f1b2d;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.day {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.card {
+  border:1px solid #2d7ef7;
+  padding:15px;
+  border-radius:10px;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+.card.selected {
+  background:#2d7ef7;
+}
+
+.summary {
+  font-size:14px;
+  line-height:1.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="progress"><div class="progress-bar" id="progress"></div></div>
+
+<form id="form">
+
+<!-- PASO 1 -->
+<div class="step active">
+<h2>Datos del titular</h2>
+
+<label>Nombre completo</label>
+<input required>
+
+<label>Teléfono</label>
+<input required>
+
+<label>Email</label>
+<input type="email" required>
+
+<label>Contraseña</label>
+<input type="password" id="pass" required>
+<button type="button" onclick="togglePass()">Mostrar</button>
+
+<label>Confirmar contraseña</label>
+<input type="password" required>
+
+<label><input type="checkbox" required> Acepto términos</label>
+
+</div>
+
+<!-- PASO 2 -->
+<div class="step">
+<h2>Negocio</h2>
+
+<label>Nombre</label>
+<input required>
+
+<label>Giro</label>
+<input required>
+
+<label>Dirección</label>
+<input required>
+
+<label>Teléfono negocio</label>
+<input required>
+
+</div>
+
+<!-- PASO 3 -->
+<div class="step">
+<h2>Servicios</h2>
+
+<div id="services"></div>
+<button type="button" onclick="addService()">Agregar servicio</button>
+
+<h3>Horarios</h3>
+<div id="days"></div>
+
+<label>Mismo día</label>
+<select><option>Sí</option><option>No</option></select>
+
+<label>Anticipación</label>
+<select>
+<option>1h</option>
+<option>2h</option>
+<option>4h</option>
+<option>24h</option>
+</select>
+
+<label>Tolerancia</label>
+<input type="number">
+
+</div>
+
+<!-- PASO 4 -->
+<div class="step">
+<h2>Asistente</h2>
+
+<label>Actitud</label>
+<textarea></textarea>
+
+<label>Emojis</label>
+<select multiple>
+<option>😊</option>
+<option>💅</option>
+<option>✨</option>
+<option>📅</option>
+<option>💬</option>
+</select>
+
+</div>
+
+<!-- PASO 5 -->
+<div class="step">
+<h2>WhatsApp</h2>
+
+<div class="card" onclick="selectCard(this)">Usar mi número</div>
+<div class="card" onclick="selectCard(this)">Asignarme uno</div>
+
+<input placeholder="+52..." >
+
+<p style="font-size:12px;">Debe ser exclusivo para el bot</p>
+
+</div>
+
+<!-- PASO 6 -->
+<div class="step">
+<h2>Resumen</h2>
+<div class="summary" id="summary"></div>
+
+<button type="button" onclick="alert('Próximamente: integración con MercadoPago')">
+Ir a pagar
+</button>
+
+</div>
+
+<div class="actions">
+<button type="button" class="secondary" onclick="prev()">Anterior</button>
+<button type="button" onclick="next()">Siguiente</button>
+</div>
+
+</form>
+
+</div>
+
+<script>
+
+let step=0;
+const steps=document.querySelectorAll(".step");
+
+function showStep(){
+steps.forEach((s,i)=>s.classList.toggle("active",i===step));
+document.getElementById("progress").style.width=((step+1)/steps.length*100)+"%";
+}
+
+function next(){
+if(step<steps.length-1){
+step++;
+if(step===5) generateSummary();
+showStep();
+}
+}
+
+function prev(){
+if(step>0){step--;showStep();}
+}
+
+function togglePass(){
+let p=document.getElementById("pass");
+p.type=p.type==="password"?"text":"password";
+}
+
+function addService(){
+let div=document.createElement("div");
+div.className="service";
+div.innerHTML=`
+<input placeholder="Nombre">
+<input placeholder="Precio">
+<input placeholder="Duración">
+`;
+document.getElementById("services").appendChild(div);
+}
+
+function selectCard(el){
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("selected"));
+el.classList.add("selected");
+}
+
+function generateSummary(){
+document.getElementById("summary").innerHTML="Revisa tus datos antes de continuar.";
+}
+
+const dias=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+const daysDiv=document.getElementById("days");
+
+dias.forEach(d=>{
+let row=document.createElement("div");
+row.className="day";
+row.innerHTML=`
+<input type="checkbox">
+<label>${d}</label>
+<input type="time">
+<input type="time">
+`;
+daysDiv.appendChild(row);
+});
+
+showStep();
+
+</script>
+
+</body>
+</html>
