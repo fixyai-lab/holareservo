@@ -19,11 +19,7 @@
             --border: #1e293b;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'DM Sans', sans-serif;
@@ -46,38 +42,13 @@
             border: 1px solid var(--border);
         }
 
-        /* Progress Bar */
-        .progress-container {
-            margin-bottom: 30px;
-        }
-        .progress-bar-bg {
-            background: var(--border);
-            height: 6px;
-            border-radius: 10px;
-            width: 100%;
-            overflow: hidden;
-        }
-        .progress-fill {
-            background: var(--primary);
-            height: 100%;
-            width: 16.6%;
-            transition: width 0.4s ease;
-        }
-        .step-indicator {
-            margin-top: 10px;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            text-align: right;
-        }
+        .progress-container { margin-bottom: 30px; }
+        .progress-bar-bg { background: var(--border); height: 6px; border-radius: 10px; width: 100%; overflow: hidden; }
+        .progress-fill { background: var(--primary); height: 100%; width: 16.6%; transition: width 0.4s ease; }
+        .step-indicator { margin-top: 10px; font-size: 0.85rem; color: var(--text-dim); text-align: right; }
 
-        /* Form Steps */
-        .step {
-            display: none;
-        }
-        .step.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.4s ease; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -100,19 +71,10 @@
             font-size: 1rem;
             transition: border-color 0.3s;
         }
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
 
-        .error-msg {
-            color: var(--error);
-            font-size: 0.8rem;
-            margin-top: 5px;
-            display: none;
-        }
+        .error-msg { color: var(--error); font-size: 0.8rem; margin-top: 5px; display: none; }
 
-        /* Password Wrapper */
         .pass-wrapper { position: relative; }
         .toggle-pass {
             position: absolute;
@@ -124,12 +86,10 @@
             font-size: 0.8rem;
         }
 
-        /* Checkbox & Toggles */
         .flex-row { display: flex; align-items: center; gap: 10px; }
         .checkbox-group { margin: 20px 0; font-size: 0.9rem; }
         input[type="checkbox"] { width: auto; cursor: pointer; }
 
-        /* Dynamic Services */
         .service-item {
             background: var(--bg-color);
             padding: 15px;
@@ -148,7 +108,6 @@
             margin-bottom: 20px;
         }
 
-        /* Days Grid */
         .day-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -157,7 +116,6 @@
             margin-bottom: 10px;
         }
 
-        /* Emoji Selection */
         .emoji-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -177,7 +135,6 @@
         }
         .emoji-item.selected { background: var(--primary); }
 
-        /* Options Cards */
         .option-card {
             border: 1px solid var(--border);
             padding: 15px;
@@ -188,13 +145,7 @@
         }
         .option-card.selected { border-color: var(--primary); background: rgba(45, 126, 247, 0.1); }
 
-        /* Navigation */
-        .nav-btns {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 10px;
-        }
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
         button.btn {
             padding: 14px 24px;
             border-radius: 8px;
@@ -208,14 +159,7 @@
         .btn-next:hover { background: var(--primary-hover); }
         .btn-prev { background: var(--border); color: var(--text-dim); flex: 1; }
 
-        /* Summary Styling */
-        .summary-box {
-            background: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
+        .summary-box { background: var(--bg-color); padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; }
         .summary-title { color: var(--primary); font-weight: bold; margin-bottom: 5px; text-transform: uppercase; font-size: 0.75rem; }
 
         @media (max-width: 480px) {
@@ -238,23 +182,18 @@
         <div class="step active" id="step1">
             <h2>Datos del Titular</h2>
             <p class="subtitle">Comencemos con tu información personal.</p>
-            
             <div class="form-group">
                 <label>Nombre Completo</label>
                 <input type="text" id="titular_nombre" required>
-                <span class="error-msg">Este campo es obligatorio</span>
             </div>
-            
             <div class="form-group">
                 <label>Número Telefónico</label>
                 <input type="tel" id="titular_tel" placeholder="+52..." required>
             </div>
-
             <div class="form-group">
                 <label>Correo Electrónico</label>
                 <input type="email" id="titular_email" required>
             </div>
-
             <div class="form-group">
                 <label>Contraseña</label>
                 <div class="pass-wrapper">
@@ -262,27 +201,23 @@
                     <span class="toggle-pass" onclick="togglePass('titular_pass')">MOSTRAR</span>
                 </div>
             </div>
-
             <div class="form-group">
                 <label>Confirmar Contraseña</label>
                 <input type="password" id="titular_pass_conf" required>
             </div>
-
             <div class="checkbox-group flex-row">
                 <input type="checkbox" id="terms" required>
-                <label for="terms">Acepto los términos y condiciones de Reservo</label>
+                <label for="terms">Acepto los términos y condiciones</label>
             </div>
         </div>
 
         <div class="step" id="step2">
             <h2>Datos del Negocio</h2>
             <p class="subtitle">¿Cómo se llama tu salón o barbería?</p>
-            
             <div class="form-group">
                 <label>Nombre del Negocio</label>
                 <input type="text" id="negocio_nombre" required>
             </div>
-            
             <div class="form-group">
                 <label>Giro del Negocio</label>
                 <select id="negocio_giro">
@@ -292,12 +227,10 @@
                     <option value="Spa">Spa / Masajes</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Dirección Completa</label>
                 <input type="text" id="negocio_dir" required>
             </div>
-
             <div class="form-group">
                 <label>Teléfono del Negocio</label>
                 <input type="tel" id="negocio_tel" required>
@@ -306,7 +239,6 @@
 
         <div class="step" id="step3">
             <h2>Servicios y Horarios</h2>
-            
             <label>Tus Servicios</label>
             <div id="servicesList">
                 <div class="service-item">
@@ -320,14 +252,12 @@
             <button type="button" class="btn-add" onclick="addService()">+ Agregar otro servicio</button>
 
             <label>Horario de Atención</label>
-            <div id="horariosGrid">
-                </div>
+            <div id="horariosGrid"></div>
 
             <div class="form-group flex-row" style="margin-top:20px">
                 <label>¿Citas el mismo día?</label>
                 <input type="checkbox" id="mismo_dia">
             </div>
-
             <div class="form-group">
                 <label>Anticipación mínima</label>
                 <select id="anticipacion">
@@ -337,7 +267,6 @@
                     <option value="24h">24 horas</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Tolerancia (minutos)</label>
                 <input type="number" id="tolerancia" value="15">
@@ -346,14 +275,11 @@
 
         <div class="step" id="step4">
             <h2>Identidad de la Asistente</h2>
-            <p class="subtitle">Dale personalidad a tu bot de WhatsApp.</p>
-            
             <div class="form-group">
-                <label>Describe la actitud de tu asistente</label>
-                <textarea id="asistente_actitud" rows="3" placeholder="Ej: Muy amable, usa emojis de flores y es muy profesional..."></textarea>
+                <label>Actitud de tu asistente</label>
+                <textarea id="asistente_actitud" rows="3" placeholder="Ej: Amable y profesional..."></textarea>
             </div>
-
-            <label>Selecciona los emojis que usará el bot</label>
+            <label>Emojis que usará el bot</label>
             <div class="emoji-grid" id="emojiGrid">
                 <span class="emoji-item" onclick="toggleEmoji(this)">✨</span>
                 <span class="emoji-item" onclick="toggleEmoji(this)">💅</span>
@@ -372,31 +298,24 @@
 
         <div class="step" id="step5">
             <h2>Configuración de WhatsApp</h2>
-            <p class="subtitle">¿Cómo quieres conectar el servicio?</p>
-            
             <div class="option-card" id="optAsignado" onclick="selectWaOption('asignado')">
                 <strong>Asignarme un número nuevo</strong>
-                <p style="font-size:0.8rem; color:var(--text-dim)">Nosotros te damos un número único para el bot.</p>
+                <p style="font-size:0.8rem; color:var(--text-dim)">Número único para el bot.</p>
             </div>
-
             <div class="option-card" id="optPropio" onclick="selectWaOption('propio')">
                 <strong>Usar mi propio número</strong>
-                <p style="font-size:0.8rem; color:var(--text-dim)">Debe ser un número sin WhatsApp personal activo.</p>
+                <p style="font-size:0.8rem; color:var(--text-dim)">Número sin WhatsApp personal activo.</p>
             </div>
-
             <div id="waPropioInput" style="display:none; margin-top:15px">
                 <div class="form-group">
                     <label>Tu número exclusivo</label>
                     <input type="tel" id="wa_numero" placeholder="+52...">
-                    <p style="font-size:0.75rem; color:var(--error); mt:5px">⚠️ Este número no debe tener una cuenta activa de WhatsApp personal.</p>
                 </div>
             </div>
         </div>
 
         <div class="step" id="step6">
             <h2>Resumen de Registro</h2>
-            <p class="subtitle">Confirma que todo esté correcto.</p>
-            
             <div id="summaryContent"></div>
         </div>
 
@@ -414,9 +333,9 @@
     let waOption = '';
 
     // Renderizar Horarios
-    const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     const grid = document.getElementById('horariosGrid');
-    dias.forEach(dia => {
+    diasSemana.forEach(dia => {
         grid.innerHTML += `
             <div class="day-row">
                 <div class="flex-row"><input type="checkbox" checked> <span>${dia}</span></div>
@@ -476,7 +395,6 @@
             }
         });
 
-        // Validación contraseña
         if(step === 1) {
             const p1 = document.getElementById('titular_pass').value;
             const p2 = document.getElementById('titular_pass_conf').value;
@@ -486,6 +404,31 @@
             }
         }
         return valid;
+    }
+
+    function getServicios() {
+        const items = document.querySelectorAll('.service-item');
+        return Array.from(items).map(item => {
+            const inputs = item.querySelectorAll('input');
+            return {
+                nombre: inputs[0].value,
+                precio: inputs[1].value,
+                duracion: inputs[2].value
+            };
+        });
+    }
+
+    function getHorarios() {
+        const rows = document.querySelectorAll('.day-row');
+        return Array.from(rows).map((row, i) => {
+            const inputs = row.querySelectorAll('input');
+            return {
+                dia: diasSemana[i],
+                activo: inputs[0].checked,
+                inicio: inputs[1].value,
+                fin: inputs[2].value
+            };
+        });
     }
 
     function buildSummary() {
@@ -498,107 +441,66 @@
             </div>
             <div class="summary-box">
                 <div class="summary-title">Negocio</div>
-                <p>${document.getElementById('negocio_nombre').value} (${document.getElementById('negocio_giro').value})</p>
-                <p>${document.getElementById('negocio_dir').value}</p>
+                <p>${document.getElementById('negocio_nombre').value}</p>
+                <p>${document.getElementById('negocio_giro').value}</p>
             </div>
             <div class="summary-box">
-                <div class="summary-title">Configuración Bot</div>
-                <p>Actitud: ${document.getElementById('asistente_actitud').value || 'No definida'}</p>
-                <p>Emojis: ${selectedEmojis.join(' ')}</p>
-                <p>WhatsApp: ${waOption === 'propio' ? 'Número propio' : 'Número asignado'}</p>
+                <div class="summary-title">WhatsApp</div>
+                <p>Opción: ${waOption === 'propio' ? 'Número propio' : 'Número asignado'}</p>
             </div>
         `;
     }
 
-function getServicios() {
-    const items = document.querySelectorAll('.service-item');
-    return Array.from(items).map(item => {
-        const inputs = item.querySelectorAll('input');
-        return {
-            nombre: inputs[0].value,
-            precio: inputs[1].value,
-            duracion: inputs[2].value
+    async function enviarOnboarding() {
+        const btn = document.getElementById('btnNext');
+        btn.innerText = "Enviando...";
+        btn.disabled = true;
+
+        const payload = {
+            titular_nombre: document.getElementById('titular_nombre').value,
+            titular_telefono: document.getElementById('titular_tel').value,
+            titular_email: document.getElementById('titular_email').value,
+            negocio_nombre: document.getElementById('negocio_nombre').value,
+            giro: document.getElementById('negocio_giro').value,
+            direccion: document.getElementById('negocio_dir').value,
+            servicios: getServicios(),
+            horarios: getHorarios(),
+            wa_opcion: waOption
         };
-    });
-}
 
-function getHorarios() {
-    const rows = document.querySelectorAll('.day-row');
-    const dias = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
-    return Array.from(rows).map((row, i) => {
-        const inputs = row.querySelectorAll('input');
-        return {
-            dia: dias[i],
-            activo: inputs[0].checked,
-            inicio: inputs[1].value,
-            fin: inputs[2].value
-        };
-    });
-}
-
-async function enviarOnboarding() {
-    const payload = {
-        titular_nombre: document.getElementById('titular_nombre').value,
-        titular_telefono: document.getElementById('titular_tel').value,
-        titular_email: document.getElementById('titular_email').value,
-        plan: 'basico',
-        negocio_nombre: document.getElementById('negocio_nombre').value,
-        giro: document.getElementById('negocio_giro').value,
-        direccion: document.getElementById('negocio_dir').value,
-        telefono_negocio: document.getElementById('negocio_tel').value,
-        servicios: getServicios(),
-        horarios: getHorarios(),
-        mismo_dia: document.getElementById('mismo_dia').checked,
-        anticipacion: document.getElementById('anticipacion').value,
-        tolerancia: document.getElementById('tolerancia').value,
-        personalidad: document.getElementById('asistente_actitud').value,
-        emojis: selectedEmojis,
-        wa_opcion: waOption,
-        numero_whatsapp: waOption === 'propio' ? document.getElementById('wa_numero').value : 'por_asignar'
-    };
-
-    try {
-        const res = await fetch('https://n8n.srv1546051.hstgr.cloud/webhook/onboarding', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if (data.success) {
-            alert('¡Tu bot está siendo configurado! Te avisamos por correo en menos de 24 horas.');
-        } else {
-            alert('Hubo un problema. Intenta de nuevo.');
+        try {
+            const res = await fetch('https://n8n.srv1546051.hstgr.cloud/webhook/onboarding', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (res.ok) {
+                alert('¡Registro exitoso! Próximamente: integración con MercadoPago');
+            } else {
+                alert('Error en el servidor. Revisa tu webhook de n8n.');
+            }
+        } catch(e) {
+            alert('Error de conexión. Verifica tu URL de n8n.');
+        } finally {
+            btn.innerText = "Ir a pagar";
+            btn.disabled = false;
         }
-    } catch(e) {
-        alert('Error de conexión. Intenta de nuevo.');
-    }
-}
-
-function changeStep(n) {
-    if (n === 1 && !validateStep(currentStep)) return;
-
-    document.getElementById(`step${currentStep}`).classList.remove('active');
-    currentStep += n;
-
-    if(currentStep > totalSteps) {
-        enviarOnboarding();
-        currentStep = totalSteps;
-        return;
     }
 
-    document.getElementById(`step${currentStep}`).classList.add('active');
+    function changeStep(n) {
+        if (n === 1 && !validateStep(currentStep)) return;
 
-    document.getElementById('btnPrev').style.display = currentStep === 1 ? 'none' : 'block';
-    document.getElementById('btnNext').innerText = currentStep === totalSteps ? 'Ir a pagar' : 'Siguiente';
-    document.getElementById('progressFill').style.width = (currentStep / totalSteps * 100) + '%';
-    document.getElementById('stepCounter').innerText = `Paso ${currentStep} de ${totalSteps}`;
+        if (currentStep + n > totalSteps) {
+            enviarOnboarding();
+            return;
+        }
 
-    if(currentStep === 6) buildSummary();
-}
-
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        currentStep += n;
         document.getElementById(`step${currentStep}`).classList.add('active');
 
-        // UI Updates
+        // Actualizar UI
         document.getElementById('btnPrev').style.display = currentStep === 1 ? 'none' : 'block';
         document.getElementById('btnNext').innerText = currentStep === totalSteps ? 'Ir a pagar' : 'Siguiente';
         document.getElementById('progressFill').style.width = (currentStep / totalSteps * 100) + '%';
