@@ -510,16 +510,91 @@
         `;
     }
 
-    function changeStep(n) {
-        if (n === 1 && !validateStep(currentStep)) return;
+function getServicios() {
+    const items = document.querySelectorAll('.service-item');
+    return Array.from(items).map(item => {
+        const inputs = item.querySelectorAll('input');
+        return {
+            nombre: inputs[0].value,
+            precio: inputs[1].value,
+            duracion: inputs[2].value
+        };
+    });
+}
 
-        document.getElementById(`step${currentStep}`).classList.remove('active');
-        currentStep += n;
+function getHorarios() {
+    const rows = document.querySelectorAll('.day-row');
+    const dias = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+    return Array.from(rows).map((row, i) => {
+        const inputs = row.querySelectorAll('input');
+        return {
+            dia: dias[i],
+            activo: inputs[0].checked,
+            inicio: inputs[1].value,
+            fin: inputs[2].value
+        };
+    });
+}
 
-        if(currentStep > totalSteps) {
-            alert("Próximamente: integración con MercadoPago");
-            currentStep = totalSteps;
+async function enviarOnboarding() {
+    const payload = {
+        titular_nombre: document.getElementById('titular_nombre').value,
+        titular_telefono: document.getElementById('titular_tel').value,
+        titular_email: document.getElementById('titular_email').value,
+        plan: 'basico',
+        negocio_nombre: document.getElementById('negocio_nombre').value,
+        giro: document.getElementById('negocio_giro').value,
+        direccion: document.getElementById('negocio_dir').value,
+        telefono_negocio: document.getElementById('negocio_tel').value,
+        servicios: getServicios(),
+        horarios: getHorarios(),
+        mismo_dia: document.getElementById('mismo_dia').checked,
+        anticipacion: document.getElementById('anticipacion').value,
+        tolerancia: document.getElementById('tolerancia').value,
+        personalidad: document.getElementById('asistente_actitud').value,
+        emojis: selectedEmojis,
+        wa_opcion: waOption,
+        numero_whatsapp: waOption === 'propio' ? document.getElementById('wa_numero').value : 'por_asignar'
+    };
+
+    try {
+        const res = await fetch('https://n8n.srv1546051.hstgr.cloud/webhook/onboarding', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert('¡Tu bot está siendo configurado! Te avisamos por correo en menos de 24 horas.');
+        } else {
+            alert('Hubo un problema. Intenta de nuevo.');
         }
+    } catch(e) {
+        alert('Error de conexión. Intenta de nuevo.');
+    }
+}
+
+function changeStep(n) {
+    if (n === 1 && !validateStep(currentStep)) return;
+
+    document.getElementById(`step${currentStep}`).classList.remove('active');
+    currentStep += n;
+
+    if(currentStep > totalSteps) {
+        enviarOnboarding();
+        currentStep = totalSteps;
+        return;
+    }
+
+    document.getElementById(`step${currentStep}`).classList.add('active');
+
+    document.getElementById('btnPrev').style.display = currentStep === 1 ? 'none' : 'block';
+    document.getElementById('btnNext').innerText = currentStep === totalSteps ? 'Ir a pagar' : 'Siguiente';
+    document.getElementById('progressFill').style.width = (currentStep / totalSteps * 100) + '%';
+    document.getElementById('stepCounter').innerText = `Paso ${currentStep} de ${totalSteps}`;
+
+    if(currentStep === 6) buildSummary();
+}
 
         document.getElementById(`step${currentStep}`).classList.add('active');
 
