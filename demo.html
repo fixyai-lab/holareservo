@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo en Vivo — Reservo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --navy: #050d1a;
+  --electric: #2d7ef7;
+  --electric-light: #e8f1fe;
+  --electric-hover: #1a6ae0;
+  --gold: #f0b429;
+  --white: #ffffff;
+  --border: #dde3f0;
+  --text: #0d1526;
+  --text-mid: #3d4f6a;
+  --text-light: #6b7a96;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(13,21,38,0.10);
+
+  /* WhatsApp colors */
+  --wa-bg: #efeae2;
+  --wa-header: #075e54;
+  --wa-header-2: #128c7e;
+  --wa-bubble-bot: #ffffff;
+  --wa-bubble-user: #dcf8c6;
+  --wa-input-bg: #f0f2f5;
+  --wa-send: #00a884;
+  --wa-text: #111b21;
+  --wa-text-dim: #667781;
+  --wa-tick: #53bdeb;
+  --wa-time: #667781;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px 60px;
+}
+
+/* HEADER */
+.page-header {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--navy);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-dot { width: 8px; height: 8px; background: var(--electric); border-radius: 50%; }
+
+.back-link {
+  font-size: 14px;
+  color: var(--text-light);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.back-link:hover { color: var(--electric); }
+
+/* HERO TEXT */
+.demo-hero {
+  text-align: center;
+  margin-bottom: 36px;
+  max-width: 600px;
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(45,126,247,0.1);
+  border: 1px solid rgba(45,126,247,0.2);
+  color: var(--electric);
+  padding: 6px 16px;
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.demo-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(26px, 4vw, 40px);
+  color: var(--navy);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.demo-sub {
+  font-size: 16px;
+  color: var(--text-light);
+  line-height: 1.65;
+}
+
+/* MAIN LAYOUT */
+.demo-layout {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .demo-layout { grid-template-columns: 1fr; }
+}
+
+/* CONFIG PANEL */
+.config-panel {
+  background: var(--white);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: sticky;
+  top: 20px;
+}
+
+.config-header {
+  background: var(--navy);
+  padding: 20px 24px;
+}
+
+.config-header h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.config-header p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+}
+
+.config-body { padding: 20px; }
+
+.config-group { margin-bottom: 16px; }
+
+.config-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+
+.config-input,
+.config-select,
+.config-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.config-input:focus,
+.config-select:focus,
+.config-textarea:focus {
+  border-color: var(--electric);
+}
+
+.config-textarea { resize: none; }
+
+/* GIRO CARDS */
+.giro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.giro-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.giro-card:hover { border-color: var(--electric); background: var(--electric-light); }
+.giro-card.selected { border-color: var(--electric); background: var(--electric-light); }
+
+.giro-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+.giro-name { font-size: 11px; font-weight: 500; color: var(--text-mid); }
+.giro-card.selected .giro-name { color: var(--electric); font-weight: 600; }
+
+.btn-activate {
+  width: 100%;
+  padding: 13px;
+  background: var(--electric);
+  border: none;
+  border-radius: var(--radius);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-activate:hover { background: var(--electric-hover); }
+.btn-activate:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-reset {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-light);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 8px;
+}
+
+.btn-reset:hover { border-color: var(--electric); color: var(--electric); }
+
+/* GUIDE */
+.guide-panel {
+  background: var(--electric-light);
+  border: 1px solid rgba(45,126,247,0.2);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-top: 16px;
+}
+
+.guide-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--electric);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+}
+
+.guide-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--text-mid);
+  line-height: 1.5;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.guide-step:hover { color: var(--electric); }
+.guide-step.completed { opacity: 0.4; text-decoration: line-through; }
+
+.guide-num {
+  width: 18px; height: 18px;
+  background: var(--electric);
+  border-radius: 50%;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.guide-step.completed .guide-num {
+  background: #22c55e;
+}
+
+.guide-step.completed .guide-num::after {
+  content: '✓';
+}
+
+/* WHATSAPP WINDOW */
+.wa-window {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(13,21,38,0.15);
+  display: flex;
+  flex-direction: column;
+  height: 680px;
+  background: var(--wa-bg);
+  position: relative;
+}
+
+/* WA HEADER */
+.wa-header {
+  background: var(--wa-header);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.wa-back { color: rgba(255,255,255,0.7); font-size: 20px; cursor: pointer; }
+
+.wa-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--wa-header-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.wa-info { flex: 1; }
+
+.wa-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  line-height: 1.2;
+}
+
+.wa-status {
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+}
+
+.wa-header-icons {
+  display: flex;
+  gap: 18px;
+  color: rgba(255,255,255,0.7);
+  font-size: 18px;
+}
+
+/* WA BODY */
+.wa-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9c4b8' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.wa-body::-webkit-scrollbar { width: 4px; }
+.wa-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+
+/* DATE DIVIDER */
+.wa-date-divider {
+  text-align: center;
+  margin: 8px 0;
+}
+
+.wa-date-divider span {
+  background: rgba(255,255,255,0.85);
+  color: var(--wa-text-dim);
+  font-size: 11.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* BUBBLES */
+.bubble-wrap {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2px;
+}
+
+.bubble-wrap.user { align-items: flex-end; }
+.bubble-wrap.bot { align-items: flex-start; }
+
+.bubble {
+  max-width: 72%;
+  padding: 7px 10px 6px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.55;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.bubble.user {
+  background: var(--wa-bubble-user);
+  color: var(--wa-text);
+  border-radius: 8px 0px 8px 8px;
+}
+
+.bubble.bot {
+  background: var(--wa-bubble-bot);
+  color: var(--wa-text);
+  border-radius: 0px 8px 8px 8px;
+}
+
+.bubble-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.bubble-time {
+  font-size: 11px;
+  color: var(--wa-time);
+}
+
+.bubble-ticks {
+  font-size: 13px;
+  color: var(--wa-tick);
+}
+
+/* TYPING INDICATOR */
+.typing-indicator {
+  display: none;
+  align-items: flex-start;
+  padding: 4px 0;
+}
+
+.typing-indicator.show { display: flex; }
+
+.typing-bubble {
+  background: var(--wa-bubble-bot);
+  border-radius: 0 8px 8px 8px;
+  padding: 10px 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.typing-dot {
+  width: 7px; height: 7px;
+  background: var(--wa-text-dim);
+  border-radius: 50%;
+  animation: typingBounce 1.2s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-5px); }
+}
+
+/* WA INPUT */
+.wa-input-area {
+  background: var(--wa-input-bg);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.wa-input-wrap {
+  flex: 1;
+  background: white;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  gap: 8px;
+}
+
+.wa-emoji-btn {
+  color: var(--wa-text-dim);
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.wa-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--wa-text);
+  background: transparent;
+  resize: none;
+  max-height: 100px;
+  line-height: 1.4;
+}
+
+.wa-input::placeholder { color: var(--wa-text-dim); }
+
+.wa-attach-btn {
+  color: var(--wa-text-dim);
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.wa-send-btn {
+  width: 44px; height: 44px;
+  background: var(--wa-send);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.wa-send-btn:hover { background: #019673; }
+.wa-send-btn svg { width: 20px; height: 20px; fill: white; }
+
+/* INACTIVE OVERLAY */
+.wa-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(7,94,84,0.97);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 32px;
+  z-index: 10;
+  transition: opacity 0.4s;
+}
+
+.wa-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wa-overlay-icon { font-size: 56px; }
+
+.wa-overlay-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.wa-overlay-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+/* QUICK SUGGESTIONS */
+.wa-suggestions {
+  padding: 6px 10px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  background: var(--wa-input-bg);
+  flex-shrink: 0;
+}
+
+.wa-suggestions::-webkit-scrollbar { display: none; }
+
+.suggestion-pill {
+  white-space: nowrap;
+  padding: 5px 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  font-size: 12px;
+  color: var(--wa-text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.suggestion-pill:hover {
+  background: var(--electric-light);
+  border-color: var(--electric);
+  color: var(--electric);
+}
+
+/* SUCCESS BANNER */
+.success-banner {
+  display: none;
+  background: #dcf8c6;
+  border: 1px solid #a8e09a;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #1a5c0e;
+  line-height: 1.5;
+}
+
+.success-banner.show { display: block; }
+
+.success-banner strong { display: block; margin-bottom: 4px; font-size: 15px; }
+
+.btn-cta-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--electric);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 12px;
+  transition: background 0.2s;
+}
+
+.btn-cta-demo:hover { background: var(--electric-hover); }
+
+@media (max-width: 480px) {
+  .wa-window { height: 560px; border-radius: 16px; }
+  .bubble { max-width: 85%; font-size: 13.5px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <a href="index.html" class="logo">Reservo <span class="logo-dot"></span></a>
+  <a href="index.html" class="back-link">← Volver al inicio</a>
+</div>
+
+<!-- HERO -->
+<div class="demo-hero">
+  <div class="demo-badge">✨ Demo interactivo en vivo</div>
+  <h1 class="demo-title">Prueba Reservo ahora mismo</h1>
+  <p class="demo-sub">Configura tu negocio de prueba, activa el bot y chatea como si fueras una clienta real. Así de simple funciona.</p>
+</div>
+
+<!-- LAYOUT -->
+<div class="demo-layout">
+
+  <!-- CONFIG PANEL -->
+  <div class="config-panel">
+    <div class="config-header">
+      <h3>⚙️ Configura tu negocio demo</h3>
+      <p>Llena los campos y activa el bot</p>
+    </div>
+    <div class="config-body">
+
+      <div class="config-group">
+        <label class="config-label">Nombre del negocio</label>
+        <input type="text" class="config-input" id="cfg_nombre" placeholder="Ej. Salón Mariana" maxlength="40">
+      </div>
+
+      <div class="config-group">
+        <label class="config-label">Tipo de negocio</label>
+        <div class="giro-grid">
+          <div class="giro-card selected" onclick="selectGiro(this, 'salon')" data-giro="salon">
+            <span class="giro-icon">💇‍♀️</span>
+            <span class="giro-name">Salón de Belleza</span>
+          </div>
+          <div class="giro-card" onclick="selectGiro(this, 'barberia')" data-giro="barberia">
+            <span class="giro-icon">💈</span>
+            <span class="giro-name">Barbería</span>
+          </div>
+          <div class="giro-card" onclick="selectGiro(this, 'unas')" data-giro="unas">
+            <span class="giro-icon">💅</span>
+            <span class="giro-name">Uñas / Nails</span>
+          </div>
+          <div class="giro-card" onclick="selectGiro(this, 'veterinaria')" data-giro="veterinaria">
+            <span class="giro-icon">🐾</span>
+            <span class="giro-name">Veterinaria</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="config-group">
+        <label class="config-label">Personalidad del bot</label>
+        <select class="config-select" id="cfg_personalidad">
+          <option value="amable y profesional, usa emojis con frecuencia">😊 Amable y profesional</option>
+          <option value="muy cálida y cercana, como una amiga">🤗 Cálida y cercana</option>
+          <option value="seria y formal, muy puntual">💼 Seria y formal</option>
+          <option value="divertida y juvenil, usa muchos emojis">🎉 Divertida y juvenil</option>
+        </select>
+      </div>
+
+      <button class="btn-activate" id="btnActivar" onclick="activarBot()">
+        <span>🚀</span> Activar bot demo
+      </button>
+      <button class="btn-reset" onclick="resetDemo()">↺ Reiniciar conversación</button>
+
+      <!-- GUIDE -->
+      <div class="guide-panel" id="guidePanel">
+        <div class="guide-title">📋 Guía de la demo</div>
+        <div class="guide-step" id="guide1" onclick="sendSuggestion('Hola, buenos días')">
+          <div class="guide-num">1</div>
+          <div>Escribe <strong>"Hola"</strong> o <strong>"Buenos días"</strong> y observa cómo responde</div>
+        </div>
+        <div class="guide-step" id="guide2" onclick="sendSuggestion('Quisiera agendar una cita')">
+          <div class="guide-num">2</div>
+          <div>Pide agendar: <strong>"Quiero una cita para el martes"</strong></div>
+        </div>
+        <div class="guide-step" id="guide3" onclick="sendSuggestion('Para el próximo martes a las 3pm, soy María')">
+          <div class="guide-num">3</div>
+          <div>Indica tu nombre, servicio, día y hora en un solo mensaje</div>
+        </div>
+        <div class="guide-step" id="guide4" onclick="sendSuggestion('Sí, confirmo')">
+          <div class="guide-num">4</div>
+          <div>Confirma tu cita con <strong>"Sí"</strong> cuando el bot te pregunte</div>
+        </div>
+        <div class="guide-step" id="guide5" onclick="sendSuggestion('¿Cuáles son sus servicios y precios?')">
+          <div class="guide-num">5</div>
+          <div>Pregunta por <strong>servicios, precios o ubicación</strong></div>
+        </div>
+      </div>
+
+      <div class="success-banner" id="successBanner">
+        <strong>🎉 ¡Cita agendada exitosamente!</strong>
+        Así funciona Reservo para tus clientas. ¿Quieres este asistente en tu negocio?
+        <br>
+        <a href="onboarding.html" class="btn-cta-demo">
+          💬 Quiero mi asistente →
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WHATSAPP WINDOW -->
+  <div>
+    <div class="wa-window">
+
+      <!-- OVERLAY (before activation) -->
+      <div class="wa-overlay" id="waOverlay">
+        <div class="wa-overlay-icon">🤖</div>
+        <div class="wa-overlay-title">Bot en espera</div>
+        <div class="wa-overlay-sub">Configura el nombre, tipo de negocio y personalidad, luego activa el bot para comenzar la demo.</div>
+      </div>
+
+      <!-- HEADER -->
+      <div class="wa-header">
+        <span class="wa-back">←</span>
+        <div class="wa-avatar" id="waAvatar">💇‍♀️</div>
+        <div class="wa-info">
+          <div class="wa-name" id="waName">Salón Demo</div>
+          <div class="wa-status" id="waStatus">en línea</div>
+        </div>
+        <div class="wa-header-icons">
+          <span>📞</span>
+          <span>⋮</span>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="wa-body" id="waBody">
+        <div class="wa-date-divider"><span id="waDateLabel">Hoy</span></div>
+      </div>
+
+      <!-- TYPING -->
+      <div class="typing-indicator" id="typingIndicator">
+        <div class="typing-bubble">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+
+      <!-- SUGGESTIONS -->
+      <div class="wa-suggestions" id="waSuggestions" style="display:none">
+        <div class="suggestion-pill" onclick="sendSuggestion('Hola')">👋 Hola</div>
+        <div class="suggestion-pill" onclick="sendSuggestion('Quiero agendar una cita')">📅 Agendar cita</div>
+        <div class="suggestion-pill" onclick="sendSuggestion('¿Cuáles son sus servicios?')">💬 Servicios</div>
+        <div class="suggestion-pill" onclick="sendSuggestion('¿Cuál es el horario?')">⏰ Horario</div>
+        <div class="suggestion-pill" onclick="sendSuggestion('Cancelar mi cita')">❌ Cancelar</div>
+      </div>
+
+      <!-- INPUT -->
+      <div class="wa-input-area">
+        <div class="wa-input-wrap">
+          <span class="wa-emoji-btn">😊</span>
+          <textarea class="wa-input" id="waInput" placeholder="Escribe un mensaje" rows="1" disabled
+            onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <span class="wa-attach-btn">📎</span>
+        </div>
+        <button class="wa-send-btn" id="waSendBtn" onclick="sendMessage()" disabled>
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let botActive = false;
+let selectedGiro = 'salon';
+let messageCount = 0;
+let guideStep = 0;
+let sessionId = 'demo_' + Date.now();
+
+const WEBHOOK_URL = 'https://n8n.srv1546051.hstgr.cloud/webhook/reservo-demo';
+
+// ALMAS de demo por giro
+const demoAlmas = {
+  salon: {
+    icon: '💇‍♀️',
+    negocio: 'Salón Demo',
+    giro: 'Salón de Belleza',
+    direccion: 'Av. Constitución 1234, Col. Centro',
+    telefono: '8112345678',
+    servicios: 'Corte de Dama, Tinte, Keratina, Planchado, Peinado, Uñas y gel',
+    duracion_servicios: { 'Corte de Dama': 60, 'Tinte': 120, 'Keratina': 180, 'Planchado': 60, 'Peinado': 45, 'Uñas y gel': 60 },
+    precios: 'Corte de Dama $200, Tinte desde $500, Keratina desde $800, Planchado $150, Peinado $200, Uñas y gel desde $500',
+    horario_semana: 'Lunes a Viernes 10am-8pm',
+    horario_sabado: 'Sábados 9am-6pm',
+    metodos_pago: 'Efectivo y tarjeta'
+  },
+  barberia: {
+    icon: '💈',
+    negocio: 'Barbería Demo',
+    giro: 'Barbería',
+    direccion: 'Calle Morelos 567, Col. Obrera',
+    telefono: '8198765432',
+    servicios: 'Corte Clásico, Corte Degradado, Arreglo de Barba, Afeitado, Tratamiento Capilar',
+    duracion_servicios: { 'Corte Clásico': 30, 'Corte Degradado': 45, 'Arreglo de Barba': 20, 'Afeitado': 30, 'Tratamiento Capilar': 45 },
+    precios: 'Corte Clásico $150, Corte Degradado $180, Arreglo de Barba $100, Afeitado $120, Tratamiento Capilar $200',
+    horario_semana: 'Lunes a Viernes 9am-8pm',
+    horario_sabado: 'Sábados 9am-5pm',
+    metodos_pago: 'Efectivo, tarjeta y transferencia'
+  },
+  unas: {
+    icon: '💅',
+    negocio: 'Nails Demo',
+    giro: 'Uñas / Nails',
+    direccion: 'Plaza Cumbres Local 45, San Nicolás',
+    telefono: '8123456789',
+    servicios: 'Manicure, Pedicure, Uñas Gel, Uñas Acrílicas, Nail Art, Retoque',
+    duracion_servicios: { 'Manicure': 45, 'Pedicure': 60, 'Uñas Gel': 90, 'Uñas Acrílicas': 120, 'Nail Art': 90, 'Retoque': 45 },
+    precios: 'Manicure $150, Pedicure $200, Uñas Gel $350, Uñas Acrílicas $400, Nail Art desde $450, Retoque $200',
+    horario_semana: 'Lunes a Viernes 10am-7pm',
+    horario_sabado: 'Sábados 10am-5pm',
+    metodos_pago: 'Efectivo y transferencia'
+  },
+  veterinaria: {
+    icon: '🐾',
+    negocio: 'Veterinaria Demo',
+    giro: 'Veterinaria',
+    direccion: 'Av. Lázaro Cárdenas 890, Col. Valle',
+    telefono: '8134567890',
+    servicios: 'Consulta General, Vacunación, Baño y Corte, Desparasitación, Cirugía, Ultrasonido',
+    duracion_servicios: { 'Consulta General': 30, 'Vacunación': 20, 'Baño y Corte': 90, 'Desparasitación': 20, 'Cirugía': 120, 'Ultrasonido': 30 },
+    precios: 'Consulta General $300, Vacunación $250, Baño y Corte desde $350, Desparasitación $150, Ultrasonido $500',
+    horario_semana: 'Lunes a Viernes 9am-7pm',
+    horario_sabado: 'Sábados 9am-2pm',
+    metodos_pago: 'Efectivo, tarjeta y MercadoPago'
+  }
+};
+
+// ─── GIRO SELECTION ───────────────────────────────────────────────────────────
+function selectGiro(el, giro) {
+  document.querySelectorAll('.giro-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedGiro = giro;
+}
+
+// ─── ACTIVATE ─────────────────────────────────────────────────────────────────
+function activarBot() {
+  const nombre = document.getElementById('cfg_nombre').value.trim();
+  const alma = demoAlmas[selectedGiro];
+  const displayName = nombre || alma.negocio;
+  const personalidad = document.getElementById('cfg_personalidad').value;
+
+  // Update WA header
+  document.getElementById('waName').textContent = displayName;
+  document.getElementById('waAvatar').textContent = alma.icon;
+  document.getElementById('waStatus').textContent = 'en línea';
+
+  // Build session ALMA
+  window.demoAlmaActual = {
+    ...alma,
+    negocio: displayName,
+    nombre_negocio: `*${displayName}*`,
+    personalidad,
+    estilo_comunicacion: `Eres una recepcionista ${personalidad}. Usa un tono cercano y positivo. Nunca uses apodos cariñosos. Trata al cliente de tú.`,
+    session_id: sessionId,
+    formato_respuesta: [
+      "Máximo 3 líneas en total",
+      "UNA SOLA pregunta al final",
+      "Para negritas usa asterisco simple *texto*",
+      "Estilo WhatsApp — conversacional y directo"
+    ]
+  };
+
+  // Hide overlay
+  document.getElementById('waOverlay').classList.add('hidden');
+
+  // Enable input
+  document.getElementById('waInput').disabled = false;
+  document.getElementById('waSendBtn').disabled = false;
+  document.getElementById('waInput').focus();
+  document.getElementById('waSuggestions').style.display = 'flex';
+
+  botActive = true;
+
+  // Add date
+  const now = new Date();
+  document.getElementById('waDateLabel').textContent = 'Hoy, ' + now.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  // Welcome system message
+  setTimeout(() => {
+    addBotMessage(`¡Hola! 👋 Bienvenida a *${displayName}*. Soy tu asistente virtual. ¿En qué te puedo ayudar hoy?`);
+    markGuideStep(1);
+  }, 600);
+}
+
+// ─── SEND MESSAGE ─────────────────────────────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById('waInput');
+  const text = input.value.trim();
+  if (!text || !botActive) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  messageCount++;
+
+  addUserMessage(text);
+  showTyping(true);
+  updateGuideFromMessage(text);
+
+  try {
+    const res = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        body: text,
+        session_id: sessionId,
+        alma: window.demoAlmaActual,
+        demo: true
+      })
+    });
+
+    const data = await res.json();
+    showTyping(false);
+
+    const respuesta = data.respuesta || data.message || data.texto || 'Lo siento, hubo un error. Intenta de nuevo.';
+    addBotMessage(respuesta);
+
+    // Check if appointment confirmed
+    if (data.cita_confirmada || respuesta.includes('¡Cita confirmada') || respuesta.includes('Cita confirmada')) {
+      setTimeout(() => {
+        document.getElementById('successBanner').classList.add('show');
+        input.disabled = true;
+        document.getElementById('waSendBtn').disabled = true;
+      }, 1500);
+    }
+
+  } catch(e) {
+    showTyping(false);
+    addBotMessage('Ups, parece que hay un problema de conexión. Intenta de nuevo en un momento. 😅');
+  }
+}
+
+function sendSuggestion(text) {
+  if (!botActive) return;
+  document.getElementById('waInput').value = text;
+  sendMessage();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+// ─── MESSAGES ─────────────────────────────────────────────────────────────────
+function getTime() {
+  return new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+}
+
+function addUserMessage(text) {
+  const body = document.getElementById('waBody');
+  const wrap = document.createElement('div');
+  wrap.className = 'bubble-wrap user';
+  wrap.innerHTML = `
+    <div class="bubble user">
+      ${escapeHtml(text)}
+      <div class="bubble-meta">
+        <span class="bubble-time">${getTime()}</span>
+        <span class="bubble-ticks">✓✓</span>
+      </div>
+    </div>
+  `;
+  body.appendChild(wrap);
+  scrollToBottom();
+}
+
+function addBotMessage(text) {
+  const body = document.getElementById('waBody');
+  const wrap = document.createElement('div');
+  wrap.className = 'bubble-wrap bot';
+  wrap.innerHTML = `
+    <div class="bubble bot">
+      ${formatWAText(text)}
+      <div class="bubble-meta">
+        <span class="bubble-time">${getTime()}</span>
+      </div>
+    </div>
+  `;
+  body.appendChild(wrap);
+  scrollToBottom();
+}
+
+function formatWAText(text) {
+  return escapeHtml(text)
+    .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function showTyping(show) {
+  const el = document.getElementById('typingIndicator');
+  el.classList.toggle('show', show);
+  if (show) scrollToBottom();
+}
+
+function scrollToBottom() {
+  const body = document.getElementById('waBody');
+  setTimeout(() => { body.scrollTop = body.scrollHeight; }, 50);
+}
+
+// ─── GUIDE ────────────────────────────────────────────────────────────────────
+function markGuideStep(step) {
+  const el = document.getElementById(`guide${step}`);
+  if (el) el.classList.add('completed');
+}
+
+function updateGuideFromMessage(text) {
+  const t = text.toLowerCase();
+  if (t.includes('hola') || t.includes('buenos') || t.includes('buenas')) markGuideStep(1);
+  if (t.includes('cita') || t.includes('agendar') || t.includes('reservar')) markGuideStep(2);
+  if (t.includes('martes') || t.includes('lunes') || t.includes('pm') || t.includes('am')) markGuideStep(3);
+  if (t === 'sí' || t === 'si' || t.includes('confirmo') || t.includes('ok')) markGuideStep(4);
+  if (t.includes('servicio') || t.includes('precio') || t.includes('horario') || t.includes('ubicación')) markGuideStep(5);
+}
+
+// ─── RESET ────────────────────────────────────────────────────────────────────
+function resetDemo() {
+  botActive = false;
+  messageCount = 0;
+  sessionId = 'demo_' + Date.now();
+  guideStep = 0;
+
+  // Reset UI
+  document.getElementById('waBody').innerHTML = '<div class="wa-date-divider"><span id="waDateLabel">Hoy</span></div>';
+  document.getElementById('waOverlay').classList.remove('hidden');
+  document.getElementById('waInput').disabled = true;
+  document.getElementById('waSendBtn').disabled = true;
+  document.getElementById('waInput').value = '';
+  document.getElementById('waSuggestions').style.display = 'none';
+  document.getElementById('successBanner').classList.remove('show');
+  showTyping(false);
+
+  // Reset guide
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById(`guide${i}`);
+    if (el) el.classList.remove('completed');
+  }
+}
+</script>
+
+</body>
+</html>
