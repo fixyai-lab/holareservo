@@ -1221,6 +1221,7 @@ async function enviarOnboarding() {
     giro: document.getElementById('negocio_giro').value,
     direccion: document.getElementById('negocio_dir').value,
     telefono_negocio: document.getElementById('negocio_tel').value,
+    metodos_pago: getPagos(),
     servicios: getServicios(),
     horarios: getHorarios(),
     mismo_dia: document.getElementById('mismo_dia').checked,
