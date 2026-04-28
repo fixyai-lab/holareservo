@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding | Reservo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --card: #ffffff;
+  --navy: #050d1a;
+  --navy-2: #0a1628;
+  --electric: #2d7ef7;
+  --electric-light: #e8f1fe;
+  --electric-hover: #1a6ae0;
+  --text: #0d1526;
+  --text-mid: #3d4f6a;
+  --text-light: #6b7a96;
+  --border: #dde3f0;
+  --error: #ef4444;
+  --success: #22c55e;
+  --step-done: #22c55e;
+  --step-active: #2d7ef7;
+  --step-pending: #dde3f0;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(13,21,38,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 80px;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--navy);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-dot { width: 8px; height: 8px; background: var(--electric); border-radius: 50%; display: inline-block; }
+
+/* STEPPER */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 36px;
+  width: 100%;
+  max-width: 640px;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  position: relative;
+}
+
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--step-pending);
+  z-index: 0;
+  transition: background 0.3s;
+}
+
+.step-item.done:not(:last-child)::after { background: var(--step-done); }
+.step-item.active:not(:last-child)::after { background: var(--step-pending); }
+
+.step-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--step-pending);
+  color: var(--text-light);
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s;
+  border: 2px solid var(--step-pending);
+}
+
+.step-item.done .step-circle {
+  background: var(--step-done);
+  border-color: var(--step-done);
+  color: white;
+}
+
+.step-item.active .step-circle {
+  background: var(--electric);
+  border-color: var(--electric);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(45,126,247,0.2);
+}
+
+.step-label {
+  font-size: 10px;
+  color: var(--text-light);
+  text-align: center;
+  display: none;
+}
+
+@media (min-width: 520px) { .step-label { display: block; } }
+.step-item.active .step-label { color: var(--electric); font-weight: 500; }
+.step-item.done .step-label { color: var(--step-done); }
+
+/* CARD */
+.wizard-card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  padding: 36px 36px 24px;
+  flex: 1;
+  min-height: 420px;
+}
+
+@media (max-width: 480px) { .card-body { padding: 24px 20px 16px; } }
+
+/* STEPS */
+.step { display: none; animation: fadeUp 0.3s ease; }
+.step.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-heading { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.step-sub { font-size: 14px; color: var(--text-light); margin-bottom: 28px; }
+
+/* FORM */
+.form-group { margin-bottom: 18px; }
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="time"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--electric);
+  box-shadow: 0 0 0 3px rgba(45,126,247,0.12);
+}
+
+input.error { border-color: var(--error); }
+.err-msg { font-size: 12px; color: var(--error); margin-top: 4px; display: none; }
+.err-msg.show { display: block; }
+
+.pass-wrap { position: relative; }
+.pass-toggle {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--electric);
+  user-select: none;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* CHECKBOX */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-mid);
+  cursor: pointer;
+}
+
+.check-row input[type="checkbox"] {
+  width: 18px; height: 18px;
+  accent-color: var(--electric);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* SERVICES */
+.services-list { margin-bottom: 12px; }
+
+.service-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--electric);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.service-inputs { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+
+.service-item input { font-size: 14px; padding: 8px 10px; }
+
+.btn-remove-service {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.btn-remove-service:hover { color: var(--error); }
+
+.btn-add-service {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1.5px dashed var(--electric);
+  border-radius: var(--radius);
+  color: var(--electric);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 24px;
+}
+
+.btn-add-service:hover { background: var(--electric-light); }
+
+/* HORARIOS */
+.horarios-grid { margin-bottom: 20px; }
+
+.day-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr 36px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.day-row:last-child { border-bottom: none; }
+
+.day-check { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+.day-check input { width: 16px; height: 16px; accent-color: var(--electric); }
+
+.day-row input[type="time"] { padding: 8px 10px; font-size: 13px; }
+
+.day-row .day-disabled { opacity: 0.3; pointer-events: none; }
+
+@media (max-width: 480px) {
+  .day-row { grid-template-columns: 1fr 1fr; gap: 6px; padding: 10px 0; }
+  .day-check { grid-column: 1 / -1; }
+}
+
+/* TOGGLE */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.toggle-label { font-size: 14px; color: var(--text-mid); font-weight: 500; }
+
+.toggle-switch {
+  position: relative;
+  width: 44px; height: 24px;
+}
+
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--border);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  left: 3px; top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider { background: var(--electric); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* EMOJI PICKER */
+.emoji-section { margin-top: 8px; }
+
+.emoji-categories {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.emoji-cat-btn {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.emoji-cat-btn.active {
+  background: var(--electric);
+  border-color: var(--electric);
+  color: white;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 10px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+}
+
+.emoji-btn {
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.15s;
+  text-align: center;
+  line-height: 1;
+}
+
+.emoji-btn:hover { background: var(--electric-light); }
+.emoji-btn.selected { background: var(--electric); }
+
+.selected-emojis {
+  margin-top: 10px;
+  min-height: 36px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border: 1.5px dashed var(--border);
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+/* WA OPTIONS */
+.wa-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+
+.wa-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.wa-card:hover { border-color: var(--electric); background: var(--electric-light); }
+.wa-card.selected { border-color: var(--electric); background: var(--electric-light); }
+
+.wa-card-icon { font-size: 28px; margin-bottom: 8px; }
+.wa-card-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.wa-card-desc { font-size: 12px; color: var(--text-light); line-height: 1.4; }
+
+.wa-notice {
+  background: #fff8e1;
+  border: 1px solid #f0b429;
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #7a5a00;
+  margin-top: 12px;
+}
+
+/* SUMMARY */
+.summary-section {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+}
+
+.summary-sec-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--electric);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+.summary-key { color: var(--text-light); flex-shrink: 0; min-width: 120px; }
+.summary-val { color: var(--text); font-weight: 500; text-align: right; word-break: break-word; }
+
+.summary-service-item {
+  background: white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  border: 1px solid var(--border);
+}
+
+.summary-service-name { font-weight: 500; color: var(--text); }
+.summary-service-detail { color: var(--text-light); }
+
+.summary-horario-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 3px 0;
+  color: var(--text-mid);
+}
+
+.summary-horario-row.off { opacity: 0.4; text-decoration: line-through; }
+
+/* NAV BUTTONS - always fixed at bottom of card */
+.card-footer {
+  padding: 16px 36px 28px;
+  display: flex;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  position: sticky;
+  bottom: 0;
+}
+
+@media (max-width: 480px) { .card-footer { padding: 14px 20px 20px; } }
+
+.btn-prev {
+  flex: 1;
+  padding: 13px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-mid);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+}
+
+.btn-prev:hover { border-color: var(--electric); color: var(--electric); }
+
+.btn-next {
+  flex: 2;
+  padding: 13px;
+  background: var(--electric);
+  border: none;
+  border-radius: var(--radius);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-next:hover { background: var(--electric-hover); }
+.btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
+</style>
+</head>
+<body>
+
+<div class="logo">Reservo <span class="logo-dot"></span></div>
+
+<!-- STEPPER -->
+<div class="stepper" id="stepper">
+  <div class="step-item active" data-step="1">
+    <div class="step-circle">1</div>
+    <div class="step-label">Titular</div>
+  </div>
+  <div class="step-item" data-step="2">
+    <div class="step-circle">2</div>
+    <div class="step-label">Negocio</div>
+  </div>
+  <div class="step-item" data-step="3">
+    <div class="step-circle">3</div>
+    <div class="step-label">Servicios</div>
+  </div>
+  <div class="step-item" data-step="4">
+    <div class="step-circle">4</div>
+    <div class="step-label">Identidad</div>
+  </div>
+  <div class="step-item" data-step="5">
+    <div class="step-circle">5</div>
+    <div class="step-label">WhatsApp</div>
+  </div>
+  <div class="step-item" data-step="6">
+    <div class="step-circle">6</div>
+    <div class="step-label">Resumen</div>
+  </div>
+</div>
+
+<!-- CARD -->
+<div class="wizard-card">
+  <div class="card-body">
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+      <div class="step-heading">Datos del Titular</div>
+      <p class="step-sub">Tu información de acceso a la plataforma Reservo.</p>
+
+      <div class="form-group">
+        <label>Nombre completo *</label>
+        <input type="text" id="titular_nombre" placeholder="Ej. María González" required>
+        <div class="err-msg" id="err_titular_nombre">Este campo es requerido</div>
+      </div>
+      <div class="two-col">
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input type="tel" id="titular_tel" placeholder="+52 81..." required>
+          <div class="err-msg" id="err_titular_tel">Requerido</div>
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico *</label>
+          <input type="email" id="titular_email" placeholder="tu@correo.com" required>
+          <div class="err-msg" id="err_titular_email">Requerido</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Contraseña *</label>
+        <div class="pass-wrap">
+          <input type="password" id="titular_pass" placeholder="Mínimo 8 caracteres" required>
+          <span class="pass-toggle" onclick="togglePass('titular_pass', this)">MOSTRAR</span>
+        </div>
+        <div class="err-msg" id="err_titular_pass">Mínimo 8 caracteres</div>
+      </div>
+      <div class="form-group">
+        <label>Confirmar contraseña *</label>
+        <div class="pass-wrap">
+          <input type="password" id="titular_pass_conf" placeholder="Repite tu contraseña" required>
+          <span class="pass-toggle" onclick="togglePass('titular_pass_conf', this)">MOSTRAR</span>
+        </div>
+        <div class="err-msg" id="err_titular_pass_conf">Las contraseñas no coinciden</div>
+      </div>
+      <div class="check-row" style="margin-top:8px">
+        <input type="checkbox" id="terms" required>
+        <label for="terms" style="margin:0;cursor:pointer;">Acepto los <a href="#" style="color:var(--electric)">términos y condiciones</a></label>
+      </div>
+      <div class="err-msg" id="err_terms">Debes aceptar los términos</div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
+      <div class="step-heading">Datos del Negocio</div>
+      <p class="step-sub">Información de tu salón o negocio.</p>
+
+      <div class="form-group">
+        <label>Nombre del negocio *</label>
+        <input type="text" id="negocio_nombre" placeholder="Ej. Javeli Beauty Salon" required>
+        <div class="err-msg" id="err_negocio_nombre">Requerido</div>
+      </div>
+      <div class="form-group">
+        <label>Giro del negocio</label>
+        <select id="negocio_giro">
+          <option value="Salón de Belleza">Salón de Belleza</option>
+          <option value="Barbería">Barbería</option>
+          <option value="Uñas / Nails">Uñas / Nails</option>
+          <option value="Spa / Masajes">Spa / Masajes</option>
+          <option value="Estética">Estética</option>
+          <option value="Cejas y Pestañas">Cejas y Pestañas</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dirección completa *</label>
+        <input type="text" id="negocio_dir" placeholder="Calle, número, colonia, ciudad" required>
+        <div class="err-msg" id="err_negocio_dir">Requerido</div>
+      </div>
+      <div class="form-group">
+        <label>Teléfono del negocio *</label>
+        <input type="tel" id="negocio_tel" placeholder="+52 81..." required>
+        <div class="err-msg" id="err_negocio_tel">Requerido</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="step3">
+      <div class="step-heading">Servicios y Horarios</div>
+      <p class="step-sub">¿Qué ofreces y cuándo atiendes?</p>
+
+      <label style="margin-bottom:10px;display:block">Tus servicios</label>
+      <div class="services-list" id="servicesList">
+        <div class="service-item">
+          <button type="button" class="btn-remove-service" onclick="removeService(this)" title="Eliminar">×</button>
+          <input type="text" placeholder="Nombre del servicio (ej. Corte de cabello)">
+          <div class="service-inputs">
+            <div></div>
+            <input type="number" placeholder="$ Precio" min="0">
+            <select class="duracion-select"><option value="30">30 min</option><option value="60">60 min</option><option value="90">90 min</option><option value="120">120 min</option><option value="150">150 min</option><option value="180">180 min</option></select>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn-add-service" onclick="addService()">+ Agregar servicio</button>
+
+      <label style="margin-bottom:10px;display:block">Horario de atención</label>
+      <div class="horarios-grid" id="horariosGrid"></div>
+
+      <div class="toggle-row">
+        <span class="toggle-label">¿Acepta citas el mismo día?</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mismo_dia">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="two-col">
+        <div class="form-group">
+          <label>Anticipación mínima</label>
+          <select id="anticipacion">
+            <option value="1h">1 hora antes</option>
+            <option value="2h" selected>2 horas antes</option>
+            <option value="4h">4 horas antes</option>
+            <option value="24h">24 horas antes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tolerancia (minutos)</label>
+          <input type="number" id="tolerancia" value="15" min="0" max="60">
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" id="step4">
+      <div class="step-heading">Identidad del Asistente</div>
+      <p class="step-sub">Dale personalidad a tu bot de WhatsApp.</p>
+
+      <div class="form-group">
+        <label>Actitud y tono del asistente</label>
+        <textarea id="asistente_actitud" rows="3" placeholder="Ej: Amable, profesional y usa emojis de flores. Siempre saluda con entusiasmo y confirma los detalles de la cita..."></textarea>
+      </div>
+
+      <div class="emoji-section">
+        <label style="margin-bottom:10px;display:block">Emojis que usará el bot</label>
+
+        <div class="emoji-categories" id="emojiCats">
+          <button class="emoji-cat-btn active" onclick="showCat('caras', this)">😊 Caras</button>
+          <button class="emoji-cat-btn" onclick="showCat('gestos', this)">👋 Gestos</button>
+          <button class="emoji-cat-btn" onclick="showCat('belleza', this)">💅 Belleza</button>
+          <button class="emoji-cat-btn" onclick="showCat('veterinaria', this)">🐾 Veterinaria</button>
+          <button class="emoji-cat-btn" onclick="showCat('restaurante', this)">🍕 Restaurante</button>
+          <button class="emoji-cat-btn" onclick="showCat('objetos', this)">📅 Objetos</button>
+          <button class="emoji-cat-btn" onclick="showCat('simbolos', this)">✅ Símbolos</button>
+          <button class="emoji-cat-btn" onclick="showCat('naturaleza', this)">🌸 Naturaleza</button>
+          <button class="emoji-cat-btn" onclick="showCat('corazones', this)">❤️ Corazones</button>
+        </div>
+
+        <div class="emoji-grid" id="emojiGrid"></div>
+
+        <div class="selected-emojis" id="selectedEmojiDisplay">
+          <span style="color:var(--text-light);font-size:13px">Toca un emoji para seleccionarlo...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step" id="step5">
+      <div class="step-heading">Configuración de WhatsApp</div>
+      <p class="step-sub">¿Cómo conectarás tu negocio?</p>
+
+      <div class="wa-options">
+        <div class="wa-card" id="waCardAsignado" onclick="selectWa('asignado')">
+          <div class="wa-card-icon">📱</div>
+          <div class="wa-card-title">Número nuevo</div>
+          <div class="wa-card-desc">Te asignamos un número exclusivo para el bot</div>
+        </div>
+        <div class="wa-card" id="waCardPropio" onclick="selectWa('propio')">
+          <div class="wa-card-icon">🔁</div>
+          <div class="wa-card-title">Mi propio número</div>
+          <div class="wa-card-desc">Usa un número que ya tienes disponible</div>
+        </div>
+      </div>
+
+      <div id="waPropioSection" style="display:none">
+        <div class="form-group">
+          <label>Tu número de WhatsApp exclusivo</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="wa_lada" style="width:220px;flex-shrink:0;padding:11px 10px;font-size:14px">
+              <option value="+52" data-flag="🇲🇽">🇲🇽 México +52</option>
+              <option value="+1" data-flag="🇺🇸">🇺🇸 Estados Unidos +1</option>
+              <option value="+54" data-flag="🇦🇷">🇦🇷 Argentina +54</option>
+              <option value="+57" data-flag="🇨🇴">🇨🇴 Colombia +57</option>
+              <option value="+51" data-flag="🇵🇪">🇵🇪 Perú +51</option>
+              <option value="+58" data-flag="🇻🇪">🇻🇪 Venezuela +58</option>
+              <option value="+56" data-flag="🇨🇱">🇨🇱 Chile +56</option>
+              <option value="+593" data-flag="🇪🇨">🇪🇨 Ecuador +593</option>
+              <option value="+502" data-flag="🇬🇹">🇬🇹 Guatemala +502</option>
+              <option value="+503" data-flag="🇸🇻">🇸🇻 El Salvador +503</option>
+              <option value="+504" data-flag="🇭🇳">🇭🇳 Honduras +504</option>
+              <option value="+505" data-flag="🇳🇮">🇳🇮 Nicaragua +505</option>
+              <option value="+506" data-flag="🇨🇷">🇨🇷 Costa Rica +506</option>
+              <option value="+507" data-flag="🇵🇦">🇵🇦 Panamá +507</option>
+              <option value="+591" data-flag="🇧🇴">🇧🇴 Bolivia +591</option>
+              <option value="+595" data-flag="🇵🇾">🇵🇾 Paraguay +595</option>
+              <option value="+598" data-flag="🇺🇾">🇺🇾 Uruguay +598</option>
+              <option value="+1809" data-flag="🇩🇴">🇩🇴 Rep. Dominicana +1809</option>
+              <option value="+34" data-flag="🇪🇸">🇪🇸 España +34</option>
+              <option value="+1787" data-flag="🇵🇷">🇵🇷 Puerto Rico +1787</option>
+            </select>
+            <input type="tel" id="wa_numero" placeholder="81 1234 5678" style="flex:1">
+          </div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:6px" id="wa_numero_preview"></div>
+        </div>
+        <div class="wa-notice">
+          ⚠️ Este número <strong>no debe tener WhatsApp personal activo</strong>. Si ya lo usas en tu celular, primero debes cerrarlo antes de conectarlo al bot.
+        </div>
+      </div>
+
+      <div id="waAsignadoSection" style="display:none">
+        <div class="wa-notice" style="background:#e8f1fe;border-color:#2d7ef7;color:#0a3a8a">
+          📞 Nosotros te asignaremos un número de WhatsApp Business dentro de las próximas <strong>24 horas</strong> y te lo comunicaremos por correo.
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 6 - RESUMEN -->
+    <div class="step" id="step6">
+      <div class="step-heading">Resumen de tu registro</div>
+      <p class="step-sub">Revisa todo antes de enviar. Puedes regresar a corregir cualquier dato.</p>
+      <div id="summaryContent"></div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- FOOTER FIJO -->
+  <div class="card-footer">
+    <button type="button" class="btn-prev" id="btnPrev" onclick="changeStep(-1)">← Anterior</button>
+    <button type="button" class="btn-next" id="btnNext" onclick="changeStep(1)">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+let currentStep = 1;
+const totalSteps = 6;
+let selectedEmojis = [];
+let waOption = '';
+
+// EMOJI DATA — 20 por categoría, contextuales por giro
+const emojiData = {
+  caras:      ['😊','😄','😁','🥰','😍','🤩','😎','🥳','😇','🤗','😋','😌','🙂','😀','😃','🤭','😏','🤔','😂','🤣'],
+  gestos:     ['👋','🤝','👍','👌','✌️','🤞','👏','🙌','🤙','💪','🙏','👐','🫶','🫰','☝️','👆','✋','🤚','🖐️','🫱'],
+  belleza:    ['💅','💇‍♀️','✂️','💄','💋','🪮','🧴','🪥','🧼','🪞','👗','👠','👒','🎀','💍','💎','🧖‍♀️','💈','🪒','🧔'],
+  veterinaria:['🐶','🐱','🐰','🐹','🐾','🦜','🐠','🦎','🐍','🐢','🐕','🐈','🦴','🏥','💉','🩺','🔬','🧪','🫀','🐾'],
+  restaurante:['🍕','🍔','🌮','🌯','🥗','🍣','🍜','🍝','🥩','🍗','🍺','🥂','☕','🧃','🍰','🎂','🥐','🍳','🥘','🍱'],
+  objetos:    ['📅','📆','🗓️','⏰','⏱️','📍','📌','📋','📝','✏️','📱','💻','📷','💰','💳','🏷️','🔑','📦','🎁','🚗'],
+  simbolos:   ['✅','❌','⭐','🌟','💫','✨','🔥','💥','❗','❓','💯','🔔','📢','📣','🚀','💡','🎯','🆕','🆒','⚡'],
+  naturaleza: ['🌸','🌺','🌻','🌹','🌷','💐','🍀','🌿','🌱','🌲','🌴','🍃','🌊','☀️','🌈','🦋','🐝','🌙','⛅','🌤️'],
+  corazones:  ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❤️‍🔥','💝','💖','💗','💓','💞','💕','💟','❣️','♥️']
+};
+
+const MAX_EMOJIS = 10;
+
+let currentCat = 'caras';
+
+function showCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.emoji-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderEmojis();
+}
+
+function renderEmojis() {
+  const grid = document.getElementById('emojiGrid');
+  grid.innerHTML = '';
+  emojiData[currentCat].forEach(emoji => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'emoji-btn' + (selectedEmojis.includes(emoji) ? ' selected' : '');
+    btn.textContent = emoji;
+    btn.onclick = () => toggleEmoji(btn, emoji);
+    grid.appendChild(btn);
+  });
+}
+
+function toggleEmoji(btn, emoji) {
+  if (!selectedEmojis.includes(emoji) && selectedEmojis.length >= MAX_EMOJIS) {
+    alert(`Máximo ${MAX_EMOJIS} emojis permitidos`);
+    return;
+  }
+  if (selectedEmojis.includes(emoji)) {
+    selectedEmojis = selectedEmojis.filter(e => e !== emoji);
+    btn.classList.remove('selected');
+  } else {
+    selectedEmojis.push(emoji);
+    btn.classList.add('selected');
+  }
+  updateEmojiDisplay();
+}
+
+function updateEmojiDisplay() {
+  const display = document.getElementById('selectedEmojiDisplay');
+  if (selectedEmojis.length === 0) {
+    display.innerHTML = '<span style="color:var(--text-light);font-size:13px">Toca un emoji para seleccionarlo...</span>';
+  } else {
+    display.textContent = selectedEmojis.join(' ');
+  }
+}
+
+// HORARIOS
+const diasSemana = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+const defaultOff = [6]; // domingo off por default
+
+function buildHorarios() {
+  const grid = document.getElementById('horariosGrid');
+  diasSemana.forEach((dia, i) => {
+    const off = defaultOff.includes(i);
+    grid.innerHTML += `
+      <div class="day-row" id="dayrow_${i}">
+        <div class="day-check">
+          <input type="checkbox" id="dia_check_${i}" ${off ? '' : 'checked'} onchange="toggleDay(${i})">
+          <span>${dia}</span>
+        </div>
+        <input type="time" id="dia_inicio_${i}" value="09:00" ${off ? 'class="day-disabled"' : ''}>
+        <input type="time" id="dia_fin_${i}" value="19:00" ${off ? 'class="day-disabled"' : ''}>
+      </div>
+    `;
+  });
+}
+
+function toggleDay(i) {
+  const checked = document.getElementById(`dia_check_${i}`).checked;
+  const inicio = document.getElementById(`dia_inicio_${i}`);
+  const fin = document.getElementById(`dia_fin_${i}`);
+  if (checked) {
+    inicio.classList.remove('day-disabled');
+    fin.classList.remove('day-disabled');
+  } else {
+    inicio.classList.add('day-disabled');
+    fin.classList.add('day-disabled');
+  }
+}
+
+// SERVICES
+function addService() {
+  const container = document.getElementById('servicesList');
+  const div = document.createElement('div');
+  div.className = 'service-item';
+  div.innerHTML = `
+    <button type="button" class="btn-remove-service" onclick="removeService(this)" title="Eliminar">×</button>
+    <input type="text" placeholder="Nombre del servicio">
+    <div class="service-inputs">
+      <div></div>
+      <input type="number" placeholder="$ Precio" min="0">
+      <select class="duracion-select"><option value="30">30 min</option><option value="60">60 min</option><option value="90">90 min</option><option value="120">120 min</option><option value="150">150 min</option><option value="180">180 min</option></select>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function removeService(btn) {
+  const items = document.querySelectorAll('.service-item');
+  if (items.length > 1) btn.closest('.service-item').remove();
+}
+
+function getServicios() {
+  return Array.from(document.querySelectorAll('.service-item')).map(item => {
+    const inputs = item.querySelectorAll('input');
+    const sel = item.querySelector(".duracion-select"); return { nombre: inputs[0].value, precio: inputs[1].value, duracion: sel ? sel.value : inputs[2].value };
+  });
+}
+
+function getHorarios() {
+  return diasSemana.map((dia, i) => ({
+    dia,
+    activo: document.getElementById(`dia_check_${i}`).checked,
+    inicio: document.getElementById(`dia_inicio_${i}`).value,
+    fin: document.getElementById(`dia_fin_${i}`).value
+  }));
+}
+
+// WA OPTION
+function selectWa(opt) {
+  waOption = opt;
+  document.getElementById('waCardAsignado').classList.toggle('selected', opt === 'asignado');
+  document.getElementById('waCardPropio').classList.toggle('selected', opt === 'propio');
+  document.getElementById('waPropioSection').style.display = opt === 'propio' ? 'block' : 'none';
+  document.getElementById('waAsignadoSection').style.display = opt === 'asignado' ? 'block' : 'none';
+}
+
+function getNumeroCompleto() {
+  const lada = document.getElementById('wa_lada')?.value || '+52';
+  const numero = (document.getElementById('wa_numero')?.value || '').replace(/\D/g, '');
+  return lada + numero;
+}
+
+function updateNumeroPreview() {
+  const preview = document.getElementById('wa_numero_preview');
+  if (!preview) return;
+  const completo = getNumeroCompleto();
+  const numero = document.getElementById('wa_numero').value.trim();
+  if (numero) {
+    preview.textContent = 'Número completo: ' + completo;
+    preview.style.color = 'var(--electric)';
+  } else {
+    preview.textContent = '';
+  }
+}
+
+// Eventos para preview — se inicializan cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+  const ladaEl = document.getElementById('wa_lada');
+  const numEl = document.getElementById('wa_numero');
+  if (ladaEl) ladaEl.addEventListener('change', updateNumeroPreview);
+  if (numEl) numEl.addEventListener('input', updateNumeroPreview);
+});
+
+// PASS TOGGLE
+function togglePass(id, el) {
+  const input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+  el.textContent = input.type === 'password' ? 'MOSTRAR' : 'OCULTAR';
+}
+
+// VALIDATION
+function validateStep(step) {
+  let valid = true;
+
+  const hide = id => { const el = document.getElementById(id); if(el) el.classList.remove('show'); };
+  const show = id => { const el = document.getElementById(id); if(el) el.classList.add('show'); };
+
+  if (step === 1) {
+    const nombre = document.getElementById('titular_nombre').value.trim();
+    const tel = document.getElementById('titular_tel').value.trim();
+    const email = document.getElementById('titular_email').value.trim();
+    const pass = document.getElementById('titular_pass').value;
+    const passConf = document.getElementById('titular_pass_conf').value;
+    const terms = document.getElementById('terms').checked;
+
+    if (!nombre) { show('err_titular_nombre'); valid = false; } else hide('err_titular_nombre');
+    if (!tel) { show('err_titular_tel'); valid = false; } else hide('err_titular_tel');
+    if (!email) { show('err_titular_email'); valid = false; } else hide('err_titular_email');
+    if (pass.length < 8) { show('err_titular_pass'); valid = false; } else hide('err_titular_pass');
+    if (pass !== passConf) { show('err_titular_pass_conf'); valid = false; } else hide('err_titular_pass_conf');
+    if (!terms) { show('err_terms'); valid = false; } else hide('err_terms');
+  }
+
+  if (step === 2) {
+    const nombre = document.getElementById('negocio_nombre').value.trim();
+    const dir = document.getElementById('negocio_dir').value.trim();
+    const tel = document.getElementById('negocio_tel').value.trim();
+    if (!nombre) { show('err_negocio_nombre'); valid = false; } else hide('err_negocio_nombre');
+    if (!dir) { show('err_negocio_dir'); valid = false; } else hide('err_negocio_dir');
+    if (!tel) { show('err_negocio_tel'); valid = false; } else hide('err_negocio_tel');
+  }
+
+  return valid;
+}
+
+// SUMMARY
+function buildSummary() {
+  const horarios = getHorarios();
+  const servicios = getServicios();
+  const waNum = waOption === 'propio' ? (getNumeroCompleto() || 'No especificado') : 'Por asignar';
+
+  document.getElementById('summaryContent').innerHTML = `
+    <div class="summary-section">
+      <div class="summary-sec-title">Titular</div>
+      <div class="summary-row"><span class="summary-key">Nombre</span><span class="summary-val">${document.getElementById('titular_nombre').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Teléfono</span><span class="summary-val">${document.getElementById('titular_tel').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Correo</span><span class="summary-val">${document.getElementById('titular_email').value}</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Negocio</div>
+      <div class="summary-row"><span class="summary-key">Nombre</span><span class="summary-val">${document.getElementById('negocio_nombre').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Giro</span><span class="summary-val">${document.getElementById('negocio_giro').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Dirección</span><span class="summary-val">${document.getElementById('negocio_dir').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Teléfono</span><span class="summary-val">${document.getElementById('negocio_tel').value}</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Servicios (${servicios.length})</div>
+      ${servicios.map(s => `
+        <div class="summary-service-item">
+          <span class="summary-service-name">${s.nombre || 'Sin nombre'}</span>
+          <span class="summary-service-detail">$${s.precio || 0} · ${s.duracion || 0} min</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Horarios</div>
+      ${horarios.map(h => `
+        <div class="summary-horario-row ${h.activo ? '' : 'off'}">
+          <span>${h.dia}</span>
+          <span>${h.activo ? `${h.inicio} – ${h.fin}` : 'Cerrado'}</span>
+        </div>
+      `).join('')}
+      <div class="summary-row" style="margin-top:10px"><span class="summary-key">Mismo día</span><span class="summary-val">${document.getElementById('mismo_dia').checked ? 'Sí' : 'No'}</span></div>
+      <div class="summary-row"><span class="summary-key">Anticipación mín.</span><span class="summary-val">${document.getElementById('anticipacion').value}</span></div>
+      <div class="summary-row"><span class="summary-key">Tolerancia</span><span class="summary-val">${document.getElementById('tolerancia').value} min</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">Identidad del Asistente</div>
+      <div class="summary-row"><span class="summary-key">Actitud</span><span class="summary-val">${document.getElementById('asistente_actitud').value || 'No especificada'}</span></div>
+      <div class="summary-row"><span class="summary-key">Emojis</span><span class="summary-val">${selectedEmojis.length > 0 ? selectedEmojis.join(' ') : 'Ninguno seleccionado'}</span></div>
+    </div>
+
+    <div class="summary-section">
+      <div class="summary-sec-title">WhatsApp</div>
+      <div class="summary-row"><span class="summary-key">Opción</span><span class="summary-val">${waOption === 'propio' ? 'Número propio' : waOption === 'asignado' ? 'Número asignado' : 'No seleccionado'}</span></div>
+      <div class="summary-row"><span class="summary-key">Número</span><span class="summary-val">${waNum}</span></div>
+    </div>
+  `;
+}
+
+// SEND
+async function enviarOnboarding() {
+  const btn = document.getElementById('btnNext');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  const payload = {
+    titular_nombre: document.getElementById('titular_nombre').value,
+    titular_telefono: document.getElementById('titular_tel').value,
+    titular_email: document.getElementById('titular_email').value,
+    plan: 'basico',
+    negocio_nombre: document.getElementById('negocio_nombre').value,
+    giro: document.getElementById('negocio_giro').value,
+    direccion: document.getElementById('negocio_dir').value,
+    telefono_negocio: document.getElementById('negocio_tel').value,
+    servicios: getServicios(),
+    horarios: getHorarios(),
+    mismo_dia: document.getElementById('mismo_dia').checked,
+    anticipacion: document.getElementById('anticipacion').value,
+    tolerancia: document.getElementById('tolerancia').value,
+    personalidad: document.getElementById('asistente_actitud').value,
+    emojis: selectedEmojis,
+    wa_opcion: waOption,
+    numero_whatsapp: waOption === 'propio' ? getNumeroCompleto() : 'por_asignar'
+  };
+
+  try {
+    const res = await fetch('https://n8n.srv1546051.hstgr.cloud/webhook/onboarding', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.querySelector('.wizard-card').innerHTML = `
+        <div style="padding:60px 36px;text-align:center">
+          <div style="font-size:56px;margin-bottom:20px">🎉</div>
+          <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:12px">¡Registro exitoso!</div>
+          <p style="color:var(--text-light);font-size:15px;max-width:360px;margin:0 auto;line-height:1.6">Tu bot está siendo configurado. Te avisamos por correo en menos de <strong>24 horas</strong>.</p>
+        </div>
+      `;
+      document.getElementById('stepper').style.display = 'none';
+    } else {
+      alert('Hubo un problema. Intenta de nuevo.');
+      btn.textContent = 'Confirmar y enviar';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('Error de conexión. Verifica tu internet e intenta de nuevo.');
+    btn.textContent = 'Confirmar y enviar';
+    btn.disabled = false;
+  }
+}
+
+// STEPPER UPDATE
+function updateStepper(step) {
+  document.querySelectorAll('.step-item').forEach((el, i) => {
+    el.classList.remove('active', 'done');
+    const circle = el.querySelector('.step-circle');
+    if (i + 1 < step) {
+      el.classList.add('done');
+      circle.innerHTML = '✓';
+    } else if (i + 1 === step) {
+      el.classList.add('active');
+      circle.textContent = i + 1;
+    } else {
+      circle.textContent = i + 1;
+    }
+  });
+}
+
+// NAVIGATION
+function changeStep(n) {
+  if (n === 1 && !validateStep(currentStep)) return;
+
+  if (currentStep + n > totalSteps) {
+    enviarOnboarding();
+    return;
+  }
+
+  document.getElementById(`step${currentStep}`).classList.remove('active');
+  currentStep += n;
+  document.getElementById(`step${currentStep}`).classList.add('active');
+
+  document.getElementById('btnPrev').style.display = currentStep === 1 ? 'none' : 'block';
+  document.getElementById('btnNext').textContent = currentStep === totalSteps ? 'Confirmar y enviar ✓' : 'Siguiente →';
+
+  updateStepper(currentStep);
+  if (currentStep === 6) buildSummary();
+
+  // Scroll to top of card
+  document.querySelector('.wizard-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// INIT
+buildHorarios();
+renderEmojis();
+updateStepper(1);
+</script>
+</body>
+</html>
