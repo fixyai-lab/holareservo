@@ -3,32 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reservo — Presentación Javeli Beauty Salon</title>
+<title id="page-title">Reservo — Presentación</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #D4A0B9;
-    --gold-light: #F2D5E3;
-    --black: #1A0F14;
-    --dark: #231519;
-    --dark2: #2D1B21;
-    --white: #FFF5F9;
-    --gray: #9B8A90;
-    --green-wa: #25D366;
-  
-    /* nuevas — derivadas de los colores base */
-    --gold-10: rgba(212,160,185,0.1);
-    --gold-20: rgba(212,160,185,0.2);
-    --gold-30: rgba(212,160,185,0.3);
-    --gold-05: rgba(212,160,185,0.05);
-    --gold-08: rgba(212,160,185,0.08);
-    --gold-12: rgba(212,160,185,0.12);
-    --black-90: rgba(26,15,20,0.9);
-    --white-06: rgba(255,255,255,0.06);
-  }
+  /* ══════════════════════════════════════════════════════════════
+     PALETA DE COLORES — LÍNEAS 14-43
+     Para cambiar paleta: reemplazar solo este bloque :root
+     Paletas predefinidas por giro al final del archivo (en JS)
+     ══════════════════════════════════════════════════════════════ */
+:root {
+  /* Acento principal */
+  --gold: #5DB89C;
+  --gold-light: #A3DBC8;
+  --gold-05: rgba(93,184,156,0.05);
+  --gold-08: rgba(93,184,156,0.08);
+  --gold-10: rgba(93,184,156,0.1);
+  --gold-12: rgba(93,184,156,0.12);
+  --gold-20: rgba(93,184,156,0.2);
+  --gold-30: rgba(93,184,156,0.3);
+  /* Fondos */
+  --black: #0C1614;
+  --black-90: rgba(12,22,20,0.9);
+  --dark: #121E1A;
+  --dark2: #1A2824;
+  /* Textos */
+  --white: #F2FAF6;
+  --white-06: rgba(255,255,255,0.06);
+  --gray: #7A938A;
+  --text-muted: #94ADA2;
+  --text-light: #B4CCC2;
+  /* WhatsApp mockup */
+  --wa-bg: #ECE5DD;
+  --wa-header: #075E54;
+  --wa-user-msg: #DCF8C6;
+  --wa-bot-msg: #FFFFFF;
+  --wa-msg-text: #111111;
+  --wa-time: #888888;
+  /* Otros */
+  --green-wa: #25D366;
+  --shadow-color: rgba(0,0,0,0.6);
+}
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -55,7 +71,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.12) 0%, transparent 70%);
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, var(--gold-12) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -87,7 +103,7 @@
   .hero-sub {
     font-size: clamp(16px, 2.5vw, 22px);
     font-weight: 300;
-    color: #AAAAAA;
+    color: var(--text-muted);
     max-width: 600px;
     line-height: 1.6;
     margin-bottom: 56px;
@@ -145,13 +161,7 @@
     animation: scrollPulse 2s ease infinite;
   }
 
-  /* ── PROBLEMA ── */
-  .section {
-    padding: 120px 40px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
+  /* ── SECCIONES ── */
   .section-label {
     font-size: 11px;
     letter-spacing: 4px;
@@ -160,7 +170,7 @@
     margin-bottom: 24px;
   }
 
-  .section h2 {
+  .section-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(36px, 5vw, 64px);
     font-weight: 700;
@@ -168,15 +178,15 @@
     margin-bottom: 32px;
   }
 
-  .section h2 em {
+  .section-title em {
     font-style: italic;
     color: var(--gold);
   }
 
-  .section p {
+  .section-desc {
     font-size: 18px;
     font-weight: 300;
-    color: #AAAAAA;
+    color: var(--text-muted);
     line-height: 1.7;
     max-width: 680px;
   }
@@ -210,7 +220,7 @@
   .stat-label {
     font-size: 14px;
     font-weight: 300;
-    color: #888;
+    color: var(--gray);
     line-height: 1.5;
   }
 
@@ -247,23 +257,23 @@
   .demo-text p {
     font-size: 16px;
     font-weight: 300;
-    color: #888;
+    color: var(--gray);
     line-height: 1.7;
     margin-bottom: 16px;
   }
 
   /* WhatsApp mockup */
   .wa-phone {
-    background: #ECE5DD;
+    background: var(--wa-bg);
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    box-shadow: 0 40px 80px var(--shadow-color);
     max-width: 360px;
     margin: 0 auto;
   }
 
   .wa-header {
-    background: #075E54;
+    background: var(--wa-header);
     padding: 16px 20px;
     display: flex;
     align-items: center;
@@ -288,7 +298,7 @@
   .wa-name {
     font-size: 15px;
     font-weight: 500;
-    color: white;
+    color: var(--white);
   }
 
   .wa-status {
@@ -301,10 +311,8 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    min-height: 400px;
     height: 400px;
     overflow-y: auto;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
   .msg {
@@ -319,15 +327,15 @@
   }
 
   .msg.user {
-    background: #DCF8C6;
-    color: #111;
+    background: var(--wa-user-msg);
+    color: var(--wa-msg-text);
     align-self: flex-end;
     border-bottom-right-radius: 4px;
   }
 
   .msg.bot {
-    background: white;
-    color: #111;
+    background: var(--wa-bot-msg);
+    color: var(--wa-msg-text);
     align-self: flex-start;
     border-bottom-left-radius: 4px;
   }
@@ -338,7 +346,7 @@
 
   .msg-time {
     font-size: 11px;
-    color: #888;
+    color: var(--wa-time);
     text-align: right;
     margin-top: 4px;
   }
@@ -378,7 +386,7 @@
   }
 
   .feature-card:hover::before { height: 100%; }
-  .feature-card:hover { background: #161616; }
+  .feature-card:hover { background: var(--dark2); }
 
   .feature-icon {
     font-size: 32px;
@@ -396,7 +404,7 @@
   .feature-desc {
     font-size: 15px;
     font-weight: 300;
-    color: #888;
+    color: var(--gray);
     line-height: 1.7;
   }
 
@@ -413,11 +421,11 @@
   }
 
   .precio-card {
-    border: 1px solid rgba(201,168,76,0.3);
+    border: 1px solid var(--gold-30);
     padding: 64px 56px;
     margin-top: 64px;
     position: relative;
-    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    background: linear-gradient(135deg, var(--gold-05) 0%, transparent 60%);
   }
 
   .precio-badge {
@@ -473,9 +481,9 @@
     align-items: flex-start;
     gap: 16px;
     padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--white-06);
     font-size: 15px;
-    color: #CCCCCC;
+    color: var(--text-light);
     font-weight: 300;
   }
 
@@ -505,7 +513,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, var(--gold-08) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -553,19 +561,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(26,15,20,0.9);
+    background: var(--black-90);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--white-06);
   }
 
   .navbar-tag {
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--gold);
-      text-transform: uppercase;
-      background: rgba(212,160,185,0.1);   /* rosa elegante al 10% */
-      border: 1px solid rgba(212,160,185,0.2); /* rosa elegante al 20% */
-      padding: 6px 16px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    background: var(--gold-10);
+    border: 1px solid var(--gold-20);
+    padding: 6px 16px;
   }
 
   /* ── DIVIDER ── */
@@ -574,6 +582,13 @@
     height: 1px;
     background: var(--gold);
     margin: 48px auto;
+  }
+
+  .footer-credit {
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
   }
 
   /* ── ANIMATIONS ── */
@@ -592,7 +607,6 @@
     50% { opacity: 0.3; }
   }
 
-  /* Scroll reveal */
   .reveal {
     opacity: 0;
     transform: translateY(32px);
@@ -610,7 +624,6 @@
     .demo-inner { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .navbar { padding: 20px 24px; }
-    .section { padding: 80px 24px; }
     .demo-section { padding: 80px 24px; }
     .precio-section { padding: 80px 24px; }
     .cta-section { padding: 100px 24px; }
@@ -622,14 +635,14 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">Reserv<span>●</span></div>
-  <div class="navbar-tag">Presentación Exclusiva · Javeli</div>
+  <div class="navbar-tag" id="navbar-tag"></div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <p class="hero-tag">El futuro de tu salón</p>
-  <h1>Tu agenda llena,<br>aunque no <em>contestes.</em></h1>
-  <p class="hero-sub">Reservo responde por ti en WhatsApp las 24 horas. Agenda citas, confirma, cancela y reprograma — sin que tú muevas un dedo.</p>
+  <p class="hero-tag" id="hero-tag"></p>
+  <h1 id="hero-title"></h1>
+  <p class="hero-sub" id="hero-sub"></p>
   <div class="hero-cta">
     <a href="#demo" class="btn-gold">Ver cómo funciona</a>
   </div>
@@ -642,23 +655,23 @@
 <!-- PROBLEMA -->
 <section style="padding: 120px 40px; max-width: 1100px; margin: 0 auto;">
   <div class="reveal">
-    <p class="section-label">El problema que conoces</p>
-    <h2>Cada mensaje sin contestar<br>es una cita que <em>se fue.</em></h2>
-    <p>Estás en medio de un servicio, con las manos ocupadas, y tu teléfono no para. Clientas esperando respuesta. Citas que se pierden. Horas que se van sin llenarse. Todo por no poder contestar a tiempo.</p>
+    <p class="section-label" id="problema-label"></p>
+    <h2 class="section-title" id="problema-title"></h2>
+    <p class="section-desc" id="problema-desc"></p>
   </div>
 
   <div class="stat-grid reveal" style="margin-top: 80px;">
     <div class="stat-card">
-      <div class="stat-number">73%</div>
-      <div class="stat-label">de las clientas no regresan si no reciben respuesta en menos de 1 hora</div>
+      <div class="stat-number" id="stat1-number"></div>
+      <div class="stat-label" id="stat1-label"></div>
     </div>
     <div class="stat-card">
-      <div class="stat-number">24/7</div>
-      <div class="stat-label">Reservo trabaja por ti incluso mientras duermes o atiendes a otra clienta</div>
+      <div class="stat-number" id="stat2-number"></div>
+      <div class="stat-label" id="stat2-label"></div>
     </div>
     <div class="stat-card">
-      <div class="stat-number">&lt;30 seg</div>
-      <div class="stat-label">Tiempo de respuesta promedio de Reservo ante cada mensaje recibido</div>
+      <div class="stat-number" id="stat3-number"></div>
+      <div class="stat-label" id="stat3-label"></div>
     </div>
   </div>
 </section>
@@ -668,23 +681,21 @@
   <div class="demo-inner">
     <div class="demo-text reveal">
       <p class="section-label">En acción</p>
-      <h2>Una conversación <em>real,</em><br>sin que tú escribas nada.</h2>
-      <p>Reservo entiende lo que tu clienta quiere — fecha, hora, servicio — y lo agenda directamente en tu calendario de Google. Sin menús. Sin botones. Como si fuera tu mejor recepcionista.</p>
-      <p>Y cuando algo está ocupado, busca alternativas. Cuando quieren cancelar, confirma. Todo automático.</p>
+      <h2 id="demo-title"></h2>
+      <p id="demo-desc1"></p>
+      <p id="demo-desc2"></p>
     </div>
 
     <div class="reveal">
       <div class="wa-phone">
         <div class="wa-header">
-          <div class="wa-avatar">J</div>
+          <div class="wa-avatar" id="wa-avatar"></div>
           <div>
-            <div class="wa-name">Javeli Beauty Salon</div>
+            <div class="wa-name" id="wa-name"></div>
             <div class="wa-status">en línea</div>
           </div>
         </div>
-        <div class="wa-body" id="chat">
-          <!-- mensajes se insertan por JS -->
-        </div>
+        <div class="wa-body" id="chat"></div>
       </div>
     </div>
   </div>
@@ -693,32 +704,10 @@
 <!-- FEATURES -->
 <section class="features-section">
   <div class="reveal">
-    <p class="section-label">Lo que Reservo hace por ti</p>
-    <h2>Todo lo que necesita<br>tu salón, <em>automatizado.</em></h2>
+    <p class="section-label" id="features-label"></p>
+    <h2 class="section-title" id="features-title"></h2>
   </div>
-
-  <div class="features-grid reveal">
-    <div class="feature-card">
-      <div class="feature-icon">📅</div>
-      <div class="feature-title">Agenda inteligente</div>
-      <div class="feature-desc">Reservo consulta tu Google Calendar en tiempo real y solo ofrece horarios disponibles. Sin dobles reservas. Sin errores.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">❌</div>
-      <div class="feature-title">Cancelaciones sin drama</div>
-      <div class="feature-desc">Cuando una clienta cancela, Reservo lo gestiona, libera el espacio y te notifica. Tu agenda siempre actualizada.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔄</div>
-      <div class="feature-title">Reprogramaciones automáticas</div>
-      <div class="feature-desc">¿La clienta quiere cambiar su cita? Reservo cancela la anterior y agenda la nueva. Todo en una conversación.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">💬</div>
-      <div class="feature-title">Responde como tú</div>
-      <div class="feature-desc">Entrenado con el tono y estilo de Javeli. Tus clientas sentirán que hablan con una recepcionista real, no con un robot.</div>
-    </div>
-  </div>
+  <div class="features-grid reveal" id="features-grid"></div>
 </section>
 
 <!-- PRECIO -->
@@ -726,26 +715,17 @@
   <div class="precio-inner">
     <div class="reveal">
       <p class="section-label">Inversión</p>
-      <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 56px); font-weight: 700; line-height: 1.1; margin-bottom: 16px;">Un precio justo por una<br>recepcionista <em>sin descanso.</em></h2>
+      <h2 class="section-title" id="precio-title"></h2>
     </div>
 
     <div class="precio-card reveal">
-      <div class="precio-badge">Plan Básico · Javeli</div>
+      <div class="precio-badge" id="precio-badge"></div>
       <div class="precio-plan">Mensualidad</div>
-      <div class="precio-amount"><sup>$</sup>990</div>
-      <div class="precio-period">MXN / mes · sin permanencia</div>
-
-      <ul class="precio-features">
-        <li>Respuesta automática 24/7 en WhatsApp</li>
-        <li>Agendamiento, cancelación y reprogramación</li>
-        <li>Integración con Google Calendar</li>
-        <li>Consulta de disponibilidad en tiempo real</li>
-        <li>Información de servicios y precios</li>
-        <li>Soporte y mejoras continuas</li>
-      </ul>
-
-      <a href="#activar" class="btn-gold" style="display: block; text-align: center; text-decoration: none;">Activar Reservo para Javeli</a>
-      <p class="setup-note">+ $2,500 MXN pago único de configuración inicial</p>
+      <div class="precio-amount" id="precio-amount"></div>
+      <div class="precio-period" id="precio-period"></div>
+      <ul class="precio-features" id="precio-features-list"></ul>
+      <a href="#activar" class="btn-gold" style="display: block; text-align: center; text-decoration: none;" id="precio-cta"></a>
+      <p class="setup-note" id="setup-note"></p>
     </div>
   </div>
 </section>
@@ -753,69 +733,333 @@
 <!-- CTA FINAL -->
 <section class="cta-section" id="activar">
   <div class="reveal">
-    <h2>Esta noche, Reservo ya<br>podría estar <em>llenando</em><br>tu agenda.</h2>
-    <p>Sin contratos. Sin complicaciones. Solo más citas.</p>
-    <a href="https://wa.me/528117633984" class="btn-gold">Quiero empezar hoy</a>
+    <h2 id="cta-title"></h2>
+    <p id="cta-sub"></p>
+    <a href="" class="btn-gold" id="cta-btn"></a>
     <div class="divider" style="margin-top: 64px;"></div>
-    <p style="font-size: 13px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase;">Reservo by Fixy IT · México</p>
+    <p class="footer-credit">Reservo by Fixy IT · México</p>
   </div>
 </section>
 
 <script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 100);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+// ══════════════════════════════════════════════════════════════
+// CONFIGURACIÓN DEL NEGOCIO — LÍNEAS 500-620 approx.
+//
+// Para personalizar para otro cliente:
+//   1. Cambiar los datos en este objeto NEGOCIO
+//   2. Cambiar la paleta :root en el CSS (líneas 14-43)
+//   3. Listo — todo lo demás se renderiza automáticamente
+//
+// ══════════════════════════════════════════════════════════════
+const NEGOCIO = {
 
-  // WhatsApp chat animation
-  const messages = [
+  // ── IDENTIDAD (cambiar por cada cliente) ──
+  nombre: 'Javeli Beauty Salon',     // Nombre completo del negocio
+  nombreCorto: 'Javeli',             // Nombre corto para badges y CTAs
+  inicial: 'J',                      // Inicial para el avatar de WhatsApp
+  giro: 'salón',                     // Tipo: salón, barbería, pastelería, veterinaria, spa, restaurante
+  giroPlural: 'salones de belleza',  // Para textos descriptivos
+  dueno: 'Alejandra',                // Nombre del dueño/a
+
+  // ── CONTACTO ──
+  whatsapp: '528117633984',           // Número de WhatsApp sin + ni espacios
+
+  // ── PRECIOS ──
+  precioMensual: '990',              // Precio mensual sin símbolo
+  precioPeriodo: 'MXN / mes · sin plazos forzosos',
+  precioSetup: '2,500',              // Precio de setup sin símbolo
+  plan: 'Plan Básico',               // Nombre del plan
+
+  // ── SERVICIOS INCLUIDOS EN EL PLAN ──
+  serviciosPlan: [
+    'Respuesta automática 24/7 en WhatsApp',
+    'Agendamiento, cancelación y reprogramación',
+    'Integración con Google Calendar',
+    'Consulta de disponibilidad en tiempo real',
+    'Información de servicios y precios de tu negocio',
+    'Soporte y mejoras continuas'
+  ],
+
+  // ── FEATURES DEL NEGOCIO ──
+  // desc: null = se genera automáticamente con nombreCorto
+  features: [
+    { icon: '📅', titulo: 'Agenda inteligente', desc: 'Reservo consulta tu Google Calendar en tiempo real y solo ofrece horarios disponibles. Sin dobles reservas. Sin errores.' },
+    { icon: '❌', titulo: 'Cancelaciones sin drama', desc: 'Cuando una clienta cancela, Reservo lo gestiona, libera el espacio y te notifica. Tu agenda siempre actualizada.' },
+    { icon: '🔄', titulo: 'Reprogramaciones automáticas', desc: '¿La clienta quiere cambiar su cita? Reservo cancela la anterior y agenda la nueva. Todo en una conversación.' },
+    { icon: '💬', titulo: 'Responde como tú', desc: null }
+  ],
+
+  // ── CHAT DEMO — conversación simulada ──
+  chatDemo: [
     { type: 'user', text: 'Hola, quiero agendar una keratina 💅', time: '10:23' },
-    { type: 'bot', text: '¡Hola! Con gusto te ayudo 😊 ¿Qué día y hora te viene mejor?', time: '10:23' },
+    { type: 'bot',  text: '¡Hola! Con gusto te ayudo 😊 ¿Qué día y hora te viene mejor?', time: '10:23' },
     { type: 'user', text: 'El viernes a las 3pm', time: '10:24' },
-    { type: 'bot', text: '✅ Perfecto. Tenemos disponibilidad el *Viernes 8 de mayo a las 15:00* para Keratina.\n\n¿A nombre de quién agendo?', time: '10:24' },
+    { type: 'bot',  text: '✅ Perfecto. Tenemos disponibilidad el *Viernes 8 de mayo a las 15:00* para Keratina.\n\n¿A nombre de quién agendo?', time: '10:24' },
     { type: 'user', text: 'A nombre de Carmen', time: '10:25' },
-    { type: 'bot', text: '¡Listo Carmen! 🌸\n✨ *Cita confirmada*\n📅 Viernes 8 de mayo\n⏰ 15:00 hrs\n💆 Keratina\n\n¡Te esperamos en Javeli!', time: '10:25' },
-  ];
+    { type: 'bot',  text: '¡Listo Carmen! 🌸\n✨ *Cita confirmada*\n📅 Viernes 8 de mayo\n⏰ 15:00 hrs\n💆 Keratina\n\n¡Te esperamos!', time: '10:25' },
+  ],
 
-  const chat = document.getElementById('chat');
-  let index = 0;
+  // ── TEXTOS POR SECCIÓN ──
+  // Usa null para que se genere automáticamente con el nombre/giro del negocio
+  textos: {
+    heroTag: null,          // default: "El futuro de tu {giro}"
+    heroTitle: 'Tu agenda llena,<br>aunque no <em>contestes.</em>',
+    heroSub: 'Reservo responde por ti en WhatsApp las 24 horas. Agenda citas, confirma, cancela y reprograma — sin que tú muevas un dedo.',
 
-  function addMessage() {
-    if (index >= messages.length) {
-      setTimeout(() => {
-        chat.innerHTML = '';
-        index = 0;
-        setTimeout(addMessage, 800);
-      }, 3000);
-      return;
-    }
-    const msg = messages[index];
-    const div = document.createElement('div');
-    div.className = `msg ${msg.type}`;
-    div.innerHTML = msg.text.replace(/\n/g, '<br>').replace(/\*(.*?)\*/g, '<strong>$1</strong>');
-    div.innerHTML += `<div class="msg-time">${msg.time}</div>`;
-    chat.appendChild(div);
-    setTimeout(() => div.classList.add('visible'), 50);
-    chat.scrollTop = chat.scrollHeight;
-    index++;
-    setTimeout(addMessage, 1200);
+    problemaLabel: 'El problema que conoces',
+    problemaTitle: 'Cada mensaje sin contestar<br>es una cita que <em>se fue.</em>',
+    problemaDesc: null,     // default: genera texto con contexto del giro
+
+    stat1Number: '73%',
+    stat1Label: null,       // default: "de los clientes no regresan si no reciben respuesta en menos de 1 hora"
+    stat2Number: '24/7',
+    stat2Label: null,       // default: "Reservo trabaja por ti incluso mientras duermes o atiendes"
+    stat3Number: '<30 seg',
+    stat3Label: 'Tiempo de respuesta promedio de Reservo ante cada mensaje recibido',
+
+    demoTitle: 'Una conversación <em>real,</em><br>sin que tú escribas nada.',
+    demoDesc1: null,        // default: genera con contexto
+    demoDesc2: 'Y cuando un horario no está disponible, busca alternativas. Cuando quieren cancelar, confirma. Todo automático.',
+
+    featuresLabel: null,    // default: "Lo que Reservo hace por ti"
+    featuresTitle: null,    // default: "Todo lo que necesita tu {giro}, automatizado."
+
+    precioTitle: 'Un precio justo por una<br>recepcionista <em>sin descanso.</em>',
+
+    ctaTitle: 'Esta noche, Reservo ya<br>podría estar <em>llenando</em><br>tu agenda.',
+    ctaSub: 'Sin contratos. Sin complicaciones. Solo más citas.',
+    ctaBtn: 'Quiero empezar hoy'
   }
+};
 
-  // Start chat when in view
-  const chatObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      setTimeout(addMessage, 500);
-      chatObserver.disconnect();
+// ══════════════════════════════════════════════════════════════
+// MOTOR DE RENDERIZADO — No tocar a menos que cambies estructura
+// ══════════════════════════════════════════════════════════════
+const N = NEGOCIO;
+
+// Género del giro para textos naturales
+const giroFemenino = ['barbería', 'pastelería', 'veterinaria', 'cafetería'].includes(N.giro) ? false :
+                     ['salón', 'spa', 'restaurante'].includes(N.giro) ? false : false;
+const clienteGenero = ['salón', 'spa'].includes(N.giro) ? 'clientas' : 'clientes';
+
+// Textos automáticos según giro/nombre
+if (!N.textos.heroTag) N.textos.heroTag = `El futuro de tu ${N.giro}`;
+if (!N.textos.problemaDesc) N.textos.problemaDesc = `Estás en medio de un servicio, con las manos ocupadas, y tu teléfono no para. ${clienteGenero.charAt(0).toUpperCase() + clienteGenero.slice(1)} esperando respuesta. Citas que se pierden. Horas que se van sin llenarse. Todo por no poder contestar a tiempo.`;
+if (!N.textos.stat1Label) N.textos.stat1Label = `de los ${clienteGenero} no regresan si no reciben respuesta en menos de 1 hora`;
+if (!N.textos.stat2Label) N.textos.stat2Label = `Reservo trabaja por ti incluso mientras duermes o atiendes a otra persona`;
+if (!N.textos.demoDesc1) N.textos.demoDesc1 = `Reservo entiende lo que tu cliente quiere — fecha, hora, servicio — y lo agenda directamente en tu calendario de Google. Sin menús. Sin botones. Como si fuera tu mejor recepcionista.`;
+if (!N.textos.featuresLabel) N.textos.featuresLabel = `Lo que Reservo hace por ti`;
+if (!N.textos.featuresTitle) N.textos.featuresTitle = `Todo lo que necesita<br>tu ${N.giro}, <em>automatizado.</em>`;
+
+// Feature "Responde como tú" — desc dinámica
+const featureResponde = N.features.find(f => !f.desc);
+if (featureResponde) {
+  featureResponde.desc = `Entrenado con el tono y estilo de ${N.nombreCorto}. Tus ${clienteGenero} sentirán que hablan con una recepcionista real, no con un robot.`;
+}
+
+// ── RENDERIZAR ──
+document.getElementById('page-title').textContent = `Reservo — Presentación ${N.nombreCorto}`;
+document.getElementById('navbar-tag').textContent = `Presentación Exclusiva · ${N.nombreCorto}`;
+document.getElementById('hero-tag').textContent = N.textos.heroTag;
+document.getElementById('hero-title').innerHTML = N.textos.heroTitle;
+document.getElementById('hero-sub').textContent = N.textos.heroSub;
+document.getElementById('problema-label').textContent = N.textos.problemaLabel;
+document.getElementById('problema-title').innerHTML = N.textos.problemaTitle;
+document.getElementById('problema-desc').textContent = N.textos.problemaDesc;
+document.getElementById('stat1-number').innerHTML = N.textos.stat1Number;
+document.getElementById('stat1-label').textContent = N.textos.stat1Label;
+document.getElementById('stat2-number').textContent = N.textos.stat2Number;
+document.getElementById('stat2-label').textContent = N.textos.stat2Label;
+document.getElementById('stat3-number').innerHTML = N.textos.stat3Number;
+document.getElementById('stat3-label').textContent = N.textos.stat3Label;
+document.getElementById('demo-title').innerHTML = N.textos.demoTitle;
+document.getElementById('demo-desc1').textContent = N.textos.demoDesc1;
+document.getElementById('demo-desc2').textContent = N.textos.demoDesc2;
+document.getElementById('wa-avatar').textContent = N.inicial;
+document.getElementById('wa-name').textContent = N.nombre;
+document.getElementById('features-label').textContent = N.textos.featuresLabel;
+document.getElementById('features-title').innerHTML = N.textos.featuresTitle;
+document.getElementById('precio-title').innerHTML = N.textos.precioTitle;
+document.getElementById('precio-badge').textContent = `${N.plan} · ${N.nombreCorto}`;
+document.getElementById('precio-amount').innerHTML = `<sup>$</sup>${N.precioMensual}`;
+document.getElementById('precio-period').textContent = N.precioPeriodo;
+document.getElementById('precio-cta').textContent = `Activar Reservo para ${N.nombreCorto}`;
+document.getElementById('setup-note').textContent = `+ $${N.precioSetup} MXN pago único de configuración inicial`;
+document.getElementById('cta-title').innerHTML = N.textos.ctaTitle;
+document.getElementById('cta-sub').textContent = N.textos.ctaSub;
+const ctaBtn = document.getElementById('cta-btn');
+ctaBtn.textContent = N.textos.ctaBtn;
+ctaBtn.href = `https://wa.me/${N.whatsapp}`;
+
+// Features grid
+const featuresGrid = document.getElementById('features-grid');
+N.features.forEach(f => {
+  const card = document.createElement('div');
+  card.className = 'feature-card';
+  card.innerHTML = `
+    <div class="feature-icon">${f.icon}</div>
+    <div class="feature-title">${f.titulo}</div>
+    <div class="feature-desc">${f.desc}</div>
+  `;
+  featuresGrid.appendChild(card);
+});
+
+// Precio features list
+const precioList = document.getElementById('precio-features-list');
+N.serviciosPlan.forEach(s => {
+  const li = document.createElement('li');
+  li.textContent = s;
+  precioList.appendChild(li);
+});
+
+// ── Scroll reveal ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      observer.unobserve(entry.target);
     }
-  }, { threshold: 0.3 });
-  chatObserver.observe(document.getElementById('chat'));
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// ── WhatsApp chat animation ──
+const chat = document.getElementById('chat');
+let msgIndex = 0;
+
+function addMessage() {
+  if (msgIndex >= N.chatDemo.length) {
+    setTimeout(() => {
+      chat.innerHTML = '';
+      msgIndex = 0;
+      setTimeout(addMessage, 800);
+    }, 3000);
+    return;
+  }
+  const msg = N.chatDemo[msgIndex];
+  const div = document.createElement('div');
+  div.className = `msg ${msg.type}`;
+  div.innerHTML = msg.text.replace(/\n/g, '<br>').replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+  div.innerHTML += `<div class="msg-time">${msg.time}</div>`;
+  chat.appendChild(div);
+  setTimeout(() => div.classList.add('visible'), 50);
+  chat.scrollTop = chat.scrollHeight;
+  msgIndex++;
+  setTimeout(addMessage, 1200);
+}
+
+const chatObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    setTimeout(addMessage, 500);
+    chatObserver.disconnect();
+  }
+}, { threshold: 0.3 });
+chatObserver.observe(chat);
+
+// ══════════════════════════════════════════════════════════════
+// PALETAS COMPLETAS POR GIRO — Copiar al bloque :root (líneas 14-43)
+// Incluyen TODOS los colores: acento, fondos, textos, WA mockup
+// ══════════════════════════════════════════════════════════════
+/*
+
+── SALÓN DE BELLEZA / UÑAS (actual) ──
+:root {
+  --gold: #D4A0B9; --gold-light: #F2D5E3;
+  --gold-05: rgba(212,160,185,0.05); --gold-08: rgba(212,160,185,0.08);
+  --gold-10: rgba(212,160,185,0.1); --gold-12: rgba(212,160,185,0.12);
+  --gold-20: rgba(212,160,185,0.2); --gold-30: rgba(212,160,185,0.3);
+  --black: #1A0F14; --black-90: rgba(26,15,20,0.9);
+  --dark: #231519; --dark2: #2D1B21;
+  --white: #FFF5F9; --white-06: rgba(255,255,255,0.06);
+  --gray: #9B8A90; --text-muted: #AAAAAA; --text-light: #CCCCCC;
+  --wa-bg: #ECE5DD; --wa-header: #075E54;
+  --wa-user-msg: #DCF8C6; --wa-bot-msg: #FFFFFF;
+  --wa-msg-text: #111111; --wa-time: #888888;
+  --green-wa: #25D366; --shadow-color: rgba(0,0,0,0.6);
+}
+
+── BARBERÍA (masculino, refinado) ──
+:root {
+  --gold: #C8A45C; --gold-light: #E0CC96;
+  --gold-05: rgba(200,164,92,0.05); --gold-08: rgba(200,164,92,0.08);
+  --gold-10: rgba(200,164,92,0.1); --gold-12: rgba(200,164,92,0.12);
+  --gold-20: rgba(200,164,92,0.2); --gold-30: rgba(200,164,92,0.3);
+  --black: #0E1210; --black-90: rgba(14,18,16,0.9);
+  --dark: #161D18; --dark2: #1E2620;
+  --white: #F0EDE6; --white-06: rgba(255,255,255,0.06);
+  --gray: #7A8278; --text-muted: #A0A89E; --text-light: #C0C8BE;
+  --wa-bg: #ECE5DD; --wa-header: #075E54;
+  --wa-user-msg: #DCF8C6; --wa-bot-msg: #FFFFFF;
+  --wa-msg-text: #111111; --wa-time: #888888;
+  --green-wa: #25D366; --shadow-color: rgba(0,0,0,0.6);
+}
+
+── PASTELERÍA / REPOSTERÍA (fiesta, dulce) ──
+:root {
+  --gold: #E8A87C; --gold-light: #FCDCC8;
+  --gold-05: rgba(232,168,124,0.05); --gold-08: rgba(232,168,124,0.08);
+  --gold-10: rgba(232,168,124,0.1); --gold-12: rgba(232,168,124,0.12);
+  --gold-20: rgba(232,168,124,0.2); --gold-30: rgba(232,168,124,0.3);
+  --black: #1C1214; --black-90: rgba(28,18,20,0.9);
+  --dark: #271A1C; --dark2: #322325;
+  --white: #FFF8F2; --white-06: rgba(255,255,255,0.06);
+  --gray: #A08E88; --text-muted: #B8A8A2; --text-light: #D4C4BC;
+  --wa-bg: #ECE5DD; --wa-header: #075E54;
+  --wa-user-msg: #DCF8C6; --wa-bot-msg: #FFFFFF;
+  --wa-msg-text: #111111; --wa-time: #888888;
+  --green-wa: #25D366; --shadow-color: rgba(0,0,0,0.6);
+}
+
+── VETERINARIA / CLÍNICA DE MASCOTAS (verde menta) ──
+:root {
+  --gold: #5DB89C; --gold-light: #A3DBC8;
+  --gold-05: rgba(93,184,156,0.05); --gold-08: rgba(93,184,156,0.08);
+  --gold-10: rgba(93,184,156,0.1); --gold-12: rgba(93,184,156,0.12);
+  --gold-20: rgba(93,184,156,0.2); --gold-30: rgba(93,184,156,0.3);
+  --black: #0C1614; --black-90: rgba(12,22,20,0.9);
+  --dark: #121E1A; --dark2: #1A2824;
+  --white: #F2FAF6; --white-06: rgba(255,255,255,0.06);
+  --gray: #7A938A; --text-muted: #94ADA2; --text-light: #B4CCC2;
+  --wa-bg: #ECE5DD; --wa-header: #075E54;
+  --wa-user-msg: #DCF8C6; --wa-bot-msg: #FFFFFF;
+  --wa-msg-text: #111111; --wa-time: #888888;
+  --green-wa: #25D366; --shadow-color: rgba(0,0,0,0.6);
+}
+
+── SPA / WELLNESS (lavanda) ──
+:root {
+  --gold: #B8A9D4; --gold-light: #DDD3EE;
+  --gold-05: rgba(184,169,212,0.05); --gold-08: rgba(184,169,212,0.08);
+  --gold-10: rgba(184,169,212,0.1); --gold-12: rgba(184,169,212,0.12);
+  --gold-20: rgba(184,169,212,0.2); --gold-30: rgba(184,169,212,0.3);
+  --black: #12101A; --black-90: rgba(18,16,26,0.9);
+  --dark: #1A1722; --dark2: #23202C;
+  --white: #F8F5FC; --white-06: rgba(255,255,255,0.06);
+  --gray: #908A9B; --text-muted: #A8A2B4; --text-light: #C8C2D4;
+  --wa-bg: #ECE5DD; --wa-header: #075E54;
+  --wa-user-msg: #DCF8C6; --wa-bot-msg: #FFFFFF;
+  --wa-msg-text: #111111; --wa-time: #888888;
+  --green-wa: #25D366; --shadow-color: rgba(0,0,0,0.6);
+}
+
+── RESTAURANTE / CAFETERÍA (terracota) ──
+:root {
+  --gold: #D4833E; --gold-light: #E8B88A;
+  --gold-05: rgba(212,131,62,0.05); --gold-08: rgba(212,131,62,0.08);
+  --gold-10: rgba(212,131,62,0.1); --gold-12: rgba(212,131,62,0.12);
+  --gold-20: rgba(212,131,62,0.2); --gold-30: rgba(212,131,62,0.3);
+  --black: #140E0A; --black-90: rgba(20,14,10,0.9);
+  --dark: #1C1410; --dark2: #251C16;
+  --white: #FBF5EE; --white-06: rgba(255,255,255,0.06);
+  --gray: #9A8878; --text-muted: #B4A292; --text-light: #D0BEB0;
+  --wa-bg: #ECE5DD; --wa-header: #075E54;
+  --wa-user-msg: #DCF8C6; --wa-bot-msg: #FFFFFF;
+  --wa-msg-text: #111111; --wa-time: #888888;
+  --green-wa: #25D366; --shadow-color: rgba(0,0,0,0.6);
+}
+
+*/
 </script>
 
 </body>
