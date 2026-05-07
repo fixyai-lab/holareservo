@@ -1013,6 +1013,15 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     if (!wasOpen) item.classList.add('open');
   });
 });
+
+  const chatDemo = [
+  { type: 'user', text: 'Hola, quiero agendar una cita', time: '10:23' },
+  { type: 'bot', text: '¡Hola! Con gusto te ayudo 😊 ¿Qué día y hora te viene mejor?', time: '10:23' },
+  { type: 'user', text: 'El viernes a las 3pm', time: '10:24' },
+  { type: 'bot', text: '✅ Tenemos disponibilidad el *Viernes 16 de mayo a las 15:00*.\n\n¿A nombre de quién agendo?', time: '10:24' },
+  { type: 'user', text: 'Carmen López', time: '10:25' },
+  { type: 'bot', text: '¡Listo Carmen! ✨\n*Cita confirmada*\n📅 Viernes 16 de mayo\n⏰ 15:00 hrs\n\n¡Te esperamos!', time: '10:25' },
+];
 </script>
 
 </body>
