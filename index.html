@@ -1014,14 +1014,39 @@ document.querySelectorAll('.faq-question').forEach(btn => {
   });
 });
 
-  const chatDemo = [
-  { type: 'user', text: 'Hola, quiero agendar una cita', time: '10:23' },
-  { type: 'bot', text: '¡Hola! Con gusto te ayudo 😊 ¿Qué día y hora te viene mejor?', time: '10:23' },
-  { type: 'user', text: 'El viernes a las 3pm', time: '10:24' },
-  { type: 'bot', text: '✅ Tenemos disponibilidad el *Viernes 16 de mayo a las 15:00*.\n\n¿A nombre de quién agendo?', time: '10:24' },
-  { type: 'user', text: 'Carmen López', time: '10:25' },
-  { type: 'bot', text: '¡Listo Carmen! ✨\n*Cita confirmada*\n📅 Viernes 16 de mayo\n⏰ 15:00 hrs\n\n¡Te esperamos!', time: '10:25' },
-];
+// ── WhatsApp chat animation ──
+const chat = document.getElementById('chat');
+let msgIndex = 0;
+
+function addMessage() {
+  if (msgIndex >= N.chatDemo.length) {
+    setTimeout(() => {
+      chat.innerHTML = '';
+      msgIndex = 0;
+      setTimeout(addMessage, 800);
+    }, 3000);
+    return;
+  }
+  const msg = N.chatDemo[msgIndex];
+  const div = document.createElement('div');
+  div.className = `msg ${msg.type}`;
+  div.innerHTML = msg.text.replace(/\n/g, '<br>').replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+  div.innerHTML += `<div class="msg-time">${msg.time}</div>`;
+  chat.appendChild(div);
+  setTimeout(() => div.classList.add('visible'), 50);
+  chat.scrollTop = chat.scrollHeight;
+  msgIndex++;
+  setTimeout(addMessage, 1200);
+}
+
+const chatObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    setTimeout(addMessage, 500);
+    chatObserver.disconnect();
+  }
+}, { threshold: 0.3 });
+chatObserver.observe(chat);
+  
 </script>
 
 </body>
