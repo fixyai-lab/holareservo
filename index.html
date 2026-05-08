@@ -44,7 +44,7 @@
   display: inline-block;
   position: relative;
   vertical-align: middle;
-  margin-top: -0.15em;
+  margin-top: -0.4em;
   overflow: visible;
   min-width: 160px;
   text-align: center;
@@ -393,7 +393,7 @@ function updateCarousel() {
 
   // Calcular alto de un item basado en el font-size del wrapper
   const computedSize = parseFloat(getComputedStyle(wrapper.parentElement).fontSize);
-  const itemH = computedSize * 1.3;
+  const itemH = computedSize * 0.7;
 
   items.forEach((item, i) => {
     const diff = i - currentGiro;
