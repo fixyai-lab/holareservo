@@ -40,11 +40,41 @@
 .section-title em{font-style:italic;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .section-desc{font-size:17px;font-weight:300;color:var(--text-muted);line-height:1.7;max-width:600px}
 .features-header{text-align:center;margin-bottom:64px}.features-header .section-title{max-width:800px;margin:0 auto 20px}
-.giro-carousel-wrapper{display:inline-block;position:relative;height:1.4em;overflow:hidden;vertical-align:bottom;min-width:180px}
-.giro-carousel{display:flex;flex-direction:column;align-items:center;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-.giro-item{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;cursor:pointer;transition:all .4s;white-space:nowrap;line-height:1.4;padding:0 4px;user-select:none}
-.giro-item.active{opacity:1}.giro-item.adjacent{opacity:.25;transform:scale(.85)}.giro-item.hidden{opacity:0;pointer-events:none}
-.giro-item:hover:not(.active){opacity:.6}
+.giro-carousel-wrapper {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+  overflow: hidden;
+  min-width: 160px;
+  text-align: center;
+  height: 1.3em; /* Mismo alto que una línea de texto */
+}
+
+.giro-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.giro-item {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  white-space: nowrap;
+  line-height: 1.3em;
+  height: 1.3em;
+  padding: 0 4px;
+  user-select: none;
+  font-size: inherit; /* Hereda el tamaño del h2 */
+}
+
+.giro-item.active { opacity: 1; }
+.giro-item.adjacent { opacity: 0.2; transform: scale(0.88); }
+.giro-item.hidden { opacity: 0; pointer-events: none; }
+.giro-item:hover:not(.active) { opacity: 0.5; }
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .feature-card{background:var(--bg-card);padding:40px 32px;border-radius:16px;border:1px solid var(--border-light);transition:all .3s;position:relative;overflow:hidden}
 .feature-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gradient);transform:scaleX(0);transition:transform .4s}
@@ -280,22 +310,131 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 
 <script>
 /* ══ CARRUSEL VERTICAL DE GIROS ══ */
-const giros=[
-{name:'estética',color:'var(--color-estetica)'},
-{name:'barbería',color:'var(--color-barberia)'},
-{name:'veterinaria',color:'var(--color-veterinaria)'},
-{name:'pastelería',color:'var(--color-pasteleria)'},
-{name:'clínica',color:'var(--color-clinica)'},
-{name:'spa',color:'var(--color-spa)'},
-{name:'salón de uñas',color:'var(--color-unas)'}
+const giros = [
+  { name: 'estética', color: 'var(--color-estetica)' },
+  { name: 'barbería', color: 'var(--color-barberia)' },
+  { name: 'veterinaria', color: 'var(--color-veterinaria)' },
+  { name: 'pastelería', color: 'var(--color-pasteleria)' },
+  { name: 'clínica', color: 'var(--color-clinica)' },
+  { name: 'spa', color: 'var(--color-spa)' },
+  { name: 'salón de uñas', color: 'var(--color-unas)' }
 ];
-let currentGiro=0,autoRotate;
-const wrapper=document.getElementById('giroWrapper'),carousel=document.getElementById('giroCarousel');
-function buildCarousel(){carousel.innerHTML='';giros.forEach((g,i)=>{const s=document.createElement('span');s.className='giro-item';s.textContent=g.name;s.dataset.index=i;s.addEventListener('click',()=>{clearInterval(autoRotate);selectGiro(i);startAutoRotate()});s.addEventListener('mouseenter',()=>{if(i!==currentGiro){clearInterval(autoRotate);selectGiro(i);startAutoRotate()}});carousel.appendChild(s)});updateCarousel()}
-function selectGiro(i){currentGiro=i;updateCarousel()}
-function updateCarousel(){const items=carousel.querySelectorAll('.giro-item');if(!items.length)return;const itemH=items[0].offsetHeight||48;items.forEach((item,i)=>{const diff=i-currentGiro;item.className='giro-item';if(diff===0){item.classList.add('active');item.style.color=giros[i].color;item.style.opacity='1';item.style.transform='scale(1)'}else if(Math.abs(diff)===1){item.classList.add('adjacent');item.style.color=giros[i].color;item.style.opacity='0.25';item.style.transform='scale(0.85)'}else{item.classList.add('hidden');item.style.color=giros[i].color;item.style.opacity='0';item.style.transform='scale(0.7)'}});carousel.style.transform=`translateY(${-currentGiro*itemH}px)`;wrapper.style.height=(itemH*3)+'px';wrapper.style.marginTop=-itemH+'px'}
-function startAutoRotate(){autoRotate=setInterval(()=>{currentGiro=(currentGiro+1)%giros.length;updateCarousel()},2500)}
-buildCarousel();startAutoRotate();
+
+let currentGiro = 0;
+let autoRotate;
+const wrapper = document.getElementById('giroWrapper');
+const carousel = document.getElementById('giroCarousel');
+
+// Repetir giros 5 veces para efecto infinito
+const girosExtended = [];
+for (let r = 0; r < 5; r++) {
+  giros.forEach(g => girosExtended.push({ ...g }));
+}
+// Empezar en el medio del array extendido
+const startOffset = giros.length * 2;
+currentGiro = startOffset;
+
+function buildCarousel() {
+  carousel.innerHTML = '';
+  girosExtended.forEach((g, i) => {
+    const s = document.createElement('span');
+    s.className = 'giro-item';
+    s.textContent = g.name;
+    s.dataset.index = i;
+
+    // Hover: arriba retrocede, abajo avanza
+    s.addEventListener('mouseenter', () => {
+      const diff = i - currentGiro;
+      if (diff === -1) {
+        // Palabra de arriba → retroceder
+        clearInterval(autoRotate);
+        currentGiro--;
+        rebalance();
+        updateCarousel();
+        startAutoRotate();
+      } else if (diff === 1) {
+        // Palabra de abajo → avanzar
+        clearInterval(autoRotate);
+        currentGiro++;
+        rebalance();
+        updateCarousel();
+        startAutoRotate();
+      }
+    });
+
+    carousel.appendChild(s);
+  });
+  updateCarousel();
+}
+
+// Rebalancear: si se acerca a los extremos, saltar al medio sin animación
+function rebalance() {
+  if (currentGiro <= giros.length) {
+    carousel.style.transition = 'none';
+    currentGiro += giros.length;
+    updateCarousel();
+    requestAnimationFrame(() => {
+      carousel.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    });
+  } else if (currentGiro >= giros.length * 4) {
+    carousel.style.transition = 'none';
+    currentGiro -= giros.length;
+    updateCarousel();
+    requestAnimationFrame(() => {
+      carousel.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    });
+  }
+}
+
+function updateCarousel() {
+  const items = carousel.querySelectorAll('.giro-item');
+  if (!items.length) return;
+
+  // Calcular alto de un item basado en el font-size del wrapper
+  const computedSize = parseFloat(getComputedStyle(wrapper.parentElement).fontSize);
+  const itemH = computedSize * 1.3;
+
+  items.forEach((item, i) => {
+    const diff = i - currentGiro;
+    item.className = 'giro-item';
+    item.style.height = itemH + 'px';
+    item.style.lineHeight = itemH + 'px';
+    item.style.color = girosExtended[i].color;
+
+    if (diff === 0) {
+      item.classList.add('active');
+      item.style.opacity = '1';
+      item.style.transform = 'scale(1)';
+    } else if (Math.abs(diff) === 1) {
+      item.classList.add('adjacent');
+      item.style.opacity = '0.2';
+      item.style.transform = 'scale(0.88)';
+    } else {
+      item.classList.add('hidden');
+      item.style.opacity = '0';
+      item.style.transform = 'scale(0.7)';
+    }
+  });
+
+  // Wrapper solo muestra 3 items (prev + active + next)
+  wrapper.style.height = (itemH * 3) + 'px';
+
+  // Centrar: el item activo debe estar en la fila del medio
+  const offset = -(currentGiro * itemH) + itemH;
+  carousel.style.transform = `translateY(${offset}px)`;
+}
+
+function startAutoRotate() {
+  autoRotate = setInterval(() => {
+    currentGiro++;
+    rebalance();
+    updateCarousel();
+  }, 3500); // Más lento: 3.5 segundos
+}
+
+buildCarousel();
+startAutoRotate();
+window.addEventListener('resize', () => updateCarousel());
 
 /* ══ SCROLL REVEAL ══ */
 const reveals=document.querySelectorAll('.reveal');const ro=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);ro.unobserve(e.target)}})},{threshold:0.1});reveals.forEach(el=>ro.observe(el));
