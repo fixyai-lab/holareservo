@@ -199,7 +199,7 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 </div>
 <div class="reveal">
 <div class="wa-phone">
-<div class="wa-header"><div class="wa-avatar">R</div><div><div class="wa-name">Tu Negocio</div><div class="wa-status">en línea</div></div></div>
+<div class="wa-header"><div class="wa-avatar">J</div><div><div class="wa-name">Javeli Beauty Salon</div><div class="wa-status">en línea</div></div></div>
 <div class="wa-body" id="chat"></div>
 </div>
 </div>
@@ -277,17 +277,17 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <p class="section-desc" style="margin-bottom:48px">Resolvemos las dudas más comunes antes de que las tengas.</p>
 </div>
 <div class="reveal">
-<div class="faq-item"><button class="faq-question">"Prefiero contestar yo misma..."<span class="icon">+</span></button><div class="faq-answer"><p>Puedes seguir haciéndolo. Reservo solo te respalda cuando no alcanzas a responder o estás ocupada atendiendo. No te reemplaza, te ayuda.</p></div></div>
-<div class="faq-item"><button class="faq-question">"¿Y si el bot se equivoca?"<span class="icon">+</span></button><div class="faq-answer"><p>El bot está conectado a tu Google Calendar en tiempo real. Si bloqueas un horario, el bot lo ve al instante y no lo ofrece. Tú sigues mandando en tu agenda.</p></div></div>
-<div class="faq-item"><button class="faq-question">"Se me hace caro..."<span class="icon">+</span></button><div class="faq-answer"><p>¿Cuántas citas pierdes al mes por no contestar rápido? Con solo 2 citas recuperadas, Reservo ya se paga. Todo lo demás es ganancia.</p></div></div>
-<div class="faq-item"><button class="faq-question">"No le sé a la tecnología..."<span class="icon">+</span></button><div class="faq-answer"><p>Nosotros hacemos todo el trabajo pesado. En menos de lo que dura un servicio de color, tu bot ya está listo y atendiendo clientes.</p></div></div>
+<div class="faq-item"><button class="faq-question">"Ya cuento con una recepcionista..."<span class="icon">+</span></button><div class="faq-answer"><p>¡Excelente! Reservo no llega para reemplazarla, sino para ser su mejor asistente. Mientras ella atiende a los clientes en el local o resuelve dudas complejas, Reservo se encarga de las tareas repetitivas de agendamiento 24/7. Así, ella puede enfocarse en brindar una experiencia de lujo a quienes ya están ahí.</p></div></div>
+<div class="faq-item"><button class="faq-question">"¿Y si el bot se equivoca?"<span class="icon">+</span></button><div class="faq-answer"><p>Reservo está conectado a tu Google Calendar en tiempo real. Si bloqueas un horario, el Asistente Virtual lo ve al instante y no lo ofrece. Tú sigues mandando en tu agenda.</p></div></div>
+<div class="faq-item"><button class="faq-question">"Se me hace caro..."<span class="icon">+</span></button><div class="faq-answer"><p>Más que un gasto, es una inversión con retorno inmediato. ¿Cuántas citas pierdes hoy por no responder al instante? En la mayoría de los negocios, con solo 1 o 2 citas recuperadas al mes, Reservo se paga solo. Todo lo demás es utilidad neta para ti y tiempo libre recuperado.</p></div></div>
+<div class="faq-item"><button class="faq-question">"No le sé a la tecnología..."<span class="icon">+</span></button><div class="faq-answer"><p>No necesitas saber nada de tecnología. Nosotros hacemos todo el trabajo pesado por ti. La configuración es tan rápida que, el mismo día, tu asistente virtual ya estará listo para atender a tus clientes y llenar tu agenda.</p></div></div>
 </div>
 </section>
 
 <!-- ══ CTA FINAL ══ -->
 <section class="cta-section">
 <div class="reveal">
-<h2>Tu negocio merece alguien que responda por ti, <em>incluso cuando estás ocupada.</em></h2>
+<h2>Tu negocio merece atención inmediata, <em>incluso cuando no puedes contestar.</em></h2>
 <p>Cada mensaje sin contestar es una oportunidad perdida. Hoy puedes empezar a aprovecharlas todas.</p>
 <a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20activar%20Reservo%20para%20mi%20negocio" class="btn-gradient">💬 Activar mi Reservo ahora</a>
 <p class="cta-sub-text">Sin contratos largos · Configuración incluida · Activo el mismo día</p>
@@ -442,12 +442,13 @@ const reveals=document.querySelectorAll('.reveal');const ro=new IntersectionObse
 
 /* ══ CHAT WHATSAPP ANIMATION ══ */
 const chatDemo=[
-{type:'user',text:'Hola, quiero agendar una cita',time:'10:23'},
-{type:'bot',text:'¡Hola! Con gusto te ayudo 😊\n\n¿Qué día y hora te viene mejor?',time:'10:23'},
-{type:'user',text:'El viernes a las 3pm',time:'10:24'},
-{type:'bot',text:'✅ Tenemos disponibilidad el *Viernes 16 de mayo a las 15:00*.\n\n¿A nombre de quién agendo?',time:'10:24'},
-{type:'user',text:'Carmen López',time:'10:25'},
-{type:'bot',text:'¡Listo Carmen! ✨\n*Cita confirmada*\n📅 Viernes 16 de mayo\n⏰ 15:00 hrs\n\n¡Te esperamos!',time:'10:25'}
+{type:'user',text:'Hola, quiero agendar una cita',time:'10:23 p.m.'},
+{type:'bot',text:'¡Hola! Con gusto te ayudo 😊\n\n¿Qué día y hora te viene mejor?',time:'10:23 p.m.'},
+{type:'user',text:'El viernes a las 3pm',time:'10:24 p.m.'},
+{type:'bot',text:'¡Claro! ¿podrías indicarme tu nombre y el servicio que deseas realizarte? ✂️',time:'10:24 p.m.'},
+{type:'user',text:'Ana Torres',time:'10:25 p.m.'},
+{type:'user',text:'Keratina, por favor',time:'10:25 p.m.'},
+{type:'bot',text:'✅ ¡Cita confirmada! \n\nNombre: Ana Torres \n\nFecha: Viernes 15 de mayo de 2026 \n\nHora: 15:00\n\nServicio: Keratina \n\nUbicación: Javeli Beauty Salon \n\nSerá un placer atenderte.',time:'10:25 p.m.'}
 ];
 const chat=document.getElementById('chat');let msgIndex=0;
 function addMessage(){if(msgIndex>=chatDemo.length){setTimeout(()=>{chat.innerHTML='';msgIndex=0;setTimeout(addMessage,800)},3000);return}const msg=chatDemo[msgIndex];const div=document.createElement('div');div.className=`msg ${msg.type}`;div.innerHTML=msg.text.replace(/\n/g,'<br>').replace(/\*(.*?)\*/g,'<strong>$1</strong>');div.innerHTML+=`<div class="msg-time">${msg.time}</div>`;chat.appendChild(div);setTimeout(()=>div.classList.add('visible'),50);chat.scrollTop=chat.scrollHeight;msgIndex++;setTimeout(addMessage,1200)}
