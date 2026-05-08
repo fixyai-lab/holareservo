@@ -45,7 +45,7 @@
   position: relative;
   vertical-align: middle;
   margin-top: -0.15em;
-  overflow: hidden;
+  overflow: visible;
   min-width: 160px;
   text-align: center;
   height: 1.3em;
@@ -418,7 +418,7 @@ function updateCarousel() {
   });
 
 // Wrapper muestra solo el item activo; adyacentes visibles por overflow
-  wrapper.style.height = itemH + 'px';
+  wrapper.style.height = (itemH *3) + 'px';
   const offset = -(currentGiro * itemH) + itemH;
   carousel.style.transform = `translateY(${offset}px)`;
 }
