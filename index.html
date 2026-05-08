@@ -417,10 +417,11 @@ function updateCarousel() {
     }
   });
 
-  // Wrapper solo muestra 3 items (prev + active + next)
+// Wrapper muestra solo el item activo; adyacentes visibles por overflow
   wrapper.style.height = itemH + 'px';
   const offset = -(currentGiro * itemH) + itemH;
   carousel.style.transform = `translateY(${offset}px)`;
+}
 
 
 function startAutoRotate() {
