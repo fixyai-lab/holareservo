@@ -43,11 +43,12 @@
 .giro-carousel-wrapper {
   display: inline-block;
   position: relative;
-  vertical-align: baseline;
+  vertical-align: middle;
+  margin-top: -0.15em;
   overflow: hidden;
   min-width: 160px;
   text-align: center;
-  height: 1em; /* Mismo alto que una línea de texto */
+  height: 1.3em;
 }
 
 .giro-carousel {
@@ -417,12 +418,10 @@ function updateCarousel() {
   });
 
   // Wrapper solo muestra 3 items (prev + active + next)
-  wrapper.style.height = (itemH * 3) + 'px';
-
-  // Centrar: el item activo debe estar en la fila del medio
+  wrapper.style.height = itemH + 'px';
   const offset = -(currentGiro * itemH) + itemH;
   carousel.style.transform = `translateY(${offset}px)`;
-}
+
 
 function startAutoRotate() {
   autoRotate = setInterval(() => {
