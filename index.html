@@ -113,6 +113,31 @@
 .precio-btn{display:block;text-align:center;padding:14px 28px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;text-decoration:none;border-radius:10px;transition:all .3s}
 .precio-btn.gradient{background:var(--gradient);color:#fff}.precio-btn.gradient:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(124,58,237,0.3)}
 .precio-btn.outline-btn{border:1px solid var(--border-light);color:var(--text-muted);background:transparent}.precio-btn.outline-btn:hover{border-color:var(--purple);color:var(--purple)}
+.precio-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  margin-bottom: 32px;
+}
+
+.precio-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text);
+}
+
+.precio-amount sup {
+  font-size: 22px;
+  vertical-align: super;
+}
+
+.precio-period {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
 .faq-section{padding:120px 40px;max-width:750px;margin:0 auto}.faq-item{border-bottom:1px solid var(--border-light);overflow:hidden}
 .faq-question{width:100%;background:none;border:none;padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;text-align:left;transition:color .3s}
 .faq-question:hover{color:var(--purple)}.faq-question .icon{font-size:20px;transition:transform .3s;flex-shrink:0;margin-left:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -220,8 +245,10 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <div class="precio-plan">Reservo Esencial</div>
 <div class="precio-sub">Para empezar a no perder citas</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$1,990</s> <span>$990 MXN</span></div>
-<div class="precio-amount"><sup>$</sup>790</div>
+<div class="precio-wrapper">
+  <div class="precio-amount"><sup>$</sup>790</div>
   <div class="precio-period">MXN / mes</div>
+</div>
 <ul class="precio-features">
 <li>Asistente Virtual WhatsApp 24/7</li>
 <li>Agendar, cancelar y reprogramar</li>
@@ -239,8 +266,10 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <div class="precio-plan">Reservo Plus</div>
 <div class="precio-sub">Para negocios que quieren crecer</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$2,990</s> <span>$1,490 MXN</span></div>
-<div class="precio-amount"><sup>$</sup>1,190</div>
-<div class="precio-period">MXN / mes</div>
+<div class="precio-wrapper">
+  <div class="precio-amount"><sup>$</sup>1,190</div>
+  <div class="precio-period">MXN / mes
+</div>
 <ul class="precio-features">
 <li>Todo lo de Esencial</li>
 <li>Recordatorios automáticos 24h al cliente</li>
@@ -256,8 +285,10 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <div class="precio-plan">Reservo Pro</div>
 <div class="precio-sub">Para negocios con equipo</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$4,990</s> <span>$2,490 MXN</span></div>
-<div class="precio-amount"><sup>$</sup>1,990</div>
-<div class="precio-period">MXN / mes</div>
+<div class="precio-wrapper">
+  <div class="precio-amount"><sup>$</sup>1,990</div>
+  <div class="precio-period">MXN / mes
+</div>
 <ul class="precio-features">
 <li>Todo lo de Plus</li>
 <li>Multi-profesional</li>
