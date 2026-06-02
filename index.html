@@ -58,15 +58,16 @@
 .section-title em{font-style:italic;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .section-desc{font-size:17px;font-weight:300;color:var(--text-muted);line-height:1.7;max-width:600px}
 .features-header{text-align:center;margin-bottom:64px}.features-header .section-title{max-width:800px;margin:0 auto 20px}
-.giro-headline{display:flex;flex-direction:column;align-items:center;gap:0.35em;line-height:1.2}
+.giro-headline{display:flex;flex-direction:column;align-items:center;gap:0.75em;line-height:1.2}
 .giro-headline-row{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0.3em}
-.giro-headline-row--bottom{display:block;text-align:center}
-.giro-carousel-wrapper{display:inline-block;position:relative;vertical-align:middle;overflow:hidden;min-width:180px;text-align:center;height:1.15em;line-height:1.15em}
+.giro-headline-row--top{min-height:calc(1.15em * 3);align-items:center}
+.giro-headline-row--bottom{display:block;text-align:center;margin-top:0}
+.giro-carousel-wrapper{display:inline-block;position:relative;vertical-align:middle;overflow:hidden;min-width:180px;text-align:center;line-height:1.15em}
 .giro-carousel{display:flex;flex-direction:column;align-items:center;will-change:transform;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1)}
-.giro-item{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.15em;height:1.15em;padding:0 4px;user-select:none;font-size:inherit;flex-shrink:0}
-.giro-item.active{opacity:1}
+.giro-item{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.15em;height:1.15em;padding:0 4px;user-select:none;font-size:inherit;flex-shrink:0;transition:opacity 0.4s ease,transform 0.4s ease}
+.giro-item.active{opacity:1;transform:scale(1)}
 .giro-item.adjacent{opacity:0.2;transform:scale(0.88)}
-.giro-item.hidden{opacity:0;pointer-events:none}
+.giro-item.hidden{opacity:0;pointer-events:none;transform:scale(0.7)}
 .giro-item:hover:not(.active){opacity:0.5}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .feature-card{background:var(--bg-card);padding:40px 32px;border-radius:16px;border:1px solid var(--border-light);transition:all .3s;position:relative;overflow:hidden}
@@ -241,7 +242,7 @@ body.menu-open{overflow:hidden}
 <div class="features-header reveal">
 <p class="section-label">¿Qué hace <strong>Reservo</strong>?</p>
 <h2 class="section-title giro-headline">
-<span class="giro-headline-row">Todo lo que tu <span class="giro-carousel-wrapper" id="giroWrapper"><span class="giro-carousel" id="giroCarousel"></span></span></span>
+<span class="giro-headline-row giro-headline-row--top">Todo lo que tu <span class="giro-carousel-wrapper" id="giroWrapper"><span class="giro-carousel" id="giroCarousel"></span></span></span>
 <span class="giro-headline-row giro-headline-row--bottom">necesita para no perder <em>una cita más.</em></span>
 </h2>
 <p class="section-desc" style="margin:0 auto"><strong>Reservo</strong> se conecta a tu WhatsApp y Google Calendar. Hace todo el trabajo pesado para que tú solo tengas que abrir tu negocio y atender.</p>
@@ -439,7 +440,7 @@ function updateGiroCarousel(animate = true) {
   if (!items.length) return;
 
   const itemH = getGiroItemHeight();
-  giroWrapper.style.height = itemH + 'px';
+  giroWrapper.style.height = (itemH * 3) + 'px';
 
   items.forEach((item, i) => {
     const diff = i - giroIndex;
@@ -458,7 +459,7 @@ function updateGiroCarousel(animate = true) {
   });
 
   if (!animate) giroCarousel.style.transition = 'none';
-  giroCarousel.style.transform = `translateY(${-giroIndex * itemH}px)`;
+  giroCarousel.style.transform = `translateY(${(-giroIndex * itemH) + itemH}px)`;
   if (!animate) void giroCarousel.offsetHeight;
   if (!animate) giroCarousel.style.transition = '';
 }
