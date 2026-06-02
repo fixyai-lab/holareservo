@@ -58,42 +58,16 @@
 .section-title em{font-style:italic;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .section-desc{font-size:17px;font-weight:300;color:var(--text-muted);line-height:1.7;max-width:600px}
 .features-header{text-align:center;margin-bottom:64px}.features-header .section-title{max-width:800px;margin:0 auto 20px}
-.giro-carousel-wrapper {
-  display: inline-block;
-  position: relative;
-  vertical-align: middle;
-  margin-top: -0.3em;
-  overflow: visible;
-  min-width: 160px;
-  text-align: center;
-  height: 1.3em;
-}
-
-.giro-carousel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.giro-item {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  white-space: nowrap;
-  line-height: 1.3em;
-  height: 1.3em;
-  padding: 0 4px;
-  user-select: none;
-  font-size: inherit; /* Hereda el tamaño del h2 */
-}
-
-.giro-item.active { opacity: 1; }
-.giro-item.adjacent { opacity: 0.2; transform: scale(0.88); }
-.giro-item.hidden { opacity: 0; pointer-events: none; }
-.giro-item:hover:not(.active) { opacity: 0.5; }
+.giro-headline{display:flex;flex-direction:column;align-items:center;gap:0.35em;line-height:1.2}
+.giro-headline-row{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0.3em}
+.giro-headline-row--bottom{display:block;text-align:center}
+.giro-carousel-wrapper{display:inline-block;position:relative;vertical-align:middle;overflow:hidden;min-width:180px;text-align:center;height:1.15em;line-height:1.15em}
+.giro-carousel{display:flex;flex-direction:column;align-items:center;will-change:transform;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1)}
+.giro-item{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.15em;height:1.15em;padding:0 4px;user-select:none;font-size:inherit;flex-shrink:0}
+.giro-item.active{opacity:1}
+.giro-item.adjacent{opacity:0.2;transform:scale(0.88)}
+.giro-item.hidden{opacity:0;pointer-events:none}
+.giro-item:hover:not(.active){opacity:0.5}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .feature-card{background:var(--bg-card);padding:40px 32px;border-radius:16px;border:1px solid var(--border-light);transition:all .3s;position:relative;overflow:hidden}
 .feature-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gradient);transform:scaleX(0);transition:transform .4s}
@@ -266,9 +240,10 @@ body.menu-open{overflow:hidden}
 <section class="section" id="features">
 <div class="features-header reveal">
 <p class="section-label">¿Qué hace <strong>Reservo</strong>?</p>
-<h2 class="section-title">Todo lo que tu
-<span class="giro-carousel-wrapper" id="giroWrapper"><span class="giro-carousel" id="giroCarousel"></span></span>
-necesita<br>para no perder <em>una cita más.</em></h2>
+<h2 class="section-title giro-headline">
+<span class="giro-headline-row">Todo lo que tu <span class="giro-carousel-wrapper" id="giroWrapper"><span class="giro-carousel" id="giroCarousel"></span></span></span>
+<span class="giro-headline-row giro-headline-row--bottom">necesita para no perder <em>una cita más.</em></span>
+</h2>
 <p class="section-desc" style="margin:0 auto"><strong>Reservo</strong> se conecta a tu WhatsApp y Google Calendar. Hace todo el trabajo pesado para que tú solo tengas que abrir tu negocio y atender.</p>
 </div>
 <div class="features-grid reveal">
@@ -410,7 +385,7 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <script>
 /* ══ CARRUSEL VERTICAL DE GIROS ══ */
 const giros = [
-  { name: 'negocio', color: 'var(--bg-dark)' },
+  { name: 'negocio', color: 'var(--purple)' },
   { name: 'estética', color: 'var(--color-estetica)' },
   { name: 'barbería', color: 'var(--color-barberia)' },
   { name: 'veterinaria', color: 'var(--color-veterinaria)' },
@@ -420,120 +395,98 @@ const giros = [
   { name: 'salón de uñas', color: 'var(--color-unas)' }
 ];
 
-let currentGiro = 0;
-let autoRotate;
-const wrapper = document.getElementById('giroWrapper');
-const carousel = document.getElementById('giroCarousel');
+const GIRO_COUNT = giros.length;
+const girosLoop = giros.concat(giros, giros);
+let giroIndex = GIRO_COUNT;
+let giroAutoRotate;
+let giroItemHeight = 0;
+const giroWrapper = document.getElementById('giroWrapper');
+const giroCarousel = document.getElementById('giroCarousel');
 
-// Repetir giros 5 veces para efecto infinito
-const girosExtended = [];
-for (let r = 0; r < 5; r++) {
-  giros.forEach(g => girosExtended.push({ ...g }));
+function getGiroItemHeight() {
+  const size = parseFloat(getComputedStyle(giroWrapper.closest('.giro-headline')).fontSize);
+  giroItemHeight = size * 1.15;
+  return giroItemHeight;
 }
-// Empezar en el medio del array extendido
-const startOffset = giros.length * 2;
-currentGiro = startOffset;
 
-function buildCarousel() {
-  carousel.innerHTML = '';
-  girosExtended.forEach((g, i) => {
-    const s = document.createElement('span');
-    s.className = 'giro-item';
-    s.textContent = g.name;
-    s.dataset.index = i;
-
-    // Hover: arriba retrocede, abajo avanza
-    s.addEventListener('mouseenter', () => {
-      const diff = i - currentGiro;
+function buildGiroCarousel() {
+  giroCarousel.innerHTML = '';
+  girosLoop.forEach((g, i) => {
+    const item = document.createElement('span');
+    item.className = 'giro-item';
+    item.textContent = g.name;
+    item.dataset.index = i;
+    item.addEventListener('mouseenter', () => {
+      const diff = i - giroIndex;
       if (diff === -1) {
-        // Palabra de arriba → retroceder
-        clearInterval(autoRotate);
-        currentGiro--;
-        rebalance();
-        updateCarousel();
-        startAutoRotate();
+        clearInterval(giroAutoRotate);
+        stepGiro(-1);
+        startGiroAutoRotate();
       } else if (diff === 1) {
-        // Palabra de abajo → avanzar
-        clearInterval(autoRotate);
-        currentGiro++;
-        rebalance();
-        updateCarousel();
-        startAutoRotate();
+        clearInterval(giroAutoRotate);
+        stepGiro(1);
+        startGiroAutoRotate();
       }
     });
-
-    carousel.appendChild(s);
+    giroCarousel.appendChild(item);
   });
-  updateCarousel();
+  giroCarousel.addEventListener('transitionend', onGiroTransitionEnd);
+  updateGiroCarousel(false);
 }
 
-// Rebalancear: si se acerca a los extremos, saltar al medio sin animación
-function rebalance() {
-  if (currentGiro <= giros.length) {
-    carousel.style.transition = 'none';
-    currentGiro += giros.length;
-    updateCarousel();
-    requestAnimationFrame(() => {
-      carousel.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-    });
-  } else if (currentGiro >= giros.length * 4) {
-    carousel.style.transition = 'none';
-    currentGiro -= giros.length;
-    updateCarousel();
-    requestAnimationFrame(() => {
-      carousel.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-    });
-  }
-}
-
-function updateCarousel() {
-  const items = carousel.querySelectorAll('.giro-item');
+function updateGiroCarousel(animate = true) {
+  const items = giroCarousel.querySelectorAll('.giro-item');
   if (!items.length) return;
 
-  // Calcular alto de un item basado en el font-size del wrapper
-  const computedSize = parseFloat(getComputedStyle(wrapper.parentElement).fontSize);
-  const itemH = computedSize * 1;
+  const itemH = getGiroItemHeight();
+  giroWrapper.style.height = itemH + 'px';
 
   items.forEach((item, i) => {
-    const diff = i - currentGiro;
+    const diff = i - giroIndex;
     item.className = 'giro-item';
     item.style.height = itemH + 'px';
     item.style.lineHeight = itemH + 'px';
-    item.style.color = girosExtended[i].color;
+    item.style.color = girosLoop[i].color;
 
     if (diff === 0) {
       item.classList.add('active');
-      item.style.opacity = '1';
-      item.style.transform = 'scale(1)';
     } else if (Math.abs(diff) === 1) {
       item.classList.add('adjacent');
-      item.style.opacity = '0.2';
-      item.style.transform = 'scale(0.88)';
     } else {
       item.classList.add('hidden');
-      item.style.opacity = '0';
-      item.style.transform = 'scale(0.7)';
     }
   });
 
-// Wrapper muestra solo el item activo; adyacentes visibles por overflow
-  wrapper.style.height = (itemH *3) + 'px';
-  const offset = -(currentGiro * itemH) + itemH;
-  carousel.style.transform = `translateY(${offset}px)`;
+  if (!animate) giroCarousel.style.transition = 'none';
+  giroCarousel.style.transform = `translateY(${-giroIndex * itemH}px)`;
+  if (!animate) void giroCarousel.offsetHeight;
+  if (!animate) giroCarousel.style.transition = '';
 }
 
-
-function startAutoRotate() {
-  autoRotate = setInterval(() => {
-    currentGiro++;
-    rebalance();
-    updateCarousel();
-  }, 3500); // Más lento: 3.5 segundos
+function onGiroTransitionEnd(e) {
+  if (e.target !== giroCarousel || e.propertyName !== 'transform') return;
+  if (giroIndex >= GIRO_COUNT * 2) {
+    giroIndex -= GIRO_COUNT;
+    updateGiroCarousel(false);
+  } else if (giroIndex < GIRO_COUNT) {
+    giroIndex += GIRO_COUNT;
+    updateGiroCarousel(false);
+  }
 }
 
-buildCarousel();
-startAutoRotate();
-window.addEventListener('resize', () => updateCarousel());
+function stepGiro(delta) {
+  giroIndex += delta;
+  updateGiroCarousel(true);
+}
+
+function startGiroAutoRotate() {
+  clearInterval(giroAutoRotate);
+  giroAutoRotate = setInterval(() => stepGiro(1), 3500);
+}
+
+buildGiroCarousel();
+startGiroAutoRotate();
+window.addEventListener('resize', () => updateGiroCarousel(false));
 
 /* ══ SCROLL REVEAL ══ */
 const reveals=document.querySelectorAll('.reveal');const ro=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);ro.unobserve(e.target)}})},{threshold:0.1});reveals.forEach(el=>ro.observe(el));
