@@ -16,18 +16,36 @@
 :root{--gradient:linear-gradient(135deg,#486088 0%,#7C3AED 50%,#F0C7F6 100%);--black:#000000;--white:#FFFFFF;--purple:#7C3AED;--purple-light:#A78BFA;--pink:#F0C7F6;--bg:#FAFAFE;--bg-card:#FFFFFF;--bg-dark:#0F0A1A;--text:#1A1A2E;--text-muted:#6B7280;--text-light:#9CA3AF;--border:rgba(124,58,237,0.12);--border-light:rgba(0,0,0,0.06);--shadow:0 4px 24px rgba(124,58,237,0.08);--shadow-hover:0 12px 40px rgba(124,58,237,0.18);--green-wa:#25D366;--color-estetica:#D4A0B9;--color-barberia:#C8A45C;--color-veterinaria:#5DB89C;--color-pasteleria:#E8A87C;--color-clinica:#6B9BD2;--color-spa:#B8A9D4;--color-unas:#E88BA7}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
 .gradient-text{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;background:var(--black);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-light)}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;background:var(--black);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-light);transition:padding .35s ease,box-shadow .35s ease}
+.navbar.scrolled{padding:12px 48px;box-shadow:0 8px 32px rgba(0,0,0,0.25)}
 .logo{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--white)}.logo span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.navbar-right{display:flex;align-items:center;gap:16px}
 .navbar-links{display:flex;gap:32px;align-items:center}.navbar-links a{font-size:14px;color:var(--white);text-decoration:none;transition:color .3s}.navbar-links a:hover{color:var(--purple)}
 .navbar-cta{background:var(--gradient);color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;padding:10px 24px;border-radius:8px;text-decoration:none;transition:all .3s}.navbar-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(124,58,237,0.3)}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 40px 60px;position:relative;overflow:hidden}
+.navbar-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:10px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:8px;cursor:pointer;transition:border-color .3s}
+.navbar-toggle span{display:block;width:100%;height:2px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s}
+.navbar-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.navbar-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.navbar-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.navbar-mobile{position:fixed;inset:0;top:0;left:0;right:0;bottom:0;background:rgba(15,10,26,0.97);backdrop-filter:blur(12px);z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:100px 24px 40px;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.navbar-mobile.open{opacity:1;visibility:visible}
+.navbar-mobile a{font-size:20px;color:#fff;text-decoration:none;font-weight:500;transition:color .3s}
+.navbar-mobile a:hover{color:var(--purple-light)}
+.navbar-mobile .navbar-cta{font-size:15px;padding:14px 32px;margin-top:8px}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:120px 40px 60px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,0.08) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.15);padding:8px 20px;border-radius:50px;margin-bottom:40px;opacity:0;animation:fadeUp .8s ease .2s forwards}
-.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green-wa);animation:pulse 2s ease infinite}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,84px);font-weight:900;line-height:1.08;margin-bottom:28px;max-width:850px;color:var(--text);opacity:0;animation:fadeUp .8s ease .4s forwards}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px 56px;align-items:center;max-width:1100px;width:100%;margin-bottom:64px}
+.hero-content{text-align:left}
+.hero-visual{display:flex;justify-content:center;align-items:center;opacity:0;animation:fadeUp .8s ease .5s forwards}
+.hero-visual-frame{position:relative;width:100%;max-width:400px}
+.hero-visual-frame::before{content:'';position:absolute;top:20px;left:20px;right:-20px;bottom:-20px;background:var(--gradient);border-radius:24px;opacity:.45;z-index:0}
+.hero-visual-frame img{position:relative;z-index:1;width:100%;border-radius:20px;box-shadow:0 24px 64px rgba(124,58,237,0.2);border:1px solid var(--border-light);object-fit:cover;display:block;aspect-ratio:4/5}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,72px);font-weight:900;line-height:1.08;margin-bottom:28px;max-width:none;color:var(--text);opacity:0;animation:fadeUp .8s ease .3s forwards}
 .hero h1 em{font-style:italic;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:clamp(16px,2.2vw,19px);font-weight:300;color:var(--text-muted);max-width:580px;line-height:1.7;margin-bottom:48px;opacity:0;animation:fadeUp .8s ease .6s forwards}
-.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:80px;opacity:0;animation:fadeUp .8s ease .8s forwards}
+.hero-sub{font-size:clamp(16px,2.2vw,19px);font-weight:300;color:var(--text-muted);max-width:520px;line-height:1.7;margin-bottom:40px;opacity:0;animation:fadeUp .8s ease .45s forwards}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-start;margin-bottom:0;opacity:0;animation:fadeUp .8s ease .6s forwards}
+.precio-tba{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--text-muted);margin-bottom:8px}
+.precio-tba-sub{font-size:14px;color:var(--text-light);margin-bottom:32px;line-height:1.5}
 .btn-gradient{display:inline-flex;align-items:center;gap:8px;background:var(--gradient);color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;padding:16px 36px;border-radius:10px;text-decoration:none;transition:all .3s}.btn-gradient:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,0.3)}
 .btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;padding:16px 36px;border-radius:10px;text-decoration:none;border:1px solid var(--border-light);transition:all .3s}.btn-outline:hover{border-color:var(--purple);color:var(--purple)}
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;max-width:700px;width:100%;background:var(--border-light);border-radius:16px;overflow:hidden;opacity:0;animation:fadeUp .8s ease 1s forwards}
@@ -80,7 +98,17 @@
 .feature-card{background:var(--bg-card);padding:40px 32px;border-radius:16px;border:1px solid var(--border-light);transition:all .3s;position:relative;overflow:hidden}
 .feature-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gradient);transform:scaleX(0);transition:transform .4s}
 .feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(124,58,237,0.2)}.feature-card:hover::after{transform:scaleX(1)}
-.feature-icon{font-size:28px;margin-bottom:20px}.feature-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:10px;color:var(--text)}.feature-desc{font-size:14px;font-weight:300;color:var(--text-muted);line-height:1.7}
+.feature-icon{width:48px;height:48px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(124,58,237,0.06)}
+.feature-icon svg{width:24px;height:24px;display:block}
+.feature-icon svg.icon-stroke{stroke:url(#icon-gradient)}
+.feature-icon svg.icon-stroke path{stroke:inherit;fill:none}
+.feature-icon svg.icon-fill,.feature-icon svg.icon-fill path{fill:url(#icon-gradient)}
+.btn-gradient strong{font-weight:700;color:inherit}
+.btn-wa-icon,.wa-float svg{width:22px;height:22px;flex-shrink:0;display:block}
+.wa-float svg{width:28px;height:28px}
+.btn-wa-icon use,.wa-float svg use{color:inherit}
+.icon-wa-sprite path{stroke:currentColor;fill:none}
+.feature-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:10px;color:var(--text)}.feature-desc{font-size:14px;font-weight:300;color:var(--text-muted);line-height:1.7}
 .demo-section{padding:100px 40px;background:var(--bg-dark);position:relative;overflow:hidden}
 .demo-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(124,58,237,0.15) 0%,transparent 70%);pointer-events:none}
 .demo-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
@@ -99,7 +127,8 @@
 .precio-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:48px 32px;text-align:left;position:relative;transition:all .4s}
 .precio-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-hover);border-color:rgba(124,58,237,0.25)}
 .precio-card.featured{border:2px solid var(--purple);box-shadow:var(--shadow)}.precio-card.featured:hover{box-shadow:0 16px 48px rgba(124,58,237,0.25)}
-.precio-card.coming-soon{opacity:.65}.precio-card.coming-soon:hover{opacity:.85}
+.precio-card.coming-soon{opacity:.85}.precio-card.coming-soon:hover{opacity:1}
+.precio-card.coming-soon .precio-setup{display:none}
 .precio-badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:50px;margin-bottom:24px}
 .precio-badge.gradient{background:var(--gradient);color:#fff}.precio-badge.outline{background:transparent;color:var(--text-muted);border:1px solid var(--border-light)}
 .precio-badge.recommended{background:var(--gradient);color:#fff;position:absolute;top:-12px;left:50%;transform:translateX(-50%);white-space:nowrap;padding:6px 20px}
@@ -149,7 +178,7 @@
 .cta-section h2 em{font-style:italic;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .cta-section p{font-size:17px;color:rgba(255,255,255,0.5);margin-bottom:40px;font-weight:300}
 .cta-sub-text{margin-top:20px;font-size:12px;letter-spacing:1px;color:rgba(255,255,255,0.3)}
-.cta-steps{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px 40px;max-width:420px;margin:48px auto 0;text-align:left}
+.cta-steps{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px 40px;max-width:500px;margin:48px auto 0;text-align:left}
 .cta-steps-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:24px;display:flex;align-items:center;gap:10px}
 .cta-steps-title .icon-spark{background:var(--gradient);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
 .cta-step{display:flex;gap:16px;padding:12px 0}.cta-step-num{font-size:13px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0}
@@ -157,35 +186,72 @@
 .footer{border-top:1px solid var(--border-light);padding:40px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto}
 .footer-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--text)}.footer-logo span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .footer-text{font-size:12px;color:var(--text-light)}
-.wa-float{display:none;position:fixed;bottom:24px;right:24px;z-index:99;width:56px;height:56px;border-radius:50%;background:var(--green-wa);color:#fff;font-size:28px;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(37,211,102,0.4);transition:transform .3s}.wa-float:hover{transform:scale(1.1)}
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:99;width:58px;height:58px;border-radius:50%;background:var(--green-wa);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.45);transition:transform .3s,box-shadow .3s}
+.wa-float:hover{transform:scale(1.08);box-shadow:0 8px 28px rgba(37,211,102,0.55)}
+.wa-float:focus-visible{outline:2px solid #fff;outline-offset:3px}
+body.menu-open{overflow:hidden}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}.reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:768px){.navbar{padding:16px 20px}.navbar-links{display:none}.hero{padding:100px 20px 60px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:12px;text-align:center}.wa-float{display:flex}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}.hero h1,.hero-sub,.hero-buttons,.hero-visual,.stat-grid{opacity:1;animation:none}.giro-carousel{transition:none}}
+@media(max-width:768px){.navbar{padding:16px 20px}.navbar.scrolled{padding:10px 20px}.navbar-links{display:none}.navbar-toggle{display:flex}.wa-float{bottom:88px}.hero{padding:100px 20px 60px}.hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}.hero-content{text-align:center}.hero-sub{margin-left:auto;margin-right:auto}.hero-buttons{justify-content:center}.hero-visual-frame{max-width:320px}.hero-visual-frame::before{top:14px;left:14px;right:-14px;bottom:-14px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:12px;text-align:center}}
 </style>
 </head>
 <body>
 
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+<defs>
+<linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#486088"/>
+<stop offset="50%" stop-color="#7C3AED"/>
+<stop offset="100%" stop-color="#F0C7F6"/>
+</linearGradient>
+<symbol id="icon-whatsapp" viewBox="0 0 24 24" fill="none" class="icon-wa-sprite">
+<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+<path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+</defs>
+</svg>
+
 <!-- ══ NAVBAR ══ -->
-<nav class="navbar">
+<nav class="navbar" id="navbar">
 <div class="logo">Reserv<span>●</span></div>
+<div class="navbar-right">
 <div class="navbar-links">
 <a href="#features">Funciones</a>
 <a href="#precios">Precios</a>
 <a href="#faq">Preguntas</a>
-<a href="https://wa.me/528117633984?text=Hola%2C%20quisiera%20informes%20para%20activar%20Reservo%20para%20mi%20negocio" class="navbar-cta">Activar →</a>
+<a href="https://wa.me/528117633984?text=Hola%2C%20quisiera%20informes%20para%20activar%20Reservo%20para%20mi%20negocio" class="navbar-cta" target="_blank" rel="noopener noreferrer">Activar →</a>
+</div>
+<button type="button" class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navbarMobile">
+<span></span><span></span><span></span>
+</button>
 </div>
 </nav>
+<div class="navbar-mobile" id="navbarMobile" aria-hidden="true">
+<a href="#features" class="nav-mobile-link">Funciones</a>
+<a href="#precios" class="nav-mobile-link">Precios</a>
+<a href="#faq" class="nav-mobile-link">Preguntas</a>
+<a href="https://wa.me/528117633984?text=Hola%2C%20quisiera%20informes%20para%20activar%20Reservo%20para%20mi%20negocio" class="navbar-cta" target="_blank" rel="noopener noreferrer">Activar →</a>
+</div>
 
 <!-- ══ HERO ══ -->
 <section class="hero">
-<div class="hero-badge"><div class="dot"></div>Tu Asistente Virtual de WhatsApp · Activo 24/7</div>
+<div class="hero-inner">
+<div class="hero-content">
 <h1>Recupera las citas que hoy pierdes<br>por estar atendiendo a tus <em>clientes</em></h1>
-<p class="hero-sub">Reservo atiende a tus clientes, agenda citas y organiza tu calendario automáticamente. Tú te enfocas en atenderlos, nosotros en llenar tu agenda.</p>
+<p class="hero-sub"><strong>Reservo</strong> es tu Asistente Virtual: atiende a tus clientes, agenda citas y organiza tu calendario automáticamente. Tú te enfocas en atenderlos, nosotros en llenar tu agenda.</p>
 <div class="hero-buttons">
-<a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20llenar%20mi%20agenda%20automáticamente" class="btn-gradient">💬 Quiero llenar mi agenda</a>
+<a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20llenar%20mi%20agenda%20automáticamente" class="btn-gradient" target="_blank" rel="noopener noreferrer"><svg class="btn-wa-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-whatsapp"/></svg>Quiero llenar mi agenda</a>
 <a href="#precios" class="btn-outline">Ver precios →</a>
+</div>
+</div>
+<div class="hero-visual">
+<div class="hero-visual-frame">
+<img src="chat.jpeg" alt="Ejemplo de conversación en WhatsApp donde Reservo agenda una cita" width="400" height="500" loading="eager">
+</div>
+</div>
 </div>
 <div class="stat-grid">
 <div class="stat-card"><div class="stat-number">24/7</div><div class="stat-label">Siempre activo</div></div>
@@ -197,19 +263,19 @@
 <!-- ══ FEATURES — Carrusel de giros ══ -->
 <section class="section" id="features">
 <div class="features-header reveal">
-<p class="section-label">¿Qué hace Reservo?</p>
+<p class="section-label">¿Qué hace <strong>Reservo</strong>?</p>
 <h2 class="section-title">Todo lo que tu
 <span class="giro-carousel-wrapper" id="giroWrapper"><span class="giro-carousel" id="giroCarousel"></span></span>
 necesita<br>para no perder <em>una cita más.</em></h2>
-<p class="section-desc" style="margin:0 auto">Reservo se conecta a tu WhatsApp y Google Calendar. Hace todo el trabajo pesado para que tú solo tengas que abrir tu negocio y atender.</p>
+<p class="section-desc" style="margin:0 auto"><strong>Reservo</strong> se conecta a tu WhatsApp y Google Calendar. Hace todo el trabajo pesado para que tú solo tengas que abrir tu negocio y atender.</p>
 </div>
 <div class="features-grid reveal">
-<div class="feature-card"><div class="feature-icon">🤖</div><div class="feature-title">Agenda automática 24/7</div><div class="feature-desc">Tu Asistente Virtual responde al instante, aunque sea medianoche o estés ocupado atendiendo a un cliente.</div></div>
-<div class="feature-card"><div class="feature-icon">📅</div><div class="feature-title">Google Calendar integrado</div><div class="feature-desc">Las citas se guardan directo en tu calendario. Sin encimones, sin confusiones, sin "¿a qué hora quedamos?"</div></div>
-<div class="feature-card"><div class="feature-icon">✏️</div><div class="feature-title">Cancela y reprograma</div><div class="feature-desc">Si un cliente quiere cambiar su cita, el Asistente Virtual lo gestiona solo. Tú te enteras de todo en tu calendario.</div></div>
-<div class="feature-card"><div class="feature-icon">💬</div><div class="feature-title">Habla como tú</div><div class="feature-desc">El Asistente Virtual se adapta al nombre y estilo de tu negocio. Tus clientes sienten que hablan con tu recepcionista.</div></div>
-<div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-title">Listo en horas</div><div class="feature-desc">Nosotros configuramos todo por ti. En el mismo día que contratas, tu Asistente Virtual ya está atendiendo clientes.</div></div>
-<div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Sin complicaciones técnicas</div><div class="feature-desc">No necesitas saber de tecnología. Si sabes usar WhatsApp, ya sabes usar Reservo.</div></div>
+<div class="feature-card"><div class="feature-icon"><svg class="icon-stroke" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 6a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -4"/><path d="M12 2v2"/><path d="M9 12v9"/><path d="M15 12v9"/><path d="M5 16l4 -2"/><path d="M15 14l4 2"/><path d="M9 18h6"/><path d="M10 8v.01"/><path d="M14 8v.01"/></svg></div><div class="feature-title">Agenda automática 24/7</div><div class="feature-desc"><strong>Reservo</strong> responde al instante, aunque sea medianoche o estés ocupado atendiendo a un cliente.</div></div>
+<div class="feature-card"><div class="feature-icon"><svg class="icon-stroke" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></div><div class="feature-title">Google Calendar integrado</div><div class="feature-desc">Las citas se guardan directo en tu calendario. Sin encimones, sin confusiones, sin "¿a qué hora quedamos?"</div></div>
+<div class="feature-card"><div class="feature-icon"><svg class="icon-fill" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a1 1 0 0 1 -1 1h-1a1 1 0 0 0 -1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1 -1v-1a1 1 0 0 1 2 0v1a3 3 0 0 1 -3 3h-9a3 3 0 0 1 -3 -3v-9a3 3 0 0 1 3 -3h1a1 1 0 0 1 1 1"/><path d="M14.596 5.011l4.392 4.392l-6.28 6.303a1 1 0 0 1 -.708 .294h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 .294 -.708zm6.496 -2.103a3.097 3.097 0 0 1 .165 4.203l-.164 .18l-.693 .694l-4.387 -4.387l.695 -.69a3.1 3.1 0 0 1 4.384 0"/></svg></div><div class="feature-title">Cancela y reprograma</div><div class="feature-desc">Si un cliente quiere cambiar su cita, <strong>Reservo</strong> lo gestiona solo. Tú te enteras de todo en tu calendario.</div></div>
+<div class="feature-card"><div class="feature-icon"><svg class="icon-stroke" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17.802 17.292s.077 -.055 .2 -.149c1.843 -1.425 3 -3.49 3 -5.789c0 -4.286 -4.03 -7.764 -9 -7.764c-4.97 0 -9 3.478 -9 7.764c0 4.288 4.03 7.646 9 7.646c.424 0 1.12 -.028 2.088 -.084c1.262 .82 3.104 1.493 4.716 1.493c.499 0 .734 -.41 .414 -.828c-.486 -.596 -1.156 -1.551 -1.416 -2.29l-.002 .001"/><path d="M7.5 13.5c2.5 2.5 6.5 2.5 9 0"/></svg></div><div class="feature-title">Habla como tú</div><div class="feature-desc"><strong>Reservo</strong> se adapta al nombre y estilo de tu negocio. Tus clientes sienten que hablan con tu recepcionista.</div></div>
+<div class="feature-card"><div class="feature-icon"><svg class="icon-fill" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 2l.018 .001l.016 .001l.083 .005l.011 .002h.011l.038 .009l.052 .008l.016 .006l.011 .001l.029 .011l.052 .014l.019 .009l.015 .004l.028 .014l.04 .017l.021 .012l.022 .01l.023 .015l.031 .017l.034 .024l.018 .011l.013 .012l.024 .017l.038 .034l.022 .017l.008 .01l.014 .012l.036 .041l.026 .027l.006 .009c.12 .147 .196 .322 .218 .513l.001 .012l.002 .041l.004 .064v6h5a1 1 0 0 1 .868 1.497l-.06 .091l-8 11c-.568 .783 -1.808 .38 -1.808 -.588v-6h-5a1 1 0 0 1 -.868 -1.497l.06 -.091l8 -11l.01 -.013l.018 -.024l.033 -.038l.018 -.022l.009 -.008l.013 -.014l.04 -.036l.028 -.026l.008 -.006a1 1 0 0 1 .402 -.199l.011 -.001l.027 -.005l.074 -.013l.011 -.001l.041 -.002z"/></svg></div><div class="feature-title">Listo en horas</div><div class="feature-desc">Nosotros configuramos todo por ti. En el mismo día que contratas, <strong>Reservo</strong> ya está atendiendo clientes.</div></div>
+<div class="feature-card"><div class="feature-icon"><svg class="icon-stroke" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.29 20.977c-.818 .132 -1.724 -.3 -1.965 -1.294a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c.983 .238 1.416 1.126 1.298 1.937"/><path d="M16 19a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M17 21l4 -4"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></svg></div><div class="feature-title">Sin complicaciones técnicas</div><div class="feature-desc">No necesitas saber de tecnología. Si sabes usar WhatsApp, ya sabes usar <strong>Reservo</strong>.</div></div>
 </div>
 </section>
 
@@ -219,7 +285,7 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <div class="demo-text reveal">
 <p class="section-label">En acción</p>
 <h2>Una conversación <em>real,</em><br>sin que tú escribas nada.</h2>
-<p>Reservo entiende lo que tu cliente quiere — fecha, hora, servicio — y lo agenda directo en tu calendario. Sin menús. Sin botones.</p>
+<p><strong>Reservo</strong> entiende lo que tu cliente quiere — fecha, hora, servicio — y lo agenda directo en tu calendario. Sin menús. Sin botones.</p>
 <p>Y cuando algo está ocupado, busca alternativas. Cuando quieren cancelar, confirma. Todo automático.</p>
 </div>
 <div class="reveal">
@@ -238,11 +304,11 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <h2 class="section-title">Elige tu plan. <em>Activa hoy.</em></h2>
 <p class="section-desc">Todos los planes incluyen configuración completa, sin permanencia. Precios en MXN.</p>
 </div>
-<div class="precio-grid reveal">
+<div class="precio-grid reveal" id="precio-planes">
 <!-- Esencial -->
 <div class="precio-card">
 <div class="precio-badge outline">Esencial</div>
-<div class="precio-plan">Reservo Esencial</div>
+<div class="precio-plan"><strong>Reservo</strong> Esencial</div>
 <div class="precio-sub">Para empezar a no perder citas</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$1,990</s> <span>$990 MXN</span></div>
 <div class="precio-wrapper">
@@ -250,7 +316,7 @@ necesita<br>para no perder <em>una cita más.</em></h2>
   <div class="precio-period">MXN / mes</div>
 </div>
 <ul class="precio-features">
-<li>Asistente Virtual WhatsApp 24/7</li>
+<li><strong>Reservo</strong> en WhatsApp 24/7</li>
 <li>Agendar, cancelar y reprogramar</li>
 <li>Google Calendar integrado</li>
 <li>Calendario público de disponibilidad</li>
@@ -263,7 +329,7 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <div class="precio-card featured">
 <div class="precio-badge recommended">✦ Recomendado</div>
 <div class="precio-badge gradient" style="margin-top:8px">Plus</div>
-<div class="precio-plan">Reservo Plus</div>
+<div class="precio-plan"><strong>Reservo</strong> Plus</div>
 <div class="precio-sub">Para negocios que quieren crecer</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$2,990</s> <span>$1,490 MXN</span></div>
 <div class="precio-wrapper">
@@ -282,13 +348,10 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <!-- PRO -->
 <div class="precio-card coming-soon">
 <div class="precio-badge outline">Próximamente</div>
-<div class="precio-plan">Reservo Pro</div>
+<div class="precio-plan"><strong>Reservo</strong> Pro</div>
 <div class="precio-sub">Para negocios con equipo</div>
-<div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$4,990</s> <span>$2,490 MXN</span></div>
-<div class="precio-wrapper">
-  <div class="precio-amount"><sup>$</sup>1,990</div>
-  <div class="precio-period">MXN / mes</div>
-</div>
+<div class="precio-tba">Precio por anunciar</div>
+<p class="precio-tba-sub">Estamos terminando las funciones de equipo. Déjanos tu contacto y te avisamos en cuanto abramos cupos.</p>
 <ul class="precio-features">
 <li>Todo lo de Plus</li>
 <li>Multi-profesional</li>
@@ -297,7 +360,7 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <li>Mensajes de reactivación de clientes</li>
 <li>Soporte dedicado</li>
 </ul>
-<a href="https://wa.me/528117633984?text=Quiero%20el%20plan%20Pro%20de%20Reservo" class="precio-btn outline-btn">Quiero el Pro</a>
+<a href="https://wa.me/528117633984?text=Quiero%20entrar%20a%20la%20lista%20de%20espera%20del%20plan%20Pro%20de%20Reservo" class="precio-btn outline-btn" target="_blank" rel="noopener noreferrer">Avísame cuando esté</a>
 </div>
 </div>
 </section>
@@ -310,10 +373,10 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <p class="section-desc" style="margin-bottom:48px">Resolvemos las dudas más comunes antes de que las tengas.</p>
 </div>
 <div class="reveal">
-<div class="faq-item"><button class="faq-question">"Ya cuento con una recepcionista..."<span class="icon">+</span></button><div class="faq-answer"><p>¡Excelente! Reservo no llega para reemplazarla, sino para ser su mejor asistente. Mientras ella atiende a los clientes en el local o resuelve dudas complejas, Reservo se encarga de las tareas repetitivas de agendamiento 24/7. Así, ella puede enfocarse en brindar una experiencia de lujo a quienes ya están ahí.</p></div></div>
-<div class="faq-item"><button class="faq-question">"¿Y si el Asistente Virtual se equivoca en alguna fecha?"<span class="icon">+</span></button><div class="faq-answer"><p>Reservo está conectado a tu Google Calendar en tiempo real. Si bloqueas un horario, el Asistente Virtual lo ve al instante y no lo ofrece. Tú sigues mandando en tu agenda.</p></div></div>
-<div class="faq-item"><button class="faq-question">"Se me hace caro..."<span class="icon">+</span></button><div class="faq-answer"><p>Más que un gasto, es una inversión con retorno inmediato. ¿Cuántas citas pierdes hoy por no responder al instante? En la mayoría de los negocios, con solo 1 o 2 citas recuperadas al mes, Reservo se paga solo. Todo lo demás es utilidad neta para ti y tiempo libre recuperado.</p></div></div>
-<div class="faq-item"><button class="faq-question">"No le sé a la tecnología..."<span class="icon">+</span></button><div class="faq-answer"><p>No necesitas saber nada de tecnología. Nosotros hacemos todo el trabajo pesado por ti. La configuración es tan rápida que, el mismo día, tu asistente virtual ya estará listo para atender a tus clientes y llenar tu agenda.</p></div></div>
+<div class="faq-item"><button class="faq-question">"Ya cuento con una recepcionista..."<span class="icon">+</span></button><div class="faq-answer"><p>¡Excelente! <strong>Reservo</strong> no llega para reemplazarla, sino para ser su mejor asistente. Mientras ella atiende a los clientes en el local o resuelve dudas complejas, <strong>Reservo</strong> se encarga de las tareas repetitivas de agendamiento 24/7. Así, ella puede enfocarse en brindar una experiencia de lujo a quienes ya están ahí.</p></div></div>
+<div class="faq-item"><button class="faq-question">"¿Y si <strong>Reservo</strong> se equivoca en alguna fecha?"<span class="icon">+</span></button><div class="faq-answer"><p><strong>Reservo</strong> está conectado a tu Google Calendar en tiempo real. Si bloqueas un horario, <strong>Reservo</strong> lo ve al instante y no lo ofrece. Tú sigues mandando en tu agenda.</p></div></div>
+<div class="faq-item"><button class="faq-question">"Se me hace caro..."<span class="icon">+</span></button><div class="faq-answer"><p>Más que un gasto, es una inversión con retorno inmediato. ¿Cuántas citas pierdes hoy por no responder al instante? En la mayoría de los negocios, con solo 1 o 2 citas recuperadas al mes, <strong>Reservo</strong> se paga solo. Todo lo demás es utilidad neta para ti y tiempo libre recuperado.</p></div></div>
+<div class="faq-item"><button class="faq-question">"No le sé a la tecnología..."<span class="icon">+</span></button><div class="faq-answer"><p>No necesitas saber nada de tecnología. Nosotros hacemos todo el trabajo pesado por ti. La configuración es tan rápida que, el mismo día, <strong>Reservo</strong> ya estará listo para atender a tus clientes y llenar tu agenda.</p></div></div>
 </div>
 </section>
 
@@ -322,13 +385,13 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <div class="reveal">
 <h2>Tu negocio merece atención inmediata, <em>incluso cuando no puedes contestar.</em></h2>
 <p>Cada mensaje sin contestar es una oportunidad perdida. Hoy puedes empezar a aprovecharlas todas.</p>
-<a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20activar%20Reservo%20para%20mi%20negocio" class="btn-gradient">💬 Activar mi Reservo ahora</a>
+<a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20activar%20Reservo%20para%20mi%20negocio" class="btn-gradient" target="_blank" rel="noopener noreferrer"><svg class="btn-wa-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-whatsapp"/></svg>Activar mi <strong>Reservo</strong> ahora</a>
 <p class="cta-sub-text">Sin contratos largos · Configuración incluida · Activo el mismo día</p>
 <div class="cta-steps">
-<div class="cta-steps-title"><span class="icon-spark">✦</span>Así arranca Reservo en tu negocio</div>
-<div class="cta-step"><span class="cta-step-num">01</span><div><div class="cta-step-text">Conectas tu WhatsApp Business</div><div class="cta-step-sub">Tu número, tu negocio. 5 minutos.</div></div></div>
-<div class="cta-step"><span class="cta-step-num">02</span><div><div class="cta-step-text">Reservo se conecta a tu agenda</div><div class="cta-step-sub">Google Calendar sincronizado en tiempo real.</div></div></div>
-<div class="cta-step"><span class="cta-step-num">03</span><div><div class="cta-step-text">Empieza a responder por ti</div><div class="cta-step-sub">Esta misma tarde, atendiendo clientes.</div></div></div>
+<div class="cta-steps-title"><span class="icon-spark">✦</span>Cómo <strong>Reservo</strong> llena tu agenda</div>
+<div class="cta-step"><span class="cta-step-num">01</span><div><div class="cta-step-text">Nos platicas cómo trabajas</div><div class="cta-step-sub">Servicios, duración de citas, horarios y el tono con el que quieres atender por WhatsApp.</div></div></div>
+<div class="cta-step"><span class="cta-step-num">02</span><div><div class="cta-step-text"><strong>Reservo</strong> aprende tu operación</div><div class="cta-step-sub">Configuramos reglas, disponibilidad y tu Google Calendar para que no se encimen citas.</div></div></div>
+<div class="cta-step"><span class="cta-step-num">03</span><div><div class="cta-step-text">Tu WhatsApp agenda mientras atiendes</div><div class="cta-step-sub">Los clientes escriben, <strong>Reservo</strong> confirma fecha y hora, y la cita queda en tu calendario sin que sueltes lo que haces.</div></div></div>
 </div>
 </div>
 </section>
@@ -336,11 +399,11 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <!-- ══ FOOTER ══ -->
 <footer class="footer">
 <div class="footer-logo">Reserv<span>●</span></div>
-<div class="footer-text">holareservo.com · Tu Asistente Virtual para WhatsApp · Powered by Fixy IT · © 2026</div>
+<div class="footer-text">holareservo.com · Agenda por WhatsApp con <strong>Reservo</strong> · Powered by Fixy IT · © 2026</div>
 </footer>
 
-<!-- ══ BOTÓN FLOTANTE WHATSAPP — Solo móvil ══ -->
-<a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20activar%20Reservo" class="wa-float" id="waFloat">💬</a>
+<!-- ══ BOTÓN FLOTANTE WHATSAPP ══ -->
+<a href="https://wa.me/528117633984?text=Hola%2C%20quiero%20activar%20Reservo%20para%20mi%20negocio" class="wa-float" id="waFloat" aria-label="Escribir por WhatsApp" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-whatsapp"/></svg></a>
 
 <script>
 /* ══ CARRUSEL VERTICAL DE GIROS ══ */
@@ -492,9 +555,16 @@ const co=new IntersectionObserver((entries)=>{if(entries[0].isIntersecting){setT
 /* ══ FAQ ACCORDION ══ */
 document.querySelectorAll('.faq-question').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.parentElement;const wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!wasOpen)item.classList.add('open')})});
 
-/* ══ BOTÓN FLOTANTE WHATSAPP ══ */
-const waFloat=document.getElementById('waFloat');const heroSection=document.querySelector('.hero');
-if(window.innerWidth<=768){const fo=new IntersectionObserver((entries)=>{waFloat.style.display=entries[0].isIntersecting?'none':'flex'},{threshold:0.1});fo.observe(heroSection)}
+/* ══ NAVBAR SCROLL + MENÚ MÓVIL ══ */
+const navbar=document.getElementById('navbar');
+const navbarToggle=document.getElementById('navbarToggle');
+const navbarMobile=document.getElementById('navbarMobile');
+function closeMobileMenu(){navbarMobile.classList.remove('open');navbarMobile.setAttribute('aria-hidden','true');navbarToggle.setAttribute('aria-expanded','false');navbarToggle.setAttribute('aria-label','Abrir menú');document.body.classList.remove('menu-open')}
+function openMobileMenu(){navbarMobile.classList.add('open');navbarMobile.setAttribute('aria-hidden','false');navbarToggle.setAttribute('aria-expanded','true');navbarToggle.setAttribute('aria-label','Cerrar menú');document.body.classList.add('menu-open')}
+navbarToggle.addEventListener('click',()=>{navbarMobile.classList.contains('open')?closeMobileMenu():openMobileMenu()});
+document.querySelectorAll('.nav-mobile-link,.navbar-mobile .navbar-cta').forEach(link=>{link.addEventListener('click',closeMobileMenu)});
+window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
+
 </script>
 </body>
 </html>
