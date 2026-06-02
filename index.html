@@ -36,10 +36,10 @@
 .hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,0.08) 0%,transparent 70%);pointer-events:none}
 .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px 56px;align-items:center;max-width:1100px;width:100%;margin-bottom:64px}
 .hero-content{text-align:left}
-.hero-visual{display:flex;justify-content:center;align-items:center;opacity:0;animation:fadeUp .8s ease .5s forwards}
-.hero-visual-frame{position:relative;width:100%;max-width:400px}
+.hero-visual{display:flex;justify-content:center;align-items:center;width:100%;opacity:0;animation:fadeUp .8s ease .5s forwards}
+.hero-visual-frame{position:relative;width:100%;max-width:100%}
 .hero-visual-frame::before{content:'';position:absolute;top:20px;left:20px;right:-20px;bottom:-20px;background:var(--gradient);border-radius:24px;opacity:.45;z-index:0}
-.hero-visual-frame img{position:relative;z-index:1;width:100%;border-radius:20px;box-shadow:0 24px 64px rgba(124,58,237,0.2);border:1px solid var(--border-light);object-fit:cover;display:block;aspect-ratio:4/5}
+.hero-visual-frame img{position:relative;z-index:1;width:100%;height:auto;border-radius:20px;box-shadow:0 24px 64px rgba(124,58,237,0.2);object-fit:contain;display:block}
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,72px);font-weight:900;line-height:1.08;margin-bottom:28px;max-width:none;color:var(--text);opacity:0;animation:fadeUp .8s ease .3s forwards}
 .hero h1 em{font-style:italic;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-sub{font-size:clamp(16px,2.2vw,19px);font-weight:300;color:var(--text-muted);max-width:520px;line-height:1.7;margin-bottom:40px;opacity:0;animation:fadeUp .8s ease .45s forwards}
@@ -98,11 +98,13 @@
 .feature-card{background:var(--bg-card);padding:40px 32px;border-radius:16px;border:1px solid var(--border-light);transition:all .3s;position:relative;overflow:hidden}
 .feature-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gradient);transform:scaleX(0);transition:transform .4s}
 .feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(124,58,237,0.2)}.feature-card:hover::after{transform:scaleX(1)}
-.feature-icon{width:48px;height:48px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(124,58,237,0.06)}
-.feature-icon svg{width:24px;height:24px;display:block}
+.feature-icon{width:auto;height:auto;margin-bottom:20px;display:flex;align-items:center;justify-content:flex-start;background:none;border-radius:0}
+.feature-icon svg{width:28px;height:28px;display:block;overflow:visible}
 .feature-icon svg.icon-stroke{stroke:url(#icon-gradient)}
-.feature-icon svg.icon-stroke path{stroke:inherit;fill:none}
-.feature-icon svg.icon-fill,.feature-icon svg.icon-fill path{fill:url(#icon-gradient)}
+.feature-icon svg.icon-stroke path[stroke="none"]{display:none}
+.feature-icon svg.icon-stroke path:not([stroke="none"]){stroke:inherit;fill:none}
+.feature-icon svg.icon-fill path[stroke="none"]{display:none}
+.feature-icon svg.icon-fill path:not([stroke="none"]){fill:url(#icon-gradient)}
 .btn-gradient strong{font-weight:700;color:inherit}
 .btn-wa-icon,.wa-float svg{width:22px;height:22px;flex-shrink:0;display:block}
 .wa-float svg{width:28px;height:28px}
@@ -168,7 +170,9 @@
   margin-bottom: 6px;
 }
 .faq-section{padding:120px 40px;max-width:750px;margin:0 auto}.faq-item{border-bottom:1px solid var(--border-light);overflow:hidden}
-.faq-question{width:100%;background:none;border:none;padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;text-align:left;transition:color .3s}
+.faq-question{width:100%;background:none;border:none;padding:24px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;text-align:left;transition:color .3s}
+.faq-q-text{flex:1;min-width:0;line-height:1.5}
+.faq-q-text strong{font-weight:700}
 .faq-question:hover{color:var(--purple)}.faq-question .icon{font-size:20px;transition:transform .3s;flex-shrink:0;margin-left:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .faq-item.open .faq-question .icon{transform:rotate(45deg)}.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s,padding .4s}
 .faq-item.open .faq-answer{max-height:200px;padding-bottom:20px}.faq-answer p{font-size:15px;font-weight:300;color:var(--text-muted);line-height:1.7}
@@ -194,7 +198,7 @@ body.menu-open{overflow:hidden}
 @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}.reveal.visible{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}.hero h1,.hero-sub,.hero-buttons,.hero-visual,.stat-grid{opacity:1;animation:none}.giro-carousel{transition:none}}
-@media(max-width:768px){.navbar{padding:16px 20px}.navbar.scrolled{padding:10px 20px}.navbar-links{display:none}.navbar-toggle{display:flex}.wa-float{bottom:88px}.hero{padding:100px 20px 60px}.hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}.hero-content{text-align:center}.hero-sub{margin-left:auto;margin-right:auto}.hero-buttons{justify-content:center}.hero-visual-frame{max-width:320px}.hero-visual-frame::before{top:14px;left:14px;right:-14px;bottom:-14px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:12px;text-align:center}}
+@media(max-width:768px){.navbar{padding:16px 20px}.navbar.scrolled{padding:10px 20px}.navbar-links{display:none}.navbar-toggle{display:flex}.wa-float{bottom:88px}.hero{padding:100px 20px 60px}.hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}.hero-content{text-align:center}.hero-sub{margin-left:auto;margin-right:auto}.hero-buttons{justify-content:center}.hero-visual-frame{max-width:100%}.hero-visual-frame::before{top:14px;left:14px;right:-14px;bottom:-14px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:12px;text-align:center}}
 </style>
 </head>
 <body>
@@ -249,7 +253,7 @@ body.menu-open{overflow:hidden}
 </div>
 <div class="hero-visual">
 <div class="hero-visual-frame">
-<img src="chat.jpeg" alt="Ejemplo de conversación en WhatsApp donde Reservo agenda una cita" width="400" height="500" loading="eager">
+<img src="chat.jpg" alt="Ejemplo de conversación en WhatsApp donde Reservo agenda una cita" loading="eager">
 </div>
 </div>
 </div>
@@ -373,10 +377,10 @@ necesita<br>para no perder <em>una cita más.</em></h2>
 <p class="section-desc" style="margin-bottom:48px">Resolvemos las dudas más comunes antes de que las tengas.</p>
 </div>
 <div class="reveal">
-<div class="faq-item"><button class="faq-question">"Ya cuento con una recepcionista..."<span class="icon">+</span></button><div class="faq-answer"><p>¡Excelente! <strong>Reservo</strong> no llega para reemplazarla, sino para ser su mejor asistente. Mientras ella atiende a los clientes en el local o resuelve dudas complejas, <strong>Reservo</strong> se encarga de las tareas repetitivas de agendamiento 24/7. Así, ella puede enfocarse en brindar una experiencia de lujo a quienes ya están ahí.</p></div></div>
-<div class="faq-item"><button class="faq-question">"¿Y si <strong>Reservo</strong> se equivoca en alguna fecha?"<span class="icon">+</span></button><div class="faq-answer"><p><strong>Reservo</strong> está conectado a tu Google Calendar en tiempo real. Si bloqueas un horario, <strong>Reservo</strong> lo ve al instante y no lo ofrece. Tú sigues mandando en tu agenda.</p></div></div>
-<div class="faq-item"><button class="faq-question">"Se me hace caro..."<span class="icon">+</span></button><div class="faq-answer"><p>Más que un gasto, es una inversión con retorno inmediato. ¿Cuántas citas pierdes hoy por no responder al instante? En la mayoría de los negocios, con solo 1 o 2 citas recuperadas al mes, <strong>Reservo</strong> se paga solo. Todo lo demás es utilidad neta para ti y tiempo libre recuperado.</p></div></div>
-<div class="faq-item"><button class="faq-question">"No le sé a la tecnología..."<span class="icon">+</span></button><div class="faq-answer"><p>No necesitas saber nada de tecnología. Nosotros hacemos todo el trabajo pesado por ti. La configuración es tan rápida que, el mismo día, <strong>Reservo</strong> ya estará listo para atender a tus clientes y llenar tu agenda.</p></div></div>
+<div class="faq-item"><button class="faq-question" type="button"><span class="faq-q-text">"Ya cuento con una recepcionista..."</span><span class="icon">+</span></button><div class="faq-answer"><p>¡Excelente! <strong>Reservo</strong> no llega para reemplazarla, sino para ser su mejor asistente. Mientras ella atiende a los clientes en el local o resuelve dudas complejas, <strong>Reservo</strong> se encarga de las tareas repetitivas de agendamiento 24/7. Así, ella puede enfocarse en brindar una experiencia de lujo a quienes ya están ahí.</p></div></div>
+<div class="faq-item"><button class="faq-question" type="button"><span class="faq-q-text">"¿Y si <strong>Reservo</strong> se equivoca en alguna fecha?"</span><span class="icon">+</span></button><div class="faq-answer"><p><strong>Reservo</strong> está conectado a tu Google Calendar en tiempo real. Si bloqueas un horario, <strong>Reservo</strong> lo ve al instante y no lo ofrece. Tú sigues mandando en tu agenda.</p></div></div>
+<div class="faq-item"><button class="faq-question" type="button"><span class="faq-q-text">"Se me hace caro..."</span><span class="icon">+</span></button><div class="faq-answer"><p>Más que un gasto, es una inversión con retorno inmediato. ¿Cuántas citas pierdes hoy por no responder al instante? En la mayoría de los negocios, con solo 1 o 2 citas recuperadas al mes, <strong>Reservo</strong> se paga solo. Todo lo demás es utilidad neta para ti y tiempo libre recuperado.</p></div></div>
+<div class="faq-item"><button class="faq-question" type="button"><span class="faq-q-text">"No le sé a la tecnología..."</span><span class="icon">+</span></button><div class="faq-answer"><p>No necesitas saber nada de tecnología. Nosotros hacemos todo el trabajo pesado por ti. La configuración es tan rápida que, el mismo día, <strong>Reservo</strong> ya estará listo para atender a tus clientes y llenar tu agenda.</p></div></div>
 </div>
 </section>
 
