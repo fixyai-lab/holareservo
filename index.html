@@ -162,8 +162,21 @@
 .cta-steps-title .icon-spark{background:var(--gradient);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
 .cta-step{display:flex;gap:16px;padding:12px 0}.cta-step-num{font-size:13px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0}
 .cta-step-text{font-size:14px;font-weight:500;color:#fff}.cta-step-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,0.4)}
-.footer{border-top:1px solid var(--border-light);padding:40px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto}
+.plan-chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 20px}
+.chip{display:inline-flex;align-items:center;font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px;border:1px solid var(--border-light);background:rgba(124,58,237,0.04);color:var(--text);line-height:1.2}
+.chip.plus{border-color:rgba(124,58,237,0.28);background:rgba(124,58,237,0.08);color:var(--purple)}
+.chip.addon{border-style:dashed;color:var(--text-muted);background:transparent}
+.extras-strip{max-width:1000px;margin:56px auto 0;padding:0 8px;text-align:center}
+.extras-strip .extras-label{font-size:13px;color:var(--text-muted);margin-bottom:16px;font-weight:400}
+.extras-strip .plan-chips{justify-content:center;margin:0}
+.footer{border-top:1px solid var(--border-light);padding:40px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;max-width:1100px;margin:0 auto}
 .footer-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--text)}.footer-logo span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.footer-follow{display:flex;flex-direction:column;align-items:center;gap:10px}
+.footer-follow-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted)}
+.footer-social{display:flex;gap:12px;align-items:center}
+.footer-social a{width:40px;height:40px;border-radius:50%;border:1px solid var(--border-light);display:inline-flex;align-items:center;justify-content:center;color:var(--text);text-decoration:none;transition:transform .25s,border-color .25s,color .25s,box-shadow .25s}
+.footer-social a:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-2px);box-shadow:var(--shadow)}
+.footer-social svg{width:18px;height:18px;fill:currentColor;display:block}
 .footer-text{font-size:12px;color:var(--text-light)}
 .wa-float{position:fixed;bottom:24px;right:24px;z-index:99;width:58px;height:58px;border-radius:50%;background:var(--green-wa);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.45);transition:transform .3s,box-shadow .3s}
 .wa-float:hover{transform:scale(1.08);box-shadow:0 8px 28px rgba(37,211,102,0.55)}
@@ -173,7 +186,7 @@ body.menu-open{overflow:hidden}
 @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}.reveal.visible{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}.hero h1,.hero-sub,.hero-buttons,.hero-visual,.stat-grid{opacity:1;animation:none}.giro-carousel{transition:none}}
-@media(max-width:768px){.navbar{padding:16px 20px}.navbar.scrolled{padding:10px 20px}.navbar-links{display:none}.navbar-toggle{display:flex}.wa-float{bottom:88px}.hero{padding:100px 20px 60px}.hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}.hero-content{text-align:center}.hero-sub{margin-left:auto;margin-right:auto}.hero-buttons{justify-content:center}.hero-visual-frame{width:75%;max-width:75%}.hero-visual-frame::before{top:14px;left:14px;right:-14px;bottom:-14px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:12px;text-align:center}}
+@media(max-width:768px){.navbar{padding:16px 20px}.navbar.scrolled{padding:10px 20px}.navbar-links{display:none}.navbar-toggle{display:flex}.wa-float{bottom:88px}.hero{padding:100px 20px 60px}.hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}.hero-content{text-align:center}.hero-sub{margin-left:auto;margin-right:auto}.hero-buttons{justify-content:center}.hero-visual-frame{width:75%;max-width:75%}.hero-visual-frame::before{top:14px;left:14px;right:-14px;bottom:-14px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:20px;text-align:center}.footer-follow{order:2}.footer-text{order:3}}
 </style>
 </head>
 <body>
@@ -288,6 +301,11 @@ body.menu-open{overflow:hidden}
 <div class="precio-badge outline">Esencial</div>
 <div class="precio-plan"><strong>Reservo</strong> Esencial</div>
 <div class="precio-sub">Para empezar a no perder citas</div>
+<div class="plan-chips" aria-label="Incluye">
+<span class="chip">WhatsApp 24/7</span>
+<span class="chip">Agenda</span>
+<span class="chip">Google Calendar</span>
+</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$1,990</s> <span>$1,393 MXN</span></div>
 <div class="precio-wrapper">
   <div class="precio-amount"><sup>$</sup>790</div>
@@ -309,6 +327,11 @@ body.menu-open{overflow:hidden}
 <div class="precio-badge gradient" style="margin-top:8px">Plus</div>
 <div class="precio-plan"><strong>Reservo</strong> Plus</div>
 <div class="precio-sub">Para negocios que quieren crecer</div>
+<div class="plan-chips" aria-label="Incluye en Plus">
+<span class="chip plus">Recordatorios</span>
+<span class="chip plus">Notif. al dueño</span>
+<span class="chip plus">Límite de citas</span>
+</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$2,990</s> <span>$2,093 MXN</span></div>
 <div class="precio-wrapper">
   <div class="precio-amount"><sup>$</sup>1,190</div>
@@ -339,6 +362,15 @@ body.menu-open{overflow:hidden}
 <li>Soporte dedicado</li>
 </ul>
 <a href="https://wa.me/528117633984?text=Quiero%20entrar%20a%20la%20lista%20de%20espera%20del%20plan%20Pro%20de%20Reservo" class="precio-btn outline-btn" target="_blank" rel="noopener noreferrer">Avísame cuando esté</a>
+</div>
+</div>
+<div class="extras-strip reveal">
+<p class="extras-label">Extras disponibles hoy (sin Messenger ni Instagram por ahora)</p>
+<div class="plan-chips" aria-label="Extras">
+<span class="chip addon">Cotizaciones</span>
+<span class="chip addon">Recordatorios</span>
+<span class="chip addon">Notificaciones al dueño</span>
+<span class="chip addon">Profesional extra</span>
 </div>
 </div>
 </section>
@@ -377,6 +409,20 @@ body.menu-open{overflow:hidden}
 <!-- ══ FOOTER ══ -->
 <footer class="footer">
 <div class="footer-logo">Reserv<span>●</span></div>
+<div class="footer-follow">
+<div class="footer-follow-label">Síguenos</div>
+<div class="footer-social">
+<a href="https://www.facebook.com/profile.php?id=1092272913967268" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V5h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3.1l.9-3H13V9c0-.6.4-1 1-1z"/></svg>
+</a>
+<a href="https://www.instagram.com/holareservo/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+</a>
+<a href="https://www.linkedin.com/company/itfixy" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H4V20h2.94V8.5zM5.47 3.5A1.72 1.72 0 1 0 5.48 6.9 1.72 1.72 0 0 0 5.47 3.5zM20 20h-2.93v-5.6c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94V20H10.1V8.5h2.82v1.57h.04c.39-.74 1.35-1.52 2.78-1.52 2.97 0 3.52 1.96 3.52 4.5V20z"/></svg>
+</a>
+</div>
+</div>
 <div class="footer-text">holareservo.com · Agenda por WhatsApp con <strong>Reservo</strong> · Powered by Fixy IT · © 2026</div>
 </footer>
 
