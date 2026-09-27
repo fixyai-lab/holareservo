@@ -165,10 +165,23 @@
 .plan-chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 20px}
 .chip{display:inline-flex;align-items:center;font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px;border:1px solid var(--border-light);background:rgba(124,58,237,0.04);color:var(--text);line-height:1.2}
 .chip.plus{border-color:rgba(124,58,237,0.28);background:rgba(124,58,237,0.08);color:var(--purple)}
-.chip.addon{border-style:dashed;color:var(--text-muted);background:transparent}
-.extras-strip{max-width:1000px;margin:56px auto 0;padding:0 8px;text-align:center}
-.extras-strip .extras-label{font-size:13px;color:var(--text-muted);margin-bottom:16px;font-weight:400}
-.extras-strip .plan-chips{justify-content:center;margin:0}
+.addons-block{max-width:1000px;margin:72px auto 0;text-align:left}
+.addons-block .addons-head{text-align:center;margin-bottom:36px}
+.addons-block .addons-head .section-label{margin-bottom:12px}
+.addons-block .addons-head .section-title{font-size:clamp(26px,3.5vw,36px);margin-bottom:12px}
+.addons-block .addons-head .section-desc{margin:0 auto;max-width:520px;font-size:15px}
+.addons-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.addon-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;transition:border-color .3s,box-shadow .3s,transform .3s}
+.addon-card:hover{border-color:rgba(124,58,237,0.22);box-shadow:var(--shadow);transform:translateY(-2px)}
+.addon-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.addon-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1.2}
+.addon-note{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--purple);background:rgba(124,58,237,0.08);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.addon-desc{font-size:14px;font-weight:300;color:var(--text-muted);line-height:1.6;flex:1}
+.addon-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;padding-top:8px;border-top:1px solid var(--border-light);margin-top:4px}
+.addon-price-main{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text)}
+.addon-price-main span{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--text-muted);margin-left:4px}
+.addon-price-setup{font-size:13px;color:var(--text-muted)}
+.addon-price-setup strong{color:var(--text);font-weight:600}
 .footer{border-top:1px solid var(--border-light);padding:40px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;max-width:1100px;margin:0 auto}
 .footer-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--text)}.footer-logo span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .footer-follow{display:flex;flex-direction:column;align-items:center;gap:10px}
@@ -186,7 +199,7 @@ body.menu-open{overflow:hidden}
 @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}.reveal.visible{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}.hero h1,.hero-sub,.hero-buttons,.hero-visual,.stat-grid{opacity:1;animation:none}.giro-carousel{transition:none}}
-@media(max-width:768px){.navbar{padding:16px 20px}.navbar.scrolled{padding:10px 20px}.navbar-links{display:none}.navbar-toggle{display:flex}.wa-float{bottom:88px}.hero{padding:100px 20px 60px}.hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}.hero-content{text-align:center}.hero-sub{margin-left:auto;margin-right:auto}.hero-buttons{justify-content:center}.hero-visual-frame{width:75%;max-width:75%}.hero-visual-frame::before{top:14px;left:14px;right:-14px;bottom:-14px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:20px;text-align:center}.footer-follow{order:2}.footer-text{order:3}}
+@media(max-width:768px){.navbar{padding:16px 20px}.navbar.scrolled{padding:10px 20px}.navbar-links{display:none}.navbar-toggle{display:flex}.wa-float{bottom:88px}.hero{padding:100px 20px 60px}.hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}.hero-content{text-align:center}.hero-sub{margin-left:auto;margin-right:auto}.hero-buttons{justify-content:center}.hero-visual-frame{width:75%;max-width:75%}.hero-visual-frame::before{top:14px;left:14px;right:-14px;bottom:-14px}.stat-grid{grid-template-columns:1fr;max-width:280px}.section{padding:80px 20px}.features-grid{grid-template-columns:1fr}.demo-section{padding:80px 20px}.demo-inner{grid-template-columns:1fr}.precio-section{padding:80px 20px}.precio-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}.addons-grid{grid-template-columns:1fr}.faq-section{padding:80px 20px}.cta-section{padding:80px 20px}.hero-buttons{flex-direction:column;align-items:center}.footer{flex-direction:column;gap:20px;text-align:center}.footer-follow{order:2}.footer-text{order:3}}
 </style>
 </head>
 <body>
@@ -301,11 +314,6 @@ body.menu-open{overflow:hidden}
 <div class="precio-badge outline">Esencial</div>
 <div class="precio-plan"><strong>Reservo</strong> Esencial</div>
 <div class="precio-sub">Para empezar a no perder citas</div>
-<div class="plan-chips" aria-label="Incluye">
-<span class="chip">WhatsApp 24/7</span>
-<span class="chip">Agenda</span>
-<span class="chip">Google Calendar</span>
-</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$1,990</s> <span>$1,393 MXN</span></div>
 <div class="precio-wrapper">
   <div class="precio-amount"><sup>$</sup>790</div>
@@ -327,11 +335,6 @@ body.menu-open{overflow:hidden}
 <div class="precio-badge gradient" style="margin-top:8px">Plus</div>
 <div class="precio-plan"><strong>Reservo</strong> Plus</div>
 <div class="precio-sub">Para negocios que quieren crecer</div>
-<div class="plan-chips" aria-label="Incluye en Plus">
-<span class="chip plus">Recordatorios</span>
-<span class="chip plus">Notif. al dueño</span>
-<span class="chip plus">Límite de citas</span>
-</div>
 <div class="precio-setup"><div style="text-align:center;margin-bottom:4px">Por lanzamiento</div> · Setup único: <s style="color:var(--text-light)">$2,990</s> <span>$2,093 MXN</span></div>
 <div class="precio-wrapper">
   <div class="precio-amount"><sup>$</sup>1,190</div>
@@ -364,13 +367,55 @@ body.menu-open{overflow:hidden}
 <a href="https://wa.me/528117633984?text=Quiero%20entrar%20a%20la%20lista%20de%20espera%20del%20plan%20Pro%20de%20Reservo" class="precio-btn outline-btn" target="_blank" rel="noopener noreferrer">Avísame cuando esté</a>
 </div>
 </div>
-<div class="extras-strip reveal">
-<p class="extras-label">Extras disponibles hoy (sin Messenger ni Instagram por ahora)</p>
-<div class="plan-chips" aria-label="Extras">
-<span class="chip addon">Cotizaciones</span>
-<span class="chip addon">Recordatorios</span>
-<span class="chip addon">Notificaciones al dueño</span>
-<span class="chip addon">Profesional extra</span>
+<div class="addons-block reveal" id="addons">
+<div class="addons-head">
+<p class="section-label">Add-ons</p>
+<h3 class="section-title">Extras que puedes sumar</h3>
+<p class="section-desc">Funciones listas hoy. Se agregan a tu plan cuando las necesites. Sin Messenger ni Instagram por ahora.</p>
+</div>
+<div class="addons-grid">
+<article class="addon-card">
+<div class="addon-card-top">
+<div class="addon-name">Recordatorios</div>
+<span class="addon-note">Incluido en Plus</span>
+</div>
+<p class="addon-desc">Avisa al cliente 24 h (y 4 h) antes de su cita para bajar inasistencias.</p>
+<div class="addon-price">
+<div class="addon-price-main">$250<span>/ mes</span></div>
+<div class="addon-price-setup">Setup: <strong>$0</strong></div>
+</div>
+</article>
+<article class="addon-card">
+<div class="addon-card-top">
+<div class="addon-name">Notificaciones al dueño</div>
+<span class="addon-note">Incluido en Plus</span>
+</div>
+<p class="addon-desc">Te llega un aviso por WhatsApp cada vez que se agenda una cita nueva.</p>
+<div class="addon-price">
+<div class="addon-price-main">$290<span>/ mes</span></div>
+<div class="addon-price-setup">Setup: <strong>$0</strong></div>
+</div>
+</article>
+<article class="addon-card">
+<div class="addon-card-top">
+<div class="addon-name">Cotizaciones</div>
+</div>
+<p class="addon-desc">El cliente manda foto o pide precio; tú respondes y Reservo le entrega la cotización.</p>
+<div class="addon-price">
+<div class="addon-price-main">$290<span>/ mes</span></div>
+<div class="addon-price-setup">Setup: <strong>$190</strong></div>
+</div>
+</article>
+<article class="addon-card">
+<div class="addon-card-top">
+<div class="addon-name">Profesional extra</div>
+</div>
+<p class="addon-desc">Agenda adicional con su propio Google Calendar. Esencial incluye 1; Plus incluye 2.</p>
+<div class="addon-price">
+<div class="addon-price-main">$390<span>/ mes</span></div>
+<div class="addon-price-setup">Setup: <strong>$290</strong></div>
+</div>
+</article>
 </div>
 </div>
 </section>
@@ -418,7 +463,7 @@ body.menu-open{overflow:hidden}
 <a href="https://www.instagram.com/holareservo/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
 </a>
-<a href="https://www.linkedin.com/company/holareservo" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+<a href="https://www.linkedin.com/company/itfixy" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H4V20h2.94V8.5zM5.47 3.5A1.72 1.72 0 1 0 5.48 6.9 1.72 1.72 0 0 0 5.47 3.5zM20 20h-2.93v-5.6c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94V20H10.1V8.5h2.82v1.57h.04c.39-.74 1.35-1.52 2.78-1.52 2.97 0 3.52 1.96 3.52 4.5V20z"/></svg>
 </a>
 </div>
